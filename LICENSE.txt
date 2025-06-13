@@ -1,0 +1,18 @@
+Copyright (c) 2025 Novus0x
+
+All rights reserved.
+
+This software and its source code (Floua) are provided for educational and reference purposes only.
+
+You may:
+- View, study, and explore the code.
+- Recommend improvements or provide feedback via GitHub.
+
+You may NOT:
+- Copy, modify, or distribute this code in whole or in part without explicit permission from the author.
+- Use this code or design in commercial projects.
+- Re-upload or publish this app or its derivatives under any name, including Floua.
+
+Violations of these terms may result in legal action or takedown requests.
+
+📬 For collaboration or permission requests, please open an issue on this repository or contact via GitHub: [@novus0x](https://github.com/novus0x)
