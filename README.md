@@ -14,16 +14,19 @@ Coming soon at: **[https://floua.app](https://floua.app)**
 
 ## 🛡 License
 
-This project is protected under a **custom license**.
+This project is released under a **custom, restricted license**.
 
-You may:
-- View and explore the code for educational or reference purposes.
-- Recommend improvements or open issues via GitHub.
+You are allowed to:
+- View and study the source code for educational purposes.
+- Take inspiration from the design and architecture to build **your own original projects**.
+- Recommend improvements or report issues via GitHub.
 
-You may **NOT**:
-- Copy, redistribute, or modify this project in whole or in part without permission.
-- Use this project or its design in commercial products.
-- Re-upload or publish it under any name, including "Floua".
+You are **not allowed to**:
+- Copy, reuse, or redistribute the source code or assets directly.
+- Publish any clone or derivative work based on this project, whether modified or not.
+- Use this project or its components for commercial purposes without explicit written permission.
+
+By viewing or using this repository, you agree to respect the creator’s ownership and originality.
 
 📬 For permissions or collaboration requests, please [open an issue](https://github.com/novus0x/floua-app/issues) or contact me via GitHub: [@novus0x](https://github.com/novus0x)
 
