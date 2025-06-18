@@ -14,6 +14,12 @@ You are strictly prohibited from:
 - Publishing or deploying any clone, fork, or derivative work based on this project, whether modified or not.
 - Using this project, its components, or its brand (Floua) in any commercial product or service without prior written consent.
 
+If you take inspiration from this project to build your own original work, you are kindly encouraged to include a visible acknowledgment to the original project:
+
+"Inspired by Floua - platform by Novus0x."
+
+This recognition is voluntary but appreciated, as it helps maintain transparency, intellectual honesty, and community respect.
+
 Any unauthorized use of this software, codebase, or its derivatives may result in takedown actions or legal steps as appropriate under applicable copyright laws.
 
 By accessing or using this repository, you agree to these terms.
