@@ -27,7 +27,12 @@
     --fw-regular: 400;
     --fw-medium: 500;
 
+    --fs-xxxsmall: 11px;
+    --fs-xxsmall: 14px;
+    --fs-xsmall: 16px;
     --fs-small: 18px;
+    --fs-big: 24px;
+    --fs-xbig: 28px;
 }
 
 /********************** General **********************/
@@ -36,6 +41,7 @@
     padding: 0;
     border: none;
     outline: none;
+    font-weight: normal;
     text-decoration: none;
     box-sizing: border-box;
 }
@@ -73,6 +79,27 @@ body {
 
 .btn-outline-secondary:hover {
     border-color: var(--color-gray-bluish);
+}
+
+/********************** Icons **********************/
+.icon-white {
+    color: var(--color-white);
+}
+
+.icon-teal {
+    color: var(--color-teal);
+}
+
+.icon-orange {
+    color: var(--color-orange);
+}
+
+.icon-yellow {
+    color: var(--color-yellow-light);
+}
+
+.icon-salmon {
+    color: var(--color-red-salmon);
 }
 
 /********************** Navbar **********************/
@@ -174,18 +201,6 @@ body {
     font-size: 28px;
 }
 
-.sidebar-link-icon-1 {
-    color: var(--color-teal);
-}
-
-.sidebar-link-icon-2 {
-    color: var(--color-orange);
-}
-
-.sidebar-link-icon-3 {
-    color: var(--color-yellow-light);
-}
-
 .sidebar-link-text {
     margin-left: 20px;
     font-size: var(--fs-small);
@@ -207,4 +222,105 @@ body {
     height: calc(100vh - 76px);
 
     padding: 35px 25px;
+}
+
+/********************** Video Carousel **********************/
+.carousel-list {
+    display: flex;
+    flex-direction: column;
+    gap: 45px;
+}
+
+.video-carousel {
+    width: 100%;
+}
+
+.video-carousel-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.video-carousel-title {
+    display: flex;
+    align-items: center;
+
+    color: var(--color-white);
+}
+
+.video-carousel-title-icon {
+    font-size: var(--fs-xbig);
+}
+
+.video-carousel-title-text {
+    margin-left: 15px;
+    font-size: var(--fs-big);
+}
+
+.video-carousel-actions-link {
+    display: flex;
+    align-items: center;
+}
+
+.video-carousel-actions-link-text {
+    margin-right: 5px;
+
+    color: var(--color-white);
+    font-size: var(--fs-xsmall);
+}
+
+.video-carousel-slider {
+    display: flex;
+
+    gap: 40px;
+    margin-top: 30px;
+    overflow-x: auto;
+}
+
+.video-carousel-item {
+    width: 260px;
+    color: var(--color-white);
+}
+
+.video-carousel-item-thumbail {
+    width: 260px;
+    height: 150px;
+    border-radius: 15px;
+
+    overflow: hidden;
+    background-color: #D9D9D9;
+}
+
+.video-carousel-item-info {
+    display: flex;
+    margin-top: 15px;
+}
+
+.video-carousel-item-channel-profile {
+    min-width: 35px;
+    min-height: 35px;
+    border-radius: 100%;
+    margin-right: 15px;
+
+    overflow: hidden;
+    background-color: #D9D9D9;
+}
+
+.video-carousel-item-info-cont,
+.video-carousel-item-channel-info {
+    width: 100%;
+}
+
+.video-carousel-item-title {
+    font-size: var(--fs-xxsmall);
+}
+
+.video-carousel-item-channel-info {
+    display: flex;
+    justify-content: space-between;
+}
+
+.video-carousel-item-channel-name,
+.video-carousel-item-channel-views {
+    font-size: var(--fs-xxxsmall);
 }
