@@ -1,0 +1,210 @@
+/********************** Variables **********************/
+:root {
+    /*Colors*/
+    --color-main: #FD420A;
+    --color-main-hover: #E93600;
+
+    --color-black-blue: #10151C;
+    --color-dark-blue-1: #161B23;
+    --color-dark-blue-2: #1B212B;
+    --color-dark-blue-3: #1E242C;
+
+    --color-bright-blue: #2979FF;
+    --color-teal: #2EC4B6;
+    --color-lime-green: #A3E635;
+    --color-orange: #FF8c42;
+    --color-red-salmon: #FF6B6B;
+    --color-yellow-light: #FFD166;
+    
+    --color-gray-light: #D9D9D9;
+    --color-gray-bluish: #B0BEC5;
+
+    --color-white: #FFFFFF;
+    --color-black: #000000;
+
+    /*Font*/
+    --font-firacode: 'Fira Code', monospace;
+    --fw-regular: 400;
+    --fw-medium: 500;
+
+    --fs-small: 18px;
+}
+
+/********************** General **********************/
+* {
+    margin: 0;
+    padding: 0;
+    border: none;
+    outline: none;
+    text-decoration: none;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: var(--font-firacode);
+    background-color: var(--color-black-blue);
+}
+
+/********************** Buttons **********************/
+.btn {
+    border: none;
+    cursor: pointer;
+    background-color: transparent;
+
+    padding: 14px 20px;
+    border-radius: 15px;
+}
+
+.btn-primary {
+    color: var(--color-white);
+    background-color: var(--color-main);
+    transition: background ease-in-out 150ms;
+}
+
+.btn-primary:hover {
+    background-color: var(--color-main-hover);
+}
+
+.btn-outline-secondary {
+    color: var(--color-white);
+    border: 2px solid var(--color-dark-blue-3);
+    transition: border-color ease-in-out 300ms;
+}
+
+.btn-outline-secondary:hover {
+    border-color: var(--color-gray-bluish);
+}
+
+/********************** Navbar **********************/
+.navbar {
+    top: 0;
+    left: 0;
+    position: fixed;
+
+    width: 100%;
+    height: 76px;
+    padding: 25px 35px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    background-color: var(--color-dark-blue-1);
+}
+
+.icon-logo-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.sidebar-toggle-icon {
+    font-size: 35px;
+    margin-right: 25px;
+    color: var(--color-white);
+}
+
+.search-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 10px;
+    padding: 0px 5px 0px 0px;
+    background-color: var(--color-dark-blue-3);
+}
+
+.search {
+    height: 45px;
+    width: 500px;
+    padding: 10px 0px 10px 15px;
+
+    color: var(--color-white);
+    background-color: transparent;
+
+    font-weight: var(--fw-medium);
+    font-family: var(--font-firacode);
+}
+
+.search::placeholder {
+    color: var(--color-gray-bluish);
+}
+
+.search-icon {
+    color: var(--color-white);
+}
+
+/********************** Sidebar **********************/
+.sidebar {
+    left: 0;
+    top: 76px;
+    position: fixed;
+
+    width: 270px;
+    height: calc(100vh - 76px);
+    
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    
+    background-color: var(--color-dark-blue-1);
+}
+
+.sidebar-link-container {
+    width: 100%;
+    height: 65px;
+    padding: 25px 35px;
+    color: var(--color-white);
+    
+    display: flex;
+    align-items: center;
+
+    transition: background-color ease-in-out 150ms;
+}
+
+.sidebar-link-container:hover {
+    background-color: var(--color-dark-blue-2);
+}
+
+.sidebar-link-container-active {
+    background-color: var(--color-dark-blue-2);
+}
+
+.sidebar-link-icon {
+    font-size: 28px;
+}
+
+.sidebar-link-icon-1 {
+    color: var(--color-teal);
+}
+
+.sidebar-link-icon-2 {
+    color: var(--color-orange);
+}
+
+.sidebar-link-icon-3 {
+    color: var(--color-yellow-light);
+}
+
+.sidebar-link-text {
+    margin-left: 20px;
+    font-size: var(--fs-small);
+    font-weight: var(--fw-regular);
+}
+
+.sidebar-extra {
+    margin-bottom: 25px;
+    margin-left: 18px;
+    color: var(--color-gray-bluish);
+}
+
+/********************** Content **********************/
+.content {
+    overflow-y: auto;
+
+    margin-top: 76px;
+    margin-left: 270px;
+    height: calc(100vh - 76px);
+
+    padding: 35px 25px;
+}
