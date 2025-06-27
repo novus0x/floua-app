@@ -22,6 +22,8 @@
     --color-white: #FFFFFF;
     --color-black: #000000;
 
+    --color-backdrop: #1b212b80;
+
     /*Font*/
     --font-firacode: 'Fira Code', monospace;
     --fw-regular: 400;
@@ -31,8 +33,11 @@
     --fs-xxsmall: 14px;
     --fs-xsmall: 16px;
     --fs-small: 18px;
+    --fs-regular: 20px;
+    --fs-medium: 22px;
     --fs-big: 24px;
     --fs-xbig: 28px;
+    --fs-xxbig: 32px;
 }
 
 /********************** General **********************/
@@ -49,6 +54,10 @@
 body {
     font-family: var(--font-firacode);
     background-color: var(--color-black-blue);
+}
+
+.hidden {
+    display: none !important;
 }
 
 /********************** Buttons **********************/
@@ -102,6 +111,109 @@ body {
     color: var(--color-red-salmon);
 }
 
+.icon-main {
+    color: var(--color-main);
+}
+
+/********************** Modals **********************/
+.modal {
+    top: 0;
+    left: 0;
+    position: fixed;
+
+    width: 100%;
+    height: 100%;
+    
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-backdrop {
+    min-width: 100vh;
+    min-height: 100vh;
+
+    position: absolute;
+    background-color: var(--color-backdrop);
+}
+
+.modal-content {
+    min-width: 450px;
+    padding: 25px;
+    border-radius: 15px;
+    background-color: var(--color-dark-blue-2);
+}
+
+.modal-title {
+    display: flex;
+    position: relative;
+    justify-content: center;
+ 
+    color: var(--color-white);
+    font-size: var(--fs-regular);
+}
+
+.modal-title-text {
+    color: var(--color-white);
+}
+
+.modal-title-actions {
+    right: 0;
+    position: absolute;
+}
+
+.modal-title-icon {
+    cursor: pointer;
+    font-size: var(--fs-xxbig);
+    background-color: transparent;
+}
+
+.modal-actions {
+    margin-top: 25px;
+}
+
+.modal-input-container {
+    display: flex;
+    margin-bottom: 20px;
+    flex-direction: column;
+}
+
+.modal-label {
+    margin-bottom: 7px;
+    color: var(--color-white);
+    font-size: var(--fs-xsmall);
+}
+
+.modal-input {
+    padding: 13px 15px;
+    border-radius: 15px;
+    background-color: transparent;
+    
+    color: var(--color-white);
+    border: 2px solid var(--color-gray-bluish);
+    transition: border-color ease-in-out 250ms;
+}
+
+.modal-input:focus,
+.modal-input:not(:placeholder-shown)  {
+    border: 2px solid var(--color-main);
+}
+
+.modal-input::placeholder {
+    color: var(--color-white);
+}
+
+.modal-input-button {
+    width: 100%;
+    color: var(--color-white);
+    border: 2px solid var(--color-main);
+    transition: background  ease-in-out 150ms;
+}
+
+.modal-input-button:hover {
+    background-color: var(--color-main);
+}
+
 /********************** Navbar **********************/
 .navbar {
     top: 0;
@@ -137,14 +249,13 @@ body {
     justify-content: center;
 
     border-radius: 10px;
-    padding: 0px 5px 0px 0px;
     background-color: var(--color-dark-blue-3);
 }
 
 .search {
     height: 45px;
     width: 500px;
-    padding: 10px 0px 10px 15px;
+    padding: 0px 0px 0px 15px;
 
     color: var(--color-white);
     background-color: transparent;
@@ -175,6 +286,11 @@ body {
     justify-content: space-between;
     
     background-color: var(--color-dark-blue-1);
+    transition: left ease-in-out 150ms;
+}
+
+.sidebar-hide {
+    left: -270px;
 }
 
 .sidebar-link-container {
@@ -222,6 +338,11 @@ body {
     height: calc(100vh - 76px);
 
     padding: 35px 25px;
+    transition: margin-left ease-in-out 150ms;
+}
+
+.content-shide {
+    margin-left: 0;
 }
 
 /********************** Video Carousel **********************/

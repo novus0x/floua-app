@@ -6,6 +6,7 @@ Floua is fresh, modern, elegant, youth-oriented video-sharing platform — desig
 
 ## 🌐 Live Demo
 
+Github page: **[https://novus0x.github.io/floua-app/prototype/no-auth/](https://novus0x.github.io/floua-app/prototype/no-auth/)**
 Coming soon at: **[https://floua.app](https://floua.app)**
 
 ---
