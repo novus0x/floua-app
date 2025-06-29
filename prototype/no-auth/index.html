@@ -25,15 +25,31 @@
         <span>Logo Here</span>
       </div>
     </div>
-    <div class="search-container">
-      <input type="text" placeholder="Search..." class="search">
-      <button class="btn">
+    <form class="search-container" action="#search" method="GET">
+      <input type="text" placeholder="Search..." class="search" id="search-result-input">
+      <div class="search-backdrop hidden" id="search-backdrop"></div>
+      <button type="button" id="search-btn">
         <span class="material-symbols-rounded search-icon">search</span>
       </button>
-    </div>
-    <div class="actions">
-      <button class="btn btn-outline-secondary" id="signin-button">Sign in</button>
-      <button class="btn btn-primary" id="signup-button">Sign up</button>
+      <div class="search-results hidden" id="search-results">
+        <div class="search-results-links">
+          <a href="#search-result" class="search-result-text" id="search-result-link-input">Lorem ipsum dolor, sit amet
+            consectetur adipisicing elit</a>
+        </div>
+        <div class="search-results-links" id="search-results-links">
+          <a href="#search-result" class="search-result-text">Lorem ipsum dolor, sit amet consectetur adipisicing
+            elit</a>
+          <a href="#search-result" class="search-result-text">it amet consectetur adipisicing elit</a>
+          <a href="#search-result" class="search-result-text">Ldipisicing elit</a>
+          <a href="#search-result" class="search-result-text">Lorem ipsum dolor,g elit</a>
+          <a href="#search-result" class="search-result-text">Lorem ipsum dolor,etur adipisicing elit</a>
+          <a href="#search-result" class="search-result-text">Lor consectetur adipisicing elit</a>
+        </div>
+      </div>
+    </form>
+    <div id="navbar-actions">
+      <button class="btn btn-outline-secondary modal-btn" data-modal="signin">Sign in</button>
+      <button class="btn btn-primary modal-btn" data-modal="signup">Sign up</button>
     </div>
   </nav>
 
@@ -54,8 +70,12 @@
         <span class="material-symbols-rounded sidebar-link-icon icon-yellow">album</span>
         <span class="sidebar-link-text">Explore</span>
       </a>
-    </div>
 
+      <div id="sidebar-actions">
+        <button class="btn btn-outline-secondary modal-btn" data-modal="signin">Sign in</button>
+        <button class="btn btn-primary modal-btn" data-modal="signup">Sign up</button>
+      </div>
+    </div>
     <span class="sidebar-extra">More features available after loggin in!</span>
   </nav>
 
@@ -175,6 +195,7 @@
     </section>
   </div>
 
+  <!--Modal-->
   <div class="modal hidden" id="modal">
     <div class="modal-backdrop" id="modal-backdrop"></div>
     <div class="modal-content" id="modal-content">
