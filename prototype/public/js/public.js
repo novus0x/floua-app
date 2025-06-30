@@ -1,3 +1,39 @@
+/********************** Modules **********************/
+import { get_videos } from "./api.js";
+import { insert_video_carousel } from "./utils.js";
+
+/********************** API **********************/
+const current_page = document.querySelector("[data-page]").getAttribute("data-page");
+const sidebar_links = document.querySelectorAll("[data-sidebar-link]");
+
+/*** Sidebar ***/
+sidebar_links.forEach((link) => {
+        if (link.getAttribute("data-sidebar-link") == current_page) link.classList.add("sidebar-link-container-active")
+});
+
+if (current_page == "home") {
+
+    /*** Videos ***/
+    let i = 0; // DEBUG
+    const video_contents_container = document.querySelectorAll("[data-videos-content]");
+    video_contents_container.forEach(async (container) => {
+        const video_section = container.getAttribute("data-videos-content");
+        
+        // Request
+        const params = {
+            "section": video_section,
+            "_limit": 8, // DEBUG
+            "_start": 7 * i, // DEBUG
+        };
+        i++; // DEBUG
+
+        container.innerHTML = "";
+        
+        let videos = await get_videos(params);
+        insert_video_carousel(videos, container);
+    });
+}
+
 /********************** Media Queries **********************/
 window.addEventListener("resize", () => {
     const window_size = window.innerWidth;
@@ -40,7 +76,7 @@ document.getElementById("search-result-input")?.addEventListener("input", (e) =>
     if (e.target.value == "") search_container.classList.add("hidden");
     else {
         if (search_container.classList.contains("hidden")) search_container.classList.remove("hidden");
-        
+
         const link_input = document.getElementById("search-result-link-input");
         link_input.textContent = e.target.value;
     }
@@ -69,6 +105,8 @@ search_backdrop?.addEventListener("click", () => {
     }, 500);
 })
 
+// <a href="#search-result" class="search-result-text">Lorem ipsum dolor</a> TEMPLATE
+
 /********************** Sidebar controller **********************/
 document.getElementById("sidebar-button")?.addEventListener("click", () => {
     const icon = document.getElementById("sidebar-toggle-icon");
@@ -93,7 +131,7 @@ const modal_content = document.getElementById("modal-content");
 const modal_title = document.getElementById("modal-title-text");
 const modal_backdrop = document.getElementById("modal-backdrop");
 
-const sign_in_dom = `
+const sign_in_template = `
 <div class="modal-input-container">
     <label for="email" class="modal-label">Email</label>
     <input type="email" id="email" class="modal-input" name="email" placeholder="Email address" required>
@@ -105,7 +143,7 @@ const sign_in_dom = `
 <button class="btn modal-input-button">Sign in</button>
 `;
 
-const sign_up_dom = `
+const sign_up_template = `
 <div class="modal-input-container">
     <label for="username" class="modal-label">Username</label>
     <input type="text" id="username" class="modal-input" name="username" placeholder="Username" required>
@@ -132,11 +170,11 @@ const sign_up_dom = `
 function user_modal(type) {
     // Content
     if (type == "signin") {
-        modal_actions.innerHTML = sign_in_dom;
+        modal_actions.innerHTML = sign_in_template;
         modal_title.textContent = "Sign in";
         modal_actions.action = "#signin"
     } else if (type == "signup") {
-        modal_actions.innerHTML = sign_up_dom;
+        modal_actions.innerHTML = sign_up_template;
         modal_title.textContent = "Sign up";
         modal_actions.action = "#signup"
     }

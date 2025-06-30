@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!--Title-->
+  <title>Floua app</title>
+  <!--Google Fonts-->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300..700&display=swap" />
+  <!--Styles-->
+  <link rel="stylesheet" href="../public/css/animations.css">
+  <link rel="stylesheet" href="../public/css/main.css">
+</head>
+
+<body>
+  <!--Navbar-->
+  <nav class="navbar">
+    <div class="icon-logo-container">
+      <button class="btn sidebar-toggle" id="sidebar-button">
+        <span class="material-symbols-rounded sidebar-toggle-icon" id="sidebar-toggle-icon">notes</span>
+      </button>
+      <div class="logo">
+        <span>Floua Logo</span>
+      </div>
+    </div>
+    <form class="search-container" action="#search" method="GET">
+      <input type="text" placeholder="Search..." class="search" id="search-result-input">
+      <div class="search-backdrop hidden" id="search-backdrop"></div>
+      <button type="button" id="search-btn">
+        <span class="material-symbols-rounded search-icon">search</span>
+      </button>
+      <div class="search-results hidden" id="search-results">
+        <div class="search-results-links">
+          <a href="#search-result" class="search-result-text" id="search-result-link-input">Lorem ipsum dolor, sit amet
+            consectetur adipisicing elit</a>
+        </div>
+        <div class="search-results-links" id="search-results-links"></div>
+      </div>
+    </form>
+    <div id="navbar-actions">
+      <button class="btn btn-outline-secondary modal-btn" data-modal="signin">Sign in</button>
+      <button class="btn btn-primary modal-btn" data-modal="signup">Sign up</button>
+    </div>
+  </nav>
+
+  <!--Sidebar-->
+  <nav class="sidebar" id="sidebar">
+    <div>
+      <a href="./index.html" class="sidebar-link-container" data-sidebar-link="home">
+        <span class="material-symbols-rounded sidebar-link-icon icon-teal">cottage</span>
+        <span class="sidebar-link-text">Home</span>
+      </a>
+
+      <a href="./trending.html"" class=" sidebar-link-container" data-sidebar-link="trending">
+        <span class="material-symbols-rounded sidebar-link-icon icon-orange">local_fire_department</span>
+        <span class="sidebar-link-text">Trending</span>
+      </a>
+
+      <a href="./explore.html" class="sidebar-link-container" data-sidebar-link="explore">
+        <span class="material-symbols-rounded sidebar-link-icon icon-yellow">album</span>
+        <span class="sidebar-link-text">Explore</span>
+      </a>
+
+      <div id="sidebar-actions">
+        <button class="btn btn-outline-secondary modal-btn" data-modal="signin">Sign in</button>
+        <button class="btn btn-primary modal-btn" data-modal="signup">Sign up</button>
+      </div>
+    </div>
+    <span class="sidebar-extra">More features available after loggin in!</span>
+  </nav>
+
+  <!--Body-->
+  <div class="content" id="content" data-page="trending">
+
+  </div>
+
+  <!--Modal-->
+  <div class="modal hidden" id="modal">
+    <div class="modal-backdrop" id="modal-backdrop"></div>
+    <div class="modal-content" id="modal-content">
+      <div class="modal-title">
+        <h3 class="modal-title-text" id="modal-title-text">Sign in</h3>
+        <div class="modal-title-actions">
+          <button class="material-symbols-rounded icon-salmon modal-title-icon" id="modal-close">close</button>
+        </div>
+      </div>
+      <form class="modal-actions" method="GET" action="#" id="modal-actions">
+
+      </form>
+    </div>
+  </div>
+
+
+  <!--JS-->
+  <script type="module" src="../public/js/public.js"></script>
+
+</body>
+
+</html>

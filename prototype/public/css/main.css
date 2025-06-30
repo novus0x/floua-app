@@ -478,6 +478,10 @@ body {
 .video-carousel-item-channel-profile {
     min-width: 35px;
     min-height: 35px;
+
+    max-width: 35px;
+    max-height: 35px;
+    
     border-radius: 100%;
     margin-right: 15px;
 
@@ -491,7 +495,15 @@ body {
 }
 
 .video-carousel-item-title {
+    height: 36px;
+    max-width: 280px;
+
+    display: block;
+    overflow: hidden;
+
+    color: var(--color-white);
     font-size: var(--fs-xxsmall);
+    margin-bottom: 10px;
 }
 
 .video-carousel-item-channel-info {
@@ -501,6 +513,7 @@ body {
 
 .video-carousel-item-channel-name,
 .video-carousel-item-channel-views {
+    color: var(--color-white);
     font-size: var(--fs-xxxsmall);
 }
 

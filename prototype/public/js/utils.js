@@ -1,0 +1,57 @@
+/********************** Variables **********************/
+const cookie_name = "floua-session";
+
+/********************** DOM Elements **********************/
+const video_carousel_template = `
+<div class="video-carousel-item">
+    <div class="video-carousel-item-thumbail">
+        <a href="#{{video_ID}}"><!-- <img src="#" alt="Video preview thumbail"> --></a>
+    </div>
+    <div class="video-carousel-item-info">
+        <a href="#{{video_userID}}" class="video-carousel-item-channel-profile"><!-- <img src="#" alt="Profile"> --></a>
+        <div class="video-carousel-item-info-cont">
+            <a href="#{{video_ID}}" class="video-carousel-item-title" title="{{video_title}}">{{video_title}}</a>
+            <div class="video-carousel-item-channel-info">
+                <a href="#$#{{video_userID}}" class="video-carousel-item-channel-name">Channel name</a>
+                <span class="video-carousel-item-channel-views">{{video_ID}}</span>
+            </div>
+        </div>
+    </div>
+</div>
+`;
+/********************** Utilities **********************/
+export function get_cookie(name) {
+    const val = `; ${document.cookie}`;
+    const parts = val.split(`; ${name}=`);
+
+    if (parts == 2) return parts.pop().split(";").shift();
+    return false;
+}
+
+export function active_session() {
+    const cookie = get_cookie(cookie_name);
+    if (cookie) return cookie;
+    return false;
+}
+
+export function build_query_params(params) {
+    const query = new URLSearchParams(params);
+    return query.toString() ? `?${query.toString()}` : "";
+}
+
+export function shorten_text(text, max) {
+    const words = text.trim().split(/\s+/);
+    if (words.length > max) return words.slice(0, max).join(" ") + "...";
+    return text
+}
+
+/********************** DOM **********************/
+export function insert_video_carousel(videos, container) {
+    videos.forEach((video) => {
+        const video_element = video_carousel_template
+            .replaceAll("{{video_ID}}", video.id)
+            .replaceAll("{{video_userID}}", video.userId)
+            .replaceAll("{{video_title}}", video.title);
+        container.insertAdjacentHTML('beforeend', video_element);
+    });
+}

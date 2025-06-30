@@ -22,7 +22,7 @@
         <span class="material-symbols-rounded sidebar-toggle-icon" id="sidebar-toggle-icon">notes</span>
       </button>
       <div class="logo">
-        <span>Logo Here</span>
+        <span>Floua Logo</span>
       </div>
     </div>
     <form class="search-container" action="#search" method="GET">
@@ -37,8 +37,7 @@
             consectetur adipisicing elit</a>
         </div>
         <div class="search-results-links" id="search-results-links">
-          <a href="#search-result" class="search-result-text">Lorem ipsum dolor, sit amet consectetur adipisicing
-            elit</a>
+          <a href="#search-result" class="search-result-text">Lorem ipsum dolor</a>
           <a href="#search-result" class="search-result-text">it amet consectetur adipisicing elit</a>
           <a href="#search-result" class="search-result-text">Ldipisicing elit</a>
           <a href="#search-result" class="search-result-text">Lorem ipsum dolor,g elit</a>
@@ -56,17 +55,17 @@
   <!--Sidebar-->
   <nav class="sidebar" id="sidebar">
     <div>
-      <a href="./index.html" class="sidebar-link-container sidebar-link-container-active">
+      <a href="./index.html" class="sidebar-link-container" data-sidebar-link="home">
         <span class="material-symbols-rounded sidebar-link-icon icon-teal">cottage</span>
         <span class="sidebar-link-text">Home</span>
       </a>
 
-      <a href="./trending.html"" class=" sidebar-link-container">
+      <a href="./trending.html"" class=" sidebar-link-container" data-sidebar-link="trending">
         <span class="material-symbols-rounded sidebar-link-icon icon-orange">local_fire_department</span>
         <span class="sidebar-link-text">Trending</span>
       </a>
 
-      <a href="./explore.html" class="sidebar-link-container">
+      <a href="./explore.html" class="sidebar-link-container" data-sidebar-link="explore">
         <span class="material-symbols-rounded sidebar-link-icon icon-yellow">album</span>
         <span class="sidebar-link-text">Explore</span>
       </a>
@@ -80,7 +79,7 @@
   </nav>
 
   <!--Body-->
-  <div class="content" id="content">
+  <div class="content" id="content" data-page="home">
     <section class="carousel-list">
       <!--Video-carousel-->
       <section class="video-carousel">
@@ -90,33 +89,14 @@
             <span class="video-carousel video-carousel-title-text">Popular videos</span>
           </h3>
           <div class="video-carousel-actions">
-            <a href="#" class="video-carousel-actions-link">
+            <a href="#watchMoreSection" class="video-carousel-actions-link">
               <span class="video-carousel-actions-link-text">Watch more</span>
               <span
                 class="material-symbols-rounded icon-white video-carousel-actions-link-icon">keyboard_arrow_right</span>
             </a>
           </div>
         </div>
-        <div class="video-carousel-slider">
-          <!--Video-->
-          <div class="video-carousel-item">
-            <div class="video-carousel-item-thumbail">
-              <!-- <img src="#" alt="Video preview thumbail"> -->
-            </div>
-            <div class="video-carousel-item-info">
-              <div class="video-carousel-item-channel-profile">
-                <!-- <img src="#" alt="Profile"> -->
-              </div>
-              <div class="video-carousel-item-info-cont">
-                <h4 class="video-carousel-item-title">Lorem Ipsum</h4>
-                <div class="video-carousel-item-channel-info">
-                  <span class="video-carousel-item-channel-name">Channel name</span>
-                  <span class="video-carousel-item-channel-views">100M views</span>
-                </div>
-              </div>
-            </div>
-          </div>
-
+        <div class="video-carousel-slider" data-videos-content="popular"></div>
       </section>
 
       <!--Video-carousel-->
@@ -127,33 +107,14 @@
             <span class="video-carousel video-carousel-title-text">Newest videos</span>
           </h3>
           <div class="video-carousel-actions">
-            <a href="#" class="video-carousel-actions-link">
+            <a href="#watchMoreSection" class="video-carousel-actions-link">
               <span class="video-carousel-actions-link-text">Watch more</span>
               <span
                 class="material-symbols-rounded icon-white video-carousel-actions-link-icon">keyboard_arrow_right</span>
             </a>
           </div>
         </div>
-        <div class="video-carousel-slider">
-          <!--Video-->
-          <div class="video-carousel-item">
-            <div class="video-carousel-item-thumbail">
-              <!-- <img src="#" alt="Video preview thumbail"> -->
-            </div>
-            <div class="video-carousel-item-info">
-              <div class="video-carousel-item-channel-profile">
-                <!-- <img src="#" alt="Profile"> -->
-              </div>
-              <div class="video-carousel-item-info-cont">
-                <h4 class="video-carousel-item-title">Lorem Ipsum</h4>
-                <div class="video-carousel-item-channel-info">
-                  <span class="video-carousel-item-channel-name">Channel name</span>
-                  <span class="video-carousel-item-channel-views">100M views</span>
-                </div>
-              </div>
-            </div>
-          </div>
-
+        <div class="video-carousel-slider" data-videos-content="newest"></div>
       </section>
 
       <!--Video-carousel-->
@@ -164,33 +125,14 @@
             <span class="video-carousel video-carousel-title-text">Discover new channels</span>
           </h3>
           <div class="video-carousel-actions">
-            <a href="#" class="video-carousel-actions-link">
+            <a href="#watchMoreSection" class="video-carousel-actions-link">
               <span class="video-carousel-actions-link-text">Watch more</span>
               <span
                 class="material-symbols-rounded icon-white video-carousel-actions-link-icon">keyboard_arrow_right</span>
             </a>
           </div>
         </div>
-        <div class="video-carousel-slider">
-          <!--Video-->
-          <div class="video-carousel-item">
-            <div class="video-carousel-item-thumbail">
-              <!-- <img src="#" alt="Video preview thumbail"> -->
-            </div>
-            <div class="video-carousel-item-info">
-              <div class="video-carousel-item-channel-profile">
-                <!-- <img src="#" alt="Profile"> -->
-              </div>
-              <div class="video-carousel-item-info-cont">
-                <h4 class="video-carousel-item-title">Lorem Ipsum</h4>
-                <div class="video-carousel-item-channel-info">
-                  <span class="video-carousel-item-channel-name">Channel name</span>
-                  <span class="video-carousel-item-channel-views">100M views</span>
-                </div>
-              </div>
-            </div>
-          </div>
-
+        <div class="video-carousel-slider" data-videos-content="discover"></div>
       </section>
     </section>
   </div>
@@ -213,7 +155,7 @@
 
 
   <!--JS-->
-  <script src="../public/js/public.js"></script>
+  <script type="module" src="../public/js/public.js"></script>
 
 </body>
 
