@@ -5,7 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <!--Title-->
-  <title>Floua app</title>
+  <title>Floua app - Trending</title>
   <!--Google Fonts-->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded" />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300..700&display=swap" />
@@ -73,7 +73,21 @@
 
   <!--Body-->
   <div class="content" id="content" data-page="trending">
-
+    <div class="content-section-title">
+      <span class="material-symbols-rounded content-section-title-icon icon-orange">local_fire_department</span>
+      <h3 class="content-section-title-text">Trending</h3>
+    </div>
+    <div class="content-section-actions">
+      <div class="content-section-actions-buttons">
+        <button class="btn btn-primary">Populars</button>
+        <button class="btn btn-secondary">Newests</button>
+      </div>
+      <div class="content-section-actions-search">
+        <input type="text" placeholder="Find your favorite category..."
+          class="search content-section-actions-search-input">
+      </div>
+    </div>
+    <div class="content-section-videos" id="content-section-videos"></div>
   </div>
 
   <!--Modal-->

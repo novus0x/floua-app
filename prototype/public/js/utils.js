@@ -19,6 +19,24 @@ const video_carousel_template = `
     </div>
 </div>
 `;
+
+const video_section_template = `
+<div class="content-section-video">
+    <div class="content-section-video-thumbail">
+        <a href="#{{video_ID}}"><!-- <img src="#" alt="Video preview thumbail"> --></a>
+    </div>
+    <div class="content-section-video-info">
+        <a href="#{{video_userID}}" class="content-section-video-channel-profile"><!-- <img src="#" alt="Profile"> --></a>
+        <div class="content-section-video-info-cont">
+            <a href="#{{video_ID}}" class="content-section-video-title" title="{{video_title}}">{{video_title}}</a>
+            <div class="content-section-video-channel-info">
+              <a href="#$#{{video_userID}}" class="content-section-video-channel-name">Channel name</a>
+              <span class="content-section-video-channel-views">{{video_ID}}</span>
+            </div>
+        </div>
+    </div>
+</div>
+`;
 /********************** Utilities **********************/
 export function get_cookie(name) {
     const val = `; ${document.cookie}`;
@@ -49,6 +67,16 @@ export function shorten_text(text, max) {
 export function insert_video_carousel(videos, container) {
     videos.forEach((video) => {
         const video_element = video_carousel_template
+            .replaceAll("{{video_ID}}", video.id)
+            .replaceAll("{{video_userID}}", video.userId)
+            .replaceAll("{{video_title}}", video.title);
+        container.insertAdjacentHTML('beforeend', video_element);
+    });
+}
+
+export function insert_video_section(videos, container) {
+    videos.forEach((video) => {
+        const video_element = video_section_template
             .replaceAll("{{video_ID}}", video.id)
             .replaceAll("{{video_userID}}", video.userId)
             .replaceAll("{{video_title}}", video.title);

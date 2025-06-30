@@ -1,6 +1,6 @@
 /********************** Modules **********************/
 import { get_videos } from "./api.js";
-import { insert_video_carousel } from "./utils.js";
+import { insert_video_carousel, insert_video_section } from "./utils.js";
 
 /********************** API **********************/
 const current_page = document.querySelector("[data-page]").getAttribute("data-page");
@@ -8,11 +8,10 @@ const sidebar_links = document.querySelectorAll("[data-sidebar-link]");
 
 /*** Sidebar ***/
 sidebar_links.forEach((link) => {
-        if (link.getAttribute("data-sidebar-link") == current_page) link.classList.add("sidebar-link-container-active")
+        if (link.getAttribute("data-sidebar-link") == current_page) link.classList.add("sidebar-link-container-active");
 });
 
 if (current_page == "home") {
-
     /*** Videos ***/
     let i = 0; // DEBUG
     const video_contents_container = document.querySelectorAll("[data-videos-content]");
@@ -22,8 +21,8 @@ if (current_page == "home") {
         // Request
         const params = {
             "section": video_section,
-            "_limit": 8, // DEBUG
-            "_start": 7 * i, // DEBUG
+            "_limit": 10,
+            "_start": 10 * i, // DEBUG
         };
         i++; // DEBUG
 
@@ -32,6 +31,22 @@ if (current_page == "home") {
         let videos = await get_videos(params);
         insert_video_carousel(videos, container);
     });
+} else if (current_page == "trending" || current_page == "explore") {
+    /*** Videos ***/
+    const content_container = document.getElementById("content");
+    const video_contents_container = document.getElementById("content-section-videos");
+    const video_section = content_container.getAttribute("data-page");
+        
+    // Request
+    const params = {
+        "section": video_section,
+        "_limit": 25,
+    };
+
+    video_contents_container.innerHTML = "";
+        
+    let videos = await get_videos(params);
+    insert_video_section(videos, video_contents_container);
 }
 
 /********************** Media Queries **********************/
@@ -189,7 +204,6 @@ navbar_actions?.addEventListener("click", (e) => {
     const btn = e.target.closest(".modal-btn");
 
     if (btn) {
-        console.log("ok");
         const modal_type = btn.getAttribute("data-modal");
         if (modal_type == "signin") user_modal(modal_type);
         else if (modal_type == "signup") user_modal(modal_type);
@@ -201,7 +215,6 @@ sidebar_actions?.addEventListener("click", (e) => {
     const btn = e.target.closest(".modal-btn");
 
     if (btn) {
-        console.log("ok");
         const modal_type = btn.getAttribute("data-modal");
         if (modal_type == "signin") user_modal(modal_type);
         else if (modal_type == "signup") user_modal(modal_type);
