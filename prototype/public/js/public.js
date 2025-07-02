@@ -1,6 +1,6 @@
 /********************** Modules **********************/
 import { get_videos } from "./api.js";
-import { insert_video_carousel, insert_video_section } from "./utils.js";
+import { insert_video_carousel, insert_video_section, insert_video_search, get_query_params, build_query_params } from "./utils.js";
 
 /********************** API **********************/
 const current_page = document.querySelector("[data-page]").getAttribute("data-page");
@@ -18,7 +18,6 @@ if (current_page == "home") {
     video_contents_container.forEach(async (container) => {
         const video_section = container.getAttribute("data-videos-content");
         
-        // Request
         const params = {
             "section": video_section,
             "_limit": 10,
@@ -28,7 +27,7 @@ if (current_page == "home") {
 
         container.innerHTML = "";
         
-        let videos = await get_videos(params);
+        const videos = await get_videos(params);
         insert_video_carousel(videos, container);
     });
 } else if (current_page == "trending" || current_page == "explore") {
@@ -36,8 +35,7 @@ if (current_page == "home") {
     const content_container = document.getElementById("content");
     const video_contents_container = document.getElementById("content-section-videos");
     const video_section = content_container.getAttribute("data-page");
-        
-    // Request
+    
     const params = {
         "section": video_section,
         "_limit": 25,
@@ -45,8 +43,29 @@ if (current_page == "home") {
 
     video_contents_container.innerHTML = "";
         
-    let videos = await get_videos(params);
+    const videos = await get_videos(params);
     insert_video_section(videos, video_contents_container);
+} else if (current_page == "search") {
+    /*** Videos ***/
+    const content_search_section = document.getElementById("content-search-section");
+    const title_search_result_text = document.getElementById("title-search-result-text");
+    
+    const content_container = document.getElementById("content");
+    const video_section = content_container.getAttribute("data-page");
+    
+    const url_params = get_query_params();
+    title_search_result_text.textContent = url_params.query;
+
+    const params = {
+        "section": video_section,
+        "query": url_params.query,
+        "_limit": 25,
+        "_start": 0,
+    };
+    
+    content_search_section.innerHTML = "";
+    const videos = await get_videos(params);
+    insert_video_search(videos, content_search_section);
 }
 
 /********************** Media Queries **********************/
@@ -86,6 +105,7 @@ const search_btn = document.getElementById("search-btn");
 const search_backdrop = document.getElementById("search-backdrop");
 const search_container = document.getElementById("search-results");
 const search_result_input = document.getElementById("search-result-input");
+const search_result_links_container = document.getElementById("search-results");
 
 document.getElementById("search-result-input")?.addEventListener("input", (e) => {
     if (e.target.value == "") search_container.classList.add("hidden");
@@ -118,7 +138,15 @@ search_backdrop?.addEventListener("click", () => {
         search_result_input.classList.toggle("show");
         search_result_input.classList.remove("scale-out-center");
     }, 500);
-})
+});
+
+search_result_links_container.addEventListener("click", (e) => {
+    if (e.target.matches(".search-result-text")) {
+        const params = {"query": e.target.textContent};
+        const query = build_query_params(params);
+        window.location.href = "search.html" + query // LINK
+    }
+});
 
 // <a href="#search-result" class="search-result-text">Lorem ipsum dolor</a> TEMPLATE
 
@@ -209,7 +237,7 @@ navbar_actions?.addEventListener("click", (e) => {
         else if (modal_type == "signup") user_modal(modal_type);
     }
 
-})
+});
 
 sidebar_actions?.addEventListener("click", (e) => {
     const btn = e.target.closest(".modal-btn");
@@ -220,7 +248,7 @@ sidebar_actions?.addEventListener("click", (e) => {
         else if (modal_type == "signup") user_modal(modal_type);
     }
 
-})
+});
 
 modal_close?.addEventListener("click", () => {
     modal_content.classList.remove("slide-in-top")
@@ -228,7 +256,7 @@ modal_close?.addEventListener("click", () => {
     setTimeout(() => {
         modal_container.classList.toggle("hidden");
     }, 500);
-})
+});
 
 modal_backdrop?.addEventListener("click", () => {
     modal_content.classList.remove("slide-in-top")
@@ -236,4 +264,4 @@ modal_backdrop?.addEventListener("click", () => {
     setTimeout(() => {
         modal_container.classList.toggle("hidden");
     }, 500);
-})
+});

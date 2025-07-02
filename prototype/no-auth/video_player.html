@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!--Title-->
+    <title>Floua app - Search</title>
+    <!--Google Fonts-->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300..700&display=swap" />
+    <!--Styles-->
+    <link rel="stylesheet" href="../public/css/animations.css">
+    <link rel="stylesheet" href="../public/css/main.css">
+</head>
+
+<body>
+    <!--Navbar-->
+    <nav class="navbar">
+        <div class="icon-logo-container">
+            <button class="btn sidebar-toggle" id="sidebar-button">
+                <span class="material-symbols-rounded sidebar-toggle-icon" id="sidebar-toggle-icon">notes</span>
+            </button>
+            <div class="logo">
+                <span>Floua Logo</span>
+            </div>
+        </div>
+        <form class="search-container" action="search.html" method="GET">
+            <input type="text" name="query" placeholder="Search..." class="search" id="search-result-input">
+            <div class="search-backdrop hidden" id="search-backdrop"></div>
+            <button type="button" id="search-btn">
+                <span class="material-symbols-rounded search-icon">search</span>
+            </button>
+            <div class="search-results hidden" id="search-results">
+                <div class="search-results-links">
+                    <span type="button" class="search-result-text" id="search-result-link-input"></span>
+                </div>
+                <div class="search-results-links" id="search-results-links"></div>
+            </div>
+        </form>
+        <div id="navbar-actions">
+            <button class="btn btn-outline-secondary modal-btn" data-modal="signin">Sign in</button>
+            <button class="btn btn-primary modal-btn" data-modal="signup">Sign up</button>
+        </div>
+    </nav>
+
+    <!--Sidebar-->
+    <nav class="sidebar" id="sidebar">
+        <div>
+            <a href="./index.html" class="sidebar-link-container" data-sidebar-link="home">
+                <span class="material-symbols-rounded sidebar-link-icon icon-teal">cottage</span>
+                <span class="sidebar-link-text">Home</span>
+            </a>
+
+            <a href="./trending.html"" class=" sidebar-link-container" data-sidebar-link="trending">
+                <span class="material-symbols-rounded sidebar-link-icon icon-orange">local_fire_department</span>
+                <span class="sidebar-link-text">Trending</span>
+            </a>
+
+            <a href="./explore.html" class="sidebar-link-container" data-sidebar-link="explore">
+                <span class="material-symbols-rounded sidebar-link-icon icon-yellow">album</span>
+                <span class="sidebar-link-text">Explore</span>
+            </a>
+
+            <div id="sidebar-actions">
+                <button class="btn btn-outline-secondary modal-btn" data-modal="signin">Sign in</button>
+                <button class="btn btn-primary modal-btn" data-modal="signup">Sign up</button>
+            </div>
+        </div>
+        <span class="sidebar-extra">More features available after loggin in!</span>
+    </nav>
+
+    <!--Body-->
+    <div class="content" id="content" data-page="video-player">
+        <div class="watch-video-container">
+            <!--Video Player-->
+            <div class="watch-video-player">
+                <div class="video-player" id="video-container">
+                    <video id="video" playsinline></video>
+                    <div class="video-player-controls" id="video-player-controls">
+                        <div class="video-player-progress-container" id="video-player-progress-container">
+                            <div class="video-player-progress" id="video-player-progress"></div>
+                        </div>
+                        <div class="video-player-controls-left">
+                            <span class="material-symbols-rounded video-player-btn"
+                                id="video-player-play">play_arrow</span>
+                            <span class="material-symbols-rounded video-player-btn" id="">double_arrow</span>
+                            <div class="video-player-volume-container" id="video-player-volume-container">
+                                <span class="material-symbols-rounded video-player-btn"
+                                    id="video-player-volume">volume_up</span>
+                                <input type="range" class="video-player-volume-input hidden"
+                                    id="video-player-volume-input" min="0" max="100">
+                            </div>
+                            <span class="video-player-controls-time">
+                                <span id="video-player-time-current"></span> / <span
+                                    id="video-player-time-total"></span>
+                            </span>
+                        </div>
+                        <div class="video-player-controls-right">
+                            <span class="material-symbols-rounded video-player-btn" id="">settings</span>
+                            <span class="material-symbols-rounded video-player-btn"
+                                id="video-player-fullscreen">fullscreen</span>
+                        </div>
+                    </div>
+                    <div id="video-player-overlay" class="video-player-overlay">idk yet!</div>
+                </div>
+            </div>
+
+            <!--Right-->
+            <div class="watch-videos-related">
+                <!--Video-->
+                <div class="watch-video-related-item">
+                    <div class="watch-video-related-thumbail">
+                        <a href="video_player.html?id={{video_ID}}"><!-- <img src="#" alt="Video preview thumbail"> --></a>
+                    </div>
+                    <div class="watch-video-related-info">
+                        <a href="#{{video_userID}}" class="watch-video-related-channel-profile"><!-- <img src="#" alt="Profile"> --></a>
+                        <div class="watch-video-related-info-cont">
+                            <a href="video_player.html?id={{video_ID}}" class="watch-video-related-title" title="{{video_title}}">{{video_title}}</a>
+                            <div class="watch-video-related-channel-info">
+                                <a href="#$#{{video_userID}}" class="watch-video-related-channel-name">Channel name</a>
+                                <span class="watch-video-related-channel-views">{{video_ID}}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--Modal-->
+    <div class="modal hidden" id="modal">
+        <div class="modal-backdrop" id="modal-backdrop"></div>
+        <div class="modal-content" id="modal-content">
+            <div class="modal-title">
+                <h3 class="modal-title-text" id="modal-title-text">Sign in</h3>
+                <div class="modal-title-actions">
+                    <button class="material-symbols-rounded icon-salmon modal-title-icon"
+                        id="modal-close">close</button>
+                </div>
+            </div>
+            <form class="modal-actions" method="GET" action="#" id="modal-actions">
+
+            </form>
+        </div>
+    </div>
+
+    <!--JS-->
+    <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+    <script type="module" src="../public/js/player.js"></script>
+    <script type="module" src="../public/js/public.js"></script>
+
+</body>
+
+</html>
