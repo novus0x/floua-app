@@ -1,0 +1,10 @@
+uuid
+fastapi
+uvicorn
+sqlalchemy
+python-dotenv
+passlib[bcrypt]
+pydantic[email]
+psycopg2-binary
+pydantic-settings
+python-jose[cryptography]
