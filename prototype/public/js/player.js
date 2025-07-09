@@ -25,7 +25,9 @@ let active_volume_controls = false;
 const hls = new Hls();
 let quality = 1080;
 // const video_url = `../public/videos/stream_${quality == "720" ? 0 : 1}.m3u8`;
-const video_url = `../public/videos/master.m3u8`;
+// const video_url = `../public/videos/master.m3u8`;
+const video_url = `https://demo.unified-streaming.com/k8s/features/stable/video/tears-of-steel/tears-of-steel.ism/.m3u8`;
+
 
 hls.loadSource(video_url);
 hls.attachMedia(video);

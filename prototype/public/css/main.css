@@ -734,6 +734,7 @@ body {
 
     overflow: hidden;
     border-radius: 15px;
+    background-color: var(--color-black);
 }
 
 .video-player video {
