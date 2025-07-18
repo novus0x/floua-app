@@ -1,6 +1,8 @@
 ########## Modules ##########
+from fastapi import Depends
+
 from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker, declarative_base
+from sqlalchemy.orm import sessionmaker, declarative_base, Session
 
 from core.config import settings
 
@@ -16,3 +18,11 @@ SessionLocal = sessionmaker(
 
 ##########  Base ##########
 Base = declarative_base()
+
+########## Get DB Session ##########
+def get_db():
+    db = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()

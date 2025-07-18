@@ -3,10 +3,10 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from core.config import settings
-from db.database import Base, engine
-from db.models import User, User_Session, Video, Comments, Video_Playlist, Playlist
+from db.database import Base, engine, SessionLocal
 
-from routes import test
+from routes import test, users
+from scripts.init_email_domains import init_email_domains
 
 ########## Create tables ##########
 Base.metadata.create_all(bind=engine)
@@ -17,6 +17,16 @@ app = FastAPI(
     description = "Backend",
     version = "1.0.0",
 )
+
+########## Events ##########
+@app.on_event("startup")
+def startup_event():
+    db = SessionLocal()
+    try:
+        init_email_domains(db)
+    finally:
+        db.close()
+
 
 ########## CORS ##########
 app.add_middleware(
@@ -29,3 +39,6 @@ app.add_middleware(
 
 ########## Routes ##########
 app.include_router(test.router)
+
+########## API Routes ##########
+app.include_router(users.router, prefix="/api/users", tags=["Users"])

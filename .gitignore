@@ -1,3 +1,4 @@
 env
+.env
 videos
 __pycache__

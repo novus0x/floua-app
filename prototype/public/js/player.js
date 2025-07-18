@@ -154,7 +154,7 @@ video.addEventListener("timeupdate", () => {
     video_player_progress.style.width = `${100 * progress_value}%`;
 
     // Especial action (0.90)
-    if (progress_value > 0.90 && !checked) {
+    if (progress_value > 0.96 && !checked) {
         console.log("Watched");
         checked = true;
     }
