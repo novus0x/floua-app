@@ -5,7 +5,9 @@ from fastapi.middleware.cors import CORSMiddleware
 from core.config import settings
 from db.database import Base, engine, SessionLocal
 
-from routes import test, users
+from routes import test
+from routes.public import users
+from routes.private import accounts
 from scripts.init_email_domains import init_email_domains
 
 ########## Create tables ##########
@@ -42,3 +44,4 @@ app.include_router(test.router)
 
 ########## API Routes ##########
 app.include_router(users.router, prefix="/api/users", tags=["Users"])
+app.include_router(accounts.router, prefix="/api/accounts", tags=["Accounts"])

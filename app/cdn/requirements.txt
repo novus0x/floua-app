@@ -1,0 +1,9 @@
+uuid
+fastapi
+uvicorn
+sqlalchemy
+python-dotenv
+psycopg2-binary
+python-multipart
+uvicorn[standard]
+pydantic-settings

@@ -1,0 +1,87 @@
+"""
+
+
+
+    # async with websockets.connect(WS_URL) as ws:
+    #      while True:
+    #         chunk = await file.read(1024 * 1024)  
+    #         if not chunk:
+    #             break
+    #         await ws.send(chunk, websocket)
+
+
+    # try:
+    #     async with websockets.connect(WS_URL) as ws:
+    #         video_info = {
+    #             "type": "upload_init",
+    #             "video_info": {
+    #                 "filename": file.filename,
+    #                 "content_type": file.content_type
+    #             }
+    #         }
+    #         video_info = json.dumps(video_info)
+
+    #         await ws.send(video_info)
+
+    #         while True:
+    #             chunk = await file.read(1024 * 1024)
+
+    #             if not chunk:
+    #                 break
+
+    #             await ws.send_bytes(chunk)
+
+    #         print("1")
+
+    #         # while chunk := await file.read(1024 * 1024):
+    #         #     await ws.send(chunk)
+
+    #         metadata = {
+    #             "type": "upload_end"
+    #         }
+    #         await ws.send(json.dumps(metadata))
+
+    #     return custom_response(status_code=201, message="File uploaded")
+
+    # except Exception as e:
+    #     return custom_response(status_code=400, message="Error")
+
+
+    # ### ###
+
+
+    ws = next(iter(connected_nodes.values()))
+
+    video_information = {
+        "type": "upload_init",
+        "video_info": {
+            "filename": file.filename,
+            "content_type": file.content_type or "video/mp4"
+        }
+    }
+
+    try:
+        json_msg = json.dumps(video_information)
+
+        await ws.send_text(json_msg)
+
+        while True:
+            chunk = await file.read(1024 * 1024)
+
+            if not chunk:
+                break
+
+            await ws.send_bytes(chunk)
+        
+        json_msg = json.dumps({
+            "type": "upload_end"
+        })
+        await ws.send_text(json_msg)
+
+        return custom_response(message="Upload started", status_code=200)
+
+    except Exception as e:
+        print(f"[ERROR] Upload failed: {e}")
+        return custom_response(status_code=400, message="Error while uploading file")
+
+    """

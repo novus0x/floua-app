@@ -1,4 +1,6 @@
 ########## Modules ##########
+import datetime
+
 from fastapi import APIRouter, Depends, Request
 
 from sqlalchemy.orm import Session
@@ -6,10 +8,10 @@ from sqlalchemy.orm import Session
 from db.database import get_db
 from db.model import User, User_Session
 
+from core.utils.generator import get_uuid
 from core.utils.responses import custom_response
 from core.utils.encrypt import hash_password, check_password, generate_jwt
-from core.utils.validators import read_json_body, validate_required_fields, validate_email_domain, get_uuid
-
+from core.utils.validators import read_json_body, validate_required_fields, validate_email_domain
 
 ########## Variables ##########
 router = APIRouter()
@@ -17,7 +19,6 @@ router = APIRouter()
 ########## Signup ##########
 @router.post("/signup")
 async def signup(request: Request, db: Session = Depends(get_db)):
-    
     ### Get Body ###
     user, error = await read_json_body(request)
     if error: 
@@ -35,13 +36,16 @@ async def signup(request: Request, db: Session = Depends(get_db)):
     if db.query(User).filter(User.email == user.email).first():
         return custom_response(status_code=400, message="Email already registered")
 
+    if db.query(User).filter(User.username == user.username).first():
+        return custom_response(status_code=400, message="Username already in use")
+
     if user.password != user.confirm_password:
         return custom_response(status_code=400, message="Passwords don't match")
 
     ### Save to DB ###
     new_user = User(
         id = await get_uuid(User, db),
-        username = user.username,
+        username = user.username.lower(),
         email = user.email,
         password = hash_password(user.password),
         birth = user.birth
@@ -55,7 +59,6 @@ async def signup(request: Request, db: Session = Depends(get_db)):
 ########## Signin ##########
 @router.post("/signin")
 async def signup(request: Request, db: Session = Depends(get_db)):
-    
     ### Get Body ###
     user, error = await read_json_body(request)
     if error: 

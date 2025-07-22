@@ -1,12 +1,13 @@
 ########## Modules ##########
-import json, uuid, random, string
+import json, uuid, random, string, datetime
+from types import SimpleNamespace
 
 from fastapi import Request
 from sqlalchemy.orm import Session
 
-from db.model import Allowed_Email_Domain
+from db.model import Allowed_Email_Domain, User_Session, User
 
-from types import SimpleNamespace
+from core.utils.encrypt import check_jwt
 
 ########## Read Json body ##########
 async def read_json_body(request: Request):
@@ -47,25 +48,54 @@ async def validate_email_domain(email: str, db: Session):
 
     return False
 
-########## Get uuid v4 ##########
-async def get_uuid(model, db: Session):
-    uid = str(uuid.uuid4())
+########## Get user ##########
+async def get_user(headers, db: Session, required = False):
+    if "Authorization" not in headers:
+        return None, True
 
-    while (1):
-        if db.query(model).filter(model.id == uid).first():
-            uid = str(uuid.uuid4())
-        else: break
+    token = headers["Authorization"]
+
+    if required == False:
+        return {}, None
+
+    token_data, error = check_jwt(token)
+
+    if error:
+        return None, "Invalid token"
+
+    user_session = db.query(User_Session).filter(User_Session.id == token_data["session_id"]).first()
+
+    if not user_session.is_active:
+        return None, "The session has expired"
     
-    return uid
+    current_date = datetime.datetime.utcnow()
 
-########## Get short id ##########
-async def get_short_id(model, db: Session):
-    charset = string.ascii_letters + string.digits + "-_"
-    short_id = ''.join(random.choices(charset, k=12))
-
-    while (1):
-        if db.query(model).filter(model.id == short_id).first():
-            short_id = ''.join(random.choices(charset, k=12))
-        else: break
+    if user_session.expires_at != None:
+        expiration_date = user_session.expires_at 
+        
+        if expiration_date <= current_date:
+            user_session.is_active = False
+            db.commit()
+            return None, "The session has expired"
     
-    return short_id
+    user_session.last_used_at = current_date
+    db.commit()
+
+    user_data = db.query(User).filter(User.id == user_session.user_id).first()
+    
+    user = {
+        "username": user_data.username,
+        "email": user_data.email,
+        "bio": user_data.bio,
+        "points" : user_data.points,
+
+        "display_name" : user_data.display_name,
+        "avatar_url" : user_data.avatar_url,
+
+        "email_verified" : user_data.email_verified,
+        "user_session_extra" : user_data.user_session_extra,
+
+        "date" : user_data.date,
+    }
+
+    return user, False
