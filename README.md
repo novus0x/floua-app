@@ -53,6 +53,9 @@ You are **not allowed to**:
 - Publish any clone or derivative work based on this project, whether modified or not.
 - Use this project or its components for commercial purposes without explicit written permission.
 
+**Changes to this License**:
+The author reserves the right to modify, update, or change the terms of this license at any time. Any modifications will be posted in this repository. Continued use of this software after any change to this license constitutes acceptance of the updated terms. You are encouraged to review the license periodically to stay informed of any updates.
+
 By viewing or using this repository, you agree to respect the creator’s ownership and originality.
 
 📬 For permissions or collaboration requests, please [open an issue](https://github.com/novus0x/floua-app/issues) or contact me via GitHub: [@novus0x](https://github.com/novus0x)

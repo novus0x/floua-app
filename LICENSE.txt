@@ -14,8 +14,12 @@ You are strictly prohibited from:
 - Publishing or deploying any clone, fork, or derivative work based on this project, whether modified or not.
 - Using this project, its components, or its brand (Floua) in any commercial product or service without prior written consent.
 
+Changes to this License:
+The author reserves the right to modify, update, or change the terms of this license at any time. Any modifications will be posted in this repository. Continued use of this software after any change to this license constitutes acceptance of the updated terms. You are encouraged to review the license periodically to stay informed of any updates.
+
 Any unauthorized use of this software, codebase, or its derivatives may result in takedown actions or legal steps as appropriate under applicable copyright laws.
 
 By accessing or using this repository, you agree to these terms.
 
 For usage permissions or collaboration requests, please open an issue on this repository or contact via GitHub: [@novus0x](https://github.com/novus0x)
+
