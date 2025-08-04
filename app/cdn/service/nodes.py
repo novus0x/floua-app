@@ -9,9 +9,5 @@ from core.utils.ws import broadcast_all_nodes
 
 ########## Select best node ##########
 async def best_node_upload(nodes, db: Session):
-
-
     # nodes = db.query(Node).filter(Node.active)
-
-    
     return "ok"

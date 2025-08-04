@@ -1,4 +1,9 @@
+.gz
 env
+.zip
 .env
+.next
 videos
+geoip.mmdb
 __pycache__
+node_modules

@@ -1,4 +1,5 @@
 uuid
+requests
 websockets
 sqlalchemy
 python-dotenv

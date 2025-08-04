@@ -24,12 +24,13 @@ def validate_required_fields(data: dict, fields: list):
     required_fields = []
 
     for field in fields:
+        clean_name = [field.replace("_", " ")]
         if not hasattr(data, field):
-            required_fields.append({"field": field, "message": field + " is required"})
+            required_fields.append({"field": field, "message": str(clean_name[0].capitalize()) + " is required"})
         else:
             value = getattr(data, field)
             if not isinstance(value, str) or value.strip() == "":
-                required_fields.append({"field": field, "message": field + " is required"})
+                required_fields.append({"field": field, "message": str(clean_name[0].capitalize()) + " is required"})
     
     if len(required_fields) > 0:
         return required_fields, True

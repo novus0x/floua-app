@@ -78,7 +78,7 @@ async def home(websocket: WebSocket, db: Session = Depends(get_db)):
         connected_nodes.pop(node_id, None)
 
 
-########## Nodes ##########
+########## Add Node ##########
 @router.post("/add")
 async def add(request: Request, db: Session = Depends(get_db)):
     ### Get Body ###
@@ -106,53 +106,19 @@ async def add(request: Request, db: Session = Depends(get_db)):
 
     return custom_response(status_code=201, message="Node added")
 
-
-########## Upload Content ##########
-@router.post("/upload")
-async def upload(request: Request, file: UploadFile = File(...), db: Session = Depends(get_db)):
-    ### Get data ###
-    form = await request.form()
-
-    video_id = form.get("video_id")
-    upload_token = form.get("upload_token")
-    ext = Path(file.filename).suffix.lower()
+########## Get node answer ##########
+@router.post("/video_status")
+async def video_status(request: Request, db: Session = Depends(get_db)):
+    ### Get Body ###
+    video, error = await read_json_body(request)
+    if error: 
+        return custom_response(status_code=400, message=error)
 
     ### Validations ###
-    if not video_id or not upload_token:
-        return custom_response(status_code=400, message="video_id and upload_token are required")
+    required_fields, error = validate_required_fields(video, ["video_id", "status"])
+    if error:
+        return custom_response(status_code=400, message="Fields required", details=required_fields)
+    
+    print(video)
 
-    if ext not in allowed_exts:
-        return custom_response(status_code=400, message="Invalid extention")
-
-    ### Upload video ###
-    async with websockets.connect(WS_URL) as ws:
-        video_information = {
-            "type": "upload_init",
-            "video_info": {
-                "filename": file.filename,
-                "content_type": file.content_type or "video/mp4"
-            }
-        }
-
-        try:
-            json_msg = json.dumps(video_information)
-
-            await ws.send(json_msg)
-
-            while True:
-                chunk = await file.read(1024 * 1024)
-
-                if not chunk:
-                    break
-
-                await ws.send(chunk)
-            
-            json_msg = json.dumps({
-                "type": "upload_end"
-            })
-            await ws.send(json_msg)
-
-            return custom_response(message="Upload end", status_code=201)
-
-        except Exception as e:
-            return custom_response(status_code=400, message="Error while uploading file")
+    return "ok"

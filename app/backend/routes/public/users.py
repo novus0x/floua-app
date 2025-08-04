@@ -8,6 +8,7 @@ from sqlalchemy.orm import Session
 from db.database import get_db
 from db.model import User, User_Session
 
+from core.utils.geoip import lookup_ip
 from core.utils.generator import get_uuid
 from core.utils.responses import custom_response
 from core.utils.encrypt import hash_password, check_password, generate_jwt
@@ -25,7 +26,7 @@ async def signup(request: Request, db: Session = Depends(get_db)):
         return custom_response(status_code=400, message=error)
 
     ### Validations ###
-    required_fields, error = validate_required_fields(user, ["username", "email", "password", "confirm_password", "birth"])
+    required_fields, error = validate_required_fields(user, ["username", "email", "password", "confirm_password", "date_of_birth"])
     if error:
         return custom_response(status_code=400, message="Fields required", details=required_fields)
         
@@ -48,7 +49,7 @@ async def signup(request: Request, db: Session = Depends(get_db)):
         username = user.username.lower(),
         email = user.email,
         password = hash_password(user.password),
-        birth = user.birth
+        birth = user.date_of_birth
     )
     db.add(new_user)
     db.commit()
@@ -65,17 +66,17 @@ async def signup(request: Request, db: Session = Depends(get_db)):
         return custom_response(status_code=400, message=error)
 
     ### Validations ###
-    required_fields, error = validate_required_fields(user, ["email", "password", "expires", "ip_addr", "user_agent", "location", "device_name"])
+    required_fields, error = validate_required_fields(user, ["email", "password", "expires"])
     if error:
         return custom_response(status_code=400, message="Fields required", details=required_fields)
 
     user_data = db.query(User).filter(User.email == user.email).first()
 
     if not user_data:
-        return custom_response(status_code=401, message="Invalid credentials")
+        return custom_response(status_code=400, message="Invalid credentials")
 
     if not check_password(user_data.password, user.password):
-        return custom_response(status_code=401, message="Invalid credentials")
+        return custom_response(status_code=400, message="Invalid credentials")
     
     ### Save to DB ###
     new_session = User_Session(
@@ -87,11 +88,16 @@ async def signup(request: Request, db: Session = Depends(get_db)):
     if user.expires == "1": 
         new_session.expires_at = datetime.datetime.now(datetime.timezone.utc) + datetime.timedelta(days=15)
 
+    ### Geo IP ###
     if user_data.user_session_extra:
-        new_session.ip_addr = user.ip_addr
-        new_session.user_agent = user.user_agent
-        new_session.location = user.location
-        new_session.device_name = user.device_name
+        forwarded = request.headers.get("x-formwarded-for")
+        ip_addr = forwarded.split(",")[0].strip() if forwarded else request.client.host
+        user_agent = request.headers.get("user-agent", "unknown")
+        ip_info = lookup_ip(ip_addr)
+
+        new_session.ip_addr = ip_addr
+        new_session.user_agent = user_agent
+        new_session.location = str(ip_info)
 
     db.add(new_session)
     db.commit()

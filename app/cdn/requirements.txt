@@ -1,4 +1,5 @@
 uuid
+bcrypt
 fastapi
 uvicorn
 sqlalchemy

@@ -42,9 +42,10 @@ class Upload_Token(Base):
     __tablename__ = "upload_tokens"
 
     id = Column(String, primary_key=True, nullable=False)
-    video_id = Column(String, ForeignKey("videos.id"), nullable=False)
-    token = Column(String, unique=True, nullable=False)
+    video_id = Column(String, nullable=False)
+    token = Column(String, nullable=False)
     used = Column(Boolean, default=False)
     
     expires_at = Column(DateTime, nullable=False)
+    expired = Column(Boolean, default=False)
     date = Column(DateTime, default=datetime.utcnow)

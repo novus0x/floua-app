@@ -11,6 +11,33 @@ Coming soon at: **[https://floua.app](https://floua.app)**
 
 ---
 
+## Login Tracking & Privacy
+
+Floua includes an optional **Login Tracking** feature to improve account security.
+When enabled manually from the **Account Settings**, users can see details of their recent login activity, including:
+
+- IP address
+- Approximate location (country/city)
+- Browser and device used
+- Login timestamp
+
+This feature is **completely optional** and is **disabled by default**. Users can choose to activate/deactivate it at any time from their account preferences.
+
+### Thy is this useful?
+
+- Helps users detect suspicious or unauthorized access to their account.
+- Enable FLoua to show recent login activity.
+- Adds transparency and security for power users.
+
+All login data is used **only for user-facing security feature**. It is never sold or shared with third parties.
+
+---
+
+## Geolocation Attribution
+
+This project includes GeoLite2 data created by **MaxMind**, available from [https://www.maxmind.com](https://www.maxmind.com).
+This data is used to geolocate user IP addresses for security and analytics purpuses.
+
 ---
 
 ## 🛡 License

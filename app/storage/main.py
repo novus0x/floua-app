@@ -1,5 +1,5 @@
 ########## Modules ##########
-import os, asyncio, json, websockets, base64, uuid, shutil
+import os, asyncio, json, websockets, base64,  shutil
 
 from pathlib import Path
 
@@ -10,6 +10,7 @@ from db.model import Video
 
 from core.utils.generator import get_uuid
 from core.utils.net import get_local_ip
+from core.utils.converter import video_converter, queue
 
 ########## Create tables ##########
 Base.metadata.create_all(bind=engine)
@@ -64,7 +65,16 @@ async def handle_upload(websocket):
             db.flush(new_video)
             file.close()
 
+            ### Start video converter ###
+            await queue.put({
+                "video_id": new_video.id,
+                "video_ext": ext,
+                "dir": file_dir,
+                "video_dir": file_path
+            })
+
     except Exception as e: ### Error
+        print(e)
         if file:
             file.close()
 
@@ -99,8 +109,13 @@ async def main():
     client = asyncio.create_task(handle_connection())
 
     ### Server ###
-    server = await websockets.serve(handle_upload, "0.0.0.0", settings.PORT)
-    await asyncio.gather(client)
+    server = await websockets.serve(handle_upload, "0.0.0.0", settings.PORT, max_size= 1024 * 1024 * 2)
+
+    ### Converter ###
+    converter = asyncio.create_task(video_converter())
+
+    ### Start ###
+    await asyncio.gather(client, converter)
 
 ########## Init ##########
 asyncio.run(main())
