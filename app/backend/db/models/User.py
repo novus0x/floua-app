@@ -25,7 +25,7 @@ class User(Base):
     birth = Column(DateTime, nullable=False)
 
     email_verified = Column(Boolean, default=False)
-    user_session_extra = Column(Boolean, default=False)
+    user_session_extra = Column(Boolean, default=True)
 
     display_name = Column(String, nullable=True)
     avatar_url = Column(String, nullable=True)
