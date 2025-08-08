@@ -1,10 +1,11 @@
-.gz
-env
-.zip
+*.gz
+*.zip
 .env
+.env.local
+.env.*.local
 .next
-videos
-geoip.mmdb
-__pycache__
 node_modules
+__pycache__
+videos
 package-lock.json
+geoip.mmdb
