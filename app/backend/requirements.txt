@@ -5,6 +5,7 @@ bcrypt
 fastapi
 uvicorn
 sqlalchemy
+user-agents
 python-dotenv
 psycopg2-binary
 pydantic-settings

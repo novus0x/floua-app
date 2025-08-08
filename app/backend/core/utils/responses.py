@@ -14,3 +14,4 @@ def custom_response(status_code: int = 200, message: str = "", details: Optional
             "data": jsonable_encoder(data) if data else {}
         }
     )
+

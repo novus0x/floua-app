@@ -58,10 +58,12 @@ class Video(Base):
 
     category_id = Column(String, ForeignKey("categories.id"), nullable=False)
     user_id = Column(String, ForeignKey("users.id"), nullable=False)
+    channel_id = Column(String, ForeignKey("user_channel.id"), nullable=False)
     date = Column(DateTime, default=datetime.utcnow)
 
     ## Relationships ##
     user = relationship("User", back_populates="videos")
+    channel = relationship("User_Channel", back_populates="videos")
     comments = relationship("Comment", back_populates="video", cascade="all, delete-orphan")
     video_playlists = relationship("Video_Playlist", back_populates="video", cascade="all, delete-orphan")
     category = relationship("Category", back_populates="videos")

@@ -8,11 +8,14 @@ from sqlalchemy.orm import Session
 from db.database import get_db
 from db.model import User, User_Session
 
+from core.config import settings
+
 from core.utils.geoip import lookup_ip
 from core.utils.generator import get_uuid
 from core.utils.responses import custom_response
-from core.utils.encrypt import hash_password, check_password, generate_jwt
-from core.utils.validators import read_json_body, validate_required_fields, validate_email_domain
+from core.utils.db_management import add_db, update_db
+from core.utils.encrypt import hash_password, check_password, generate_jwt, check_jwt
+from core.utils.validators import read_json_body, validate_required_fields, validate_email_domain, validate_user
 
 ########## Variables ##########
 router = APIRouter()
@@ -51,9 +54,7 @@ async def signup(request: Request, db: Session = Depends(get_db)):
         password = hash_password(user.password),
         birth = user.date_of_birth
     )
-    db.add(new_user)
-    db.commit()
-    db.refresh(new_user)
+    add_db(db, new_user)
 
     return custom_response(status_code=201, message="User created")
 
@@ -85,7 +86,7 @@ async def signup(request: Request, db: Session = Depends(get_db)):
         expires_at = None,
     )
 
-    if user.expires == "1": 
+    if user.expires == "0": 
         new_session.expires_at = datetime.datetime.now(datetime.timezone.utc) + datetime.timedelta(days=15)
 
     ### Geo IP ###
@@ -99,10 +100,45 @@ async def signup(request: Request, db: Session = Depends(get_db)):
         new_session.user_agent = user_agent
         new_session.location = str(ip_info)
 
-    db.add(new_session)
-    db.commit()
-    db.refresh(new_session)
+    add_db(db, new_session)
 
     token = generate_jwt(session_id=new_session.id, expires=user.expires)
 
-    return custom_response(status_code=200, message="Login successful", data={"token": token})
+    response = custom_response(status_code=200, message="Login successful")
+    response.set_cookie(
+        key=settings.TOKEN_NAME,
+        value=token,
+        httponly=True,
+        secure=False, # Prod -> True
+        max_age=new_session.expires_at,
+    )
+    return response
+
+########## Validate ##########
+@router.get("/validate")
+async def validate(request: Request, db: Session = Depends(get_db)):
+    ### Get Session ###
+    user, error = await validate_user(request, db, True)
+    if error:
+        return custom_response(status_code=400, message=error)
+
+    return custom_response(status_code=200, message="Account information", data={
+        "user": user
+    })
+
+########## Logout ##########
+@router.get("/logout")
+async def logout(request: Request, db: Session = Depends(get_db)):
+    token = request.cookies.get(settings.TOKEN_NAME)
+    token_data, error = check_jwt(token)
+
+    if token_data:
+        user_session = db.query(User_Session).filter(User_Session.id == token_data["session_id"]).first()
+
+        if user_session:
+            user_session.is_active = False
+            update_db(db)
+
+    response = custom_response(status_code=200, message="Logout successful")
+    response.delete_cookie(key=settings.TOKEN_NAME)
+    return response

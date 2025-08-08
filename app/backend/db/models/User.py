@@ -19,23 +19,24 @@ class User(Base):
     __tablename__ = "users"
 
     id = Column(String, primary_key=True, nullable=False)
-    username = Column(String, unique=True, index=True, nullable=False)
+    username = Column(String, nullable=False)
     email = Column(String, unique=True, index=True, nullable=False)
     password = Column(String, nullable=False)
     birth = Column(DateTime, nullable=False)
 
     email_verified = Column(Boolean, default=False)
+    has_channel = Column(Boolean, default=False)
     user_session_extra = Column(Boolean, default=True)
 
-    display_name = Column(String, nullable=True)
-    avatar_url = Column(String, nullable=True)
     bio = Column(Text, nullable=True)
+    avatar_url = Column(String, default="/img/default_avatar.png")
 
     points = Column(Integer, default=0)
     role = Column(Enum(User_Role), default=User_Role.viewer)
     date = Column(DateTime, default=datetime.utcnow)
 
     ## Relationships ##
+    channel = relationship("User_Channel", back_populates="user")
     videos = relationship("Video", back_populates="user")
     comments = relationship("Comment", back_populates="user", cascade="all, delete-orphan")
     playlists = relationship("Playlist", back_populates="user", cascade="all, delete-orphan")
@@ -56,13 +57,29 @@ class User_Session(Base):
     ip_addr = Column(String, nullable=True)
     user_agent = Column(String, nullable=True)
     location = Column(String, nullable=True)
-    device_name = Column(String, nullable=True)
 
     last_used_at = Column(DateTime, default=datetime.utcnow)
     date = Column(DateTime, default=datetime.utcnow)
 
     ## Relationships ##
     user = relationship("User", back_populates="sessions")
+
+##### User Channel #####
+class User_Channel(Base):
+    __tablename__ = "user_channel"
+
+    id = Column(String, primary_key=True, nullable=False)
+    user_id = Column(String, ForeignKey("users.id"), nullable=False)
+
+    name = Column(String, nullable=False)
+    description = Column(Text, nullable=True)
+    avatar_url = Column(String, default="/img/default_avatar.png")
+
+    date = Column(DateTime, default=datetime.utcnow)
+
+    ## Relationships ##
+    user = relationship("User", back_populates="channel")
+    videos = relationship("Video", back_populates="channel")
 
 ##### External Accounts #####
 class OAuth_Provider(str, enum.Enum):

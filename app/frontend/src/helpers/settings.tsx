@@ -2,4 +2,6 @@
 export const settings = {
     // API BASE URL
     api_url: "http://192.168.1.36:3001",
+    // Cookie name
+    token_name: "Authorization",
 }

@@ -1,5 +1,6 @@
 ########## Modules ##########
 import json, uuid, random, string, datetime
+
 from types import SimpleNamespace
 
 from fastapi import Request
@@ -7,7 +8,9 @@ from sqlalchemy.orm import Session
 
 from db.model import Allowed_Email_Domain, User_Session, User
 
+from core.config import settings
 from core.utils.encrypt import check_jwt
+from core.utils.db_management import add_db, update_db
 
 ########## Read Json body ##########
 async def read_json_body(request: Request):
@@ -49,12 +52,11 @@ async def validate_email_domain(email: str, db: Session):
 
     return False
 
-########## Get user ##########
-async def get_user(headers, db: Session, required = False):
-    if "Authorization" not in headers:
+########## Get token ##########
+async def get_token(request, db: Session, required = False):
+    token = request.cookies.get(settings.TOKEN_NAME)
+    if not token:
         return None, True
-
-    token = headers["Authorization"]
 
     if required == False:
         return {}, None
@@ -65,6 +67,30 @@ async def get_user(headers, db: Session, required = False):
         return None, "Invalid token"
 
     user_session = db.query(User_Session).filter(User_Session.id == token_data["session_id"]).first()
+    
+    if not user_session:
+        return None, "Invalid token"
+
+    return token_data["session_id"], False
+
+########## Get user ##########
+async def validate_user(request, db: Session, required = False):
+    token = request.cookies.get(settings.TOKEN_NAME)
+    if not token:
+        return None, True
+
+    if required == False:
+        return {}, None
+
+    token_data, error = check_jwt(token)
+
+    if error:
+        return None, "Invalid token"
+
+    user_session = db.query(User_Session).filter(User_Session.id == token_data["session_id"]).first()
+    
+    if not user_session:
+        return None, "Invalid token"
 
     if not user_session.is_active:
         return None, "The session has expired"
@@ -76,24 +102,25 @@ async def get_user(headers, db: Session, required = False):
         
         if expiration_date <= current_date:
             user_session.is_active = False
-            db.commit()
+            update_db(db)
             return None, "The session has expired"
     
     user_session.last_used_at = current_date
-    db.commit()
+    update_db(db)
 
     user_data = db.query(User).filter(User.id == user_session.user_id).first()
     
     user = {
+        "id": user_data.id,
         "username": user_data.username,
         "email": user_data.email,
-        "bio": user_data.bio,
         "points" : user_data.points,
 
-        "display_name" : user_data.display_name,
         "avatar_url" : user_data.avatar_url,
+        "bio": user_data.bio,
 
         "email_verified" : user_data.email_verified,
+        "has_channel": user_data.has_channel,
         "user_session_extra" : user_data.user_session_extra,
 
         "date" : user_data.date,
