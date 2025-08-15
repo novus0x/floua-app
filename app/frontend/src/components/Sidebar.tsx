@@ -21,7 +21,7 @@ import { use_UI } from "@/context/ui";
 import { useAuth } from "@/context/auth";
 
 /********************** Show **********************/
-const hide_sidebar_paths = [routes.auth.signup, routes.auth.signin, routes.auth.logout];
+const hide_sidebar_paths = [routes.auth.signup, routes.auth.signin, routes.auth.logout, routes.auth.verify_path];
 
 /********************** Component **********************/
 const Sidebar = () => {
@@ -33,8 +33,8 @@ const Sidebar = () => {
 
     // Check if valid path
     const pathname = usePathname();
-    if (hide_sidebar_paths.includes(pathname)) return "";
-
+    if (hide_sidebar_paths.some(path => pathname.startsWith(path))) return "";
+    
     // DOM
     return (
         <nav className={`sidebar ${sidebarOpen ? "" : "sidebar-hide"} `}>

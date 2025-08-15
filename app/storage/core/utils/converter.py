@@ -100,6 +100,6 @@ async def video_converter():
         if result:
             data["status"] = 201
 
-        request.post(settings.CDN_ORIGIN + "/nodes/video_status", json=data)
+        # request.post(settings.CDN_ORIGIN + "/nodes/video_status", json=data)
 
         queue.task_done()

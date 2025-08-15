@@ -25,7 +25,7 @@ class Point_Transaction(Base):
     type = Column(Enum(Point_Transaction_Type), nullable=False)
     description = Column(Text, nullable=True)
 
-    date = Column(DateTime, default=datetime.utcnow)
+    date = Column(DateTime(timezone=True), default=datetime.utcnow)
 
     ## Relationships ##
     user = relationship("User")

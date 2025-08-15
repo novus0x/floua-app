@@ -179,7 +179,7 @@ body {
     right: 25px;
     position: absolute;
 
-    z-index: 3;
+    z-index: 9999999;
 }
 
 .notification {
@@ -207,6 +207,8 @@ body {
 
 /********************** Navbar **********************/
 .navbar {
+    z-index: 999999;
+
     top: 0;
     left: 0;
     position: fixed;
@@ -349,6 +351,8 @@ body {
 
     border-radius: 15px;
     background-color: var(--color-dark-blue-3);
+
+    box-shadow: 10px 10px 10px var(--color-black-blue);
 }
 
 .navbar-user-avatar-extra-divider {
@@ -367,12 +371,14 @@ body {
 }
 
 .navbar-user-avatar-extra-account-avatar {
-    width: 55px;
+    width: 60px;
     overflow: hidden;
 }
 
 .navbar-user-avatar-extra-account-info {
-    padding: 15px 25px;
+    margin-left: 15px;
+    padding: 15px 0px;
+
     color: var(--color-white);
     font-weight: var(--fw-bold);
 
@@ -482,8 +488,9 @@ body {
 
 /********************** Sidebar **********************/
 .sidebar {
+    z-index: 999999;
+
     top: 76px;
-    z-index: 10;
     position: fixed;
 
     width: 270px;
@@ -698,6 +705,8 @@ body {
 
     padding: 25px 30px;
     transition: margin-left ease-in-out 150ms;
+
+    /* background: linear-gradient(25deg, var(--color-black-blue) 35%, var(--color-main) 100%); */
 }
 
 .content-title-container {
@@ -724,9 +733,28 @@ body {
     font-weight: var(--fw-bold);
 
     margin: 0px 15px;
-    padding: 15px 25px;
+    padding: 10px 25px;
     border-radius: 10px;
-    background-color: var(--color-orange);
+    background-color: var(--color-main);
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.user-activate-account-btn {
+    cursor: pointer;
+    padding: 8px 20px;
+    font-weight: var(--fw-bold);
+
+    border-radius: 15px;
+    background-color: var(--color-black-blue);
+
+    transition: background-color 250ms ease-in-out;
+}
+
+.user-activate-account-btn:hover {
+    background-color: var(--color-background-player);
 }
 
 .account-container {
@@ -786,13 +814,19 @@ body {
     border-radius: 10px;
 
     color: var(--color-white);
-    background-color: var(--color-dark-blue-2);
+    background-color: var(--color-dark-blue-1);
 }
 
+/*General*/
 .account-data-general-container {
     gap: 25px;
     display: flex;
     flex-direction: column;
+}
+
+.account-data-general-section-title {
+    font-size: var(--fs-medium);
+    font-weight: var(--fw-bold);
 }
 
 .account-data-general-basic-container {
@@ -804,9 +838,8 @@ body {
     padding: 15px 0;
 }
 
-.account-data-general-section-title {
-    font-size: var(--fs-medium);
-    font-weight: var(--fw-bold);
+.account-data-general-basic-role {
+    text-transform: capitalize;
 }
 
 .account-data-general-basic-avatar {
@@ -825,6 +858,46 @@ body {
     text-transform: capitalize;
 }
 
+/*Create Channel Section*/
+.account-data-create-channel {
+    height: 100%;
+
+    gap: 20px;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.account-data-create-channel-title {
+    font-size: var(--fs-small);
+    font-weight: var(--fw-bold);
+}
+
+.account-data-create-channel-btn {
+    padding: 12px 15px;
+    font-weight: var(--fw-bold);
+    font-size: var(--fs-regular);
+
+    gap: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 15px;
+    border: 2px dashed var(--color-main);
+
+    transition: background-color 350ms ease-in-out;
+}
+
+.account-data-create-channel-btn:hover {
+    background-color: var(--color-main);
+}
+
+/*Overview Channel Section*/
+
+
+/*Login Tracking Section*/
 .account-data-loggin-tracking-container {
     gap: 25px;
     display: flex;
@@ -845,7 +918,7 @@ body {
     width: 60px;
     height: 20px;
     border-radius: 35px;
-    background-color: var(--color-dark-blue-4);
+    background-color: var(--color-dark-blue-3);
 
     cursor: pointer;
     position: relative;
@@ -866,11 +939,185 @@ body {
 .account-data-loggin-tracking {
     padding: 15px 20px;
     border-radius: 10px;
-    background-color: var(--color-dark-blue-4);
+    background-color: var(--color-dark-blue-3);
+
 }
 
 .account-data-loggin-tracking-deactivate-btn {
     cursor: pointer;
+}
+
+/********************** Create Channel **********************/
+.create-channel-container {
+    height: 100%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+}
+
+.create-channel-form {
+    gap: 15px;
+    display: flex;
+    flex-direction: column;
+
+    padding: 40px 35px;
+    border-radius: 10px;
+    background-color: var(--color-dark-blue-1);
+}
+
+.create-channel-form-input-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.create-channel-text {
+    color: var(--color-white);
+    font-size: var(--fs-regular);
+}
+
+.create-channel-looks-like {
+    color: var(--color-gray-bluish);
+    font-weight: var(--fw-bold);
+    font-size: var(--fs-xxsmall);
+}
+
+.create-channel-input {
+    color: var(--color-white);
+
+    width: 100%;
+    padding: 15px 20px;
+
+    border-radius: 10px;
+    border: 2px solid var(--color-white);
+
+    margin-bottom: 15px;
+}
+
+.create-channel-btn {
+    cursor: pointer;
+    padding: 15px 20px;
+
+    color: var(--color-white);
+    font-weight: var(--fw-bold);
+
+    border-radius: 10px;
+    background-color: var(--color-main);
+}
+
+.create-channel-slogan {
+    margin-top: 15px;
+    color: var(--color-main);
+}
+
+/********************** Channel **********************/
+.channel-view-container {}
+
+.channel-view-info-container-p {
+    width: 100%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    flex-direction: column;
+
+    position: relative;
+
+}
+
+.channel-view-banner-container {
+    width: 100%;
+    height: 250px;
+
+    background-color: var(--color-gray-light);
+}
+
+.channel-view-info-container-content {
+    width: 100%;
+
+    display: flex;
+    flex-direction: column;
+
+    padding: 30px 55px;
+    background-color: var(--color-dark-blue-2);
+}
+
+.channel-view-info-content-img-container {
+    width: 100%;
+    border-radius: 100%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    margin-bottom: 25px;
+}
+
+.channel-view-info-content-img {
+    width: 50%;
+}
+
+.channel-view-info-content {
+    width: 100%;
+}
+
+.channel-view-info-content-top {
+    width: 100%;
+
+    gap: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    flex-direction: column;
+}
+
+.channel-view-info-content-top-left {
+    gap: 10px;
+    display: flex;
+    flex-direction: column;
+}
+
+.channel-view-info-content-title {
+    color: var(--color-white);
+    font-size: var(--fs-medium);
+    font-weight: var(--fw-bold);
+}
+
+.channel-view-info-content-extra-info-container {
+    gap: 20px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.channel-view-info-content-extra-info-text {
+    color: var(--color-gray-bluish);
+}
+
+.channel-view-info-content-action {
+    cursor: pointer;
+
+    color: var(--color-white);
+    font-weight: var(--fw-medium);
+
+    padding: 10px 35px;
+    border-radius: 15px;
+    background: linear-gradient(110deg, var(--color-dark-blue-2) 1%, var(--color-gray-bluish) 100%);
+}
+
+.channel-view-info-content-action-creator {
+    background: var(--color-main)
+}
+
+.channel-view-info-content-bottom {
+    margin-top: 15px;
+}
+
+.channel-view-info-content-bottom-text {
+    color: var(--color-gray-bluish);
 }
 
 /********************** Media Queries **********************/
@@ -936,6 +1183,7 @@ body {
 }
 
 @media (max-width: 992px) {
+
     /*** Scroll ***/
     ::-webkit-scrollbar {
         height: 0;
@@ -947,6 +1195,7 @@ body {
 @media (max-width: 600px) {}
 
 @media (max-width: 500px) {
+
     /*** Content ***/
     .content {
         padding: 15px 0px;
@@ -964,8 +1213,8 @@ body {
 
 }
 
-
 @media (min-width: 1000px) {
+
     /*** Account ***/
     .account-container {
         flex-direction: row;
@@ -990,6 +1239,47 @@ body {
 
     .account-data {
         margin-top: 15px;
+    }
+
+    /*** Channel ***/
+    .channel-view-banner-container {
+        border-radius: 15px;
+    }
+
+
+    .channel-view-info-container-dark {
+        width: 100%;
+        height: 115px;
+    }
+
+    .channel-view-info-container-content {
+        width: 85%;
+
+        bottom: 0;
+        position: absolute;
+
+        gap: 25px;
+        display: flex;
+        flex-direction: row;
+
+        padding: 30px 55px;
+        border-radius: 15px;
+    }
+
+    .channel-view-info-content-top {
+        flex-direction: row;
+    }
+
+    .channel-view-info-content-img-container {
+        width: 200px;
+        border-radius: 100%;
+
+        display: block;
+        margin-bottom: 0;
+    }
+
+    .channel-view-info-content-img {
+        width: 100%;
     }
 }
 

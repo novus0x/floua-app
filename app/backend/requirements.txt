@@ -1,9 +1,11 @@
 uuid
 PyJWT
+jinja2
 geoip2
 bcrypt
 fastapi
 uvicorn
+aiosmtplib
 sqlalchemy
 user-agents
 python-dotenv

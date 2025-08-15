@@ -25,9 +25,10 @@ export function Auth_provider({ children }) {
 
             if (data?.user) setUser(data.user);
             else {
-                await get_data("/api/users/logout", {});
                 setUser(null);
             }
+
+            if (data?.expired) await get_data("/api/users/logout", {});
 
             setUserLoading(false);
         };

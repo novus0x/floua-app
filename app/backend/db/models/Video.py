@@ -32,7 +32,7 @@ class Video_Point_Stats(Base):
     video_id = Column(String, ForeignKey("videos.id"), nullable=False)
 
     total_points = Column(Integer, default=0)
-    date = Column(DateTime, default=datetime.utcnow)
+    date = Column(DateTime(timezone=True), default=datetime.utcnow)
 
     ## Relationships ##
     video = relationship("Video")
@@ -58,8 +58,8 @@ class Video(Base):
 
     category_id = Column(String, ForeignKey("categories.id"), nullable=False)
     user_id = Column(String, ForeignKey("users.id"), nullable=False)
-    channel_id = Column(String, ForeignKey("user_channel.id"), nullable=False)
-    date = Column(DateTime, default=datetime.utcnow)
+    channel_id = Column(String, ForeignKey("user_channels.id"), nullable=False)
+    date = Column(DateTime(timezone=True), default=datetime.utcnow)
 
     ## Relationships ##
     user = relationship("User", back_populates="videos")

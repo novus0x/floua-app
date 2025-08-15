@@ -41,6 +41,9 @@ export async function get_data(
     }
 
     values = data?.data ?? {};
+
+    // Success
+    if(notify) notify(data.message, 'success');
     return values;
 }
 
@@ -50,7 +53,7 @@ export async function send_data(
     endpoint: string, 
     headers: Record<string, string>, 
     body: Record<string, string>,
-    notify: (message: string, type: string) => void
+    notify?: (message: string, type: string) => void
 ) {
     // Variables
     let i, details, values;
@@ -67,9 +70,7 @@ export async function send_data(
     })
 
     // Get data
-    console.log(res);
     const data = await res.json();
-    console.log(data);
 
     // Check errors
     if (res.status == 400) {

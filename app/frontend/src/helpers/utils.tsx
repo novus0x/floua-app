@@ -3,6 +3,23 @@
 /********************** Modules **********************/
 import { settings } from "./settings";
 
+/********************** Create params **********************/
+export function create_params(obj: Record<string, any>): string {
+    const params = new URLSearchParams();
+
+    Object.entries(obj).forEach(([key, value]) => {
+        if (value !== undefined && value !== null) {
+            if (Array.isArray(value)) {
+                value.forEach(v => params.append(key, v));
+            } else {
+                params.append(key, value.toString());
+            }
+        }
+    });
+
+    return `?${params.toString()}`;
+}
+
 /********************** Set Cookie **********************/
 export function set_cookie(cookie_value: string) {
     document.cookie = `${settings.token_name}=${cookie_value}; path=/`;

@@ -1,4 +1,6 @@
 ########## Modules ##########
+import asyncio
+
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -7,8 +9,10 @@ from db.database import Base, engine, SessionLocal
 
 from routes import test
 from routes.public import users
-from routes.private import accounts
+from routes.private import accounts, channels
 from scripts.init_email_domains import init_email_domains
+
+from services.smtp.main import send_mail_worker
 
 ########## Create tables ##########
 Base.metadata.create_all(bind=engine)
@@ -26,6 +30,9 @@ def startup_event():
     db = SessionLocal()
     try:
         init_email_domains(db)
+
+        ### Workers ###
+        asyncio.create_task(send_mail_worker())
     finally:
         db.close()
 
@@ -33,7 +40,7 @@ def startup_event():
 ########## CORS ##########
 app.add_middleware(
     CORSMiddleware,
-    allow_origins = ["http://192.168.1.36:3000"],
+    allow_origins = ["http://192.168.1.80:3000"],
     allow_credentials = True,
     allow_methods = ["*"],
     allow_headers = ["*"],
@@ -45,3 +52,4 @@ app.include_router(test.router)
 ########## API Routes ##########
 app.include_router(users.router, prefix="/api/users", tags=["Users"])
 app.include_router(accounts.router, prefix="/api/accounts", tags=["Accounts"])
+app.include_router(channels.router, prefix="/api/channels", tags=["Channels"])

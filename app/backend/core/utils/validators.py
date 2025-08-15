@@ -1,6 +1,8 @@
 ########## Modules ##########
 import json, uuid, random, string, datetime
 
+from datetime import timezone
+
 from types import SimpleNamespace
 
 from fastapi import Request
@@ -11,6 +13,11 @@ from db.model import Allowed_Email_Domain, User_Session, User
 from core.config import settings
 from core.utils.encrypt import check_jwt
 from core.utils.db_management import add_db, update_db
+
+########## Read Json params ##########
+async def read_params(request: Request):
+    query_params = request.query_params
+    return dict(query_params)
 
 ########## Read Json body ##########
 async def read_json_body(request: Request):
@@ -77,7 +84,7 @@ async def get_token(request, db: Session, required = False):
 async def validate_user(request, db: Session, required = False):
     token = request.cookies.get(settings.TOKEN_NAME)
     if not token:
-        return None, True
+        return None, "Invalid token"
 
     if required == False:
         return {}, None
@@ -95,7 +102,7 @@ async def validate_user(request, db: Session, required = False):
     if not user_session.is_active:
         return None, "The session has expired"
     
-    current_date = datetime.datetime.utcnow()
+    current_date = datetime.datetime.now(timezone.utc)
 
     if user_session.expires_at != None:
         expiration_date = user_session.expires_at 
@@ -109,13 +116,14 @@ async def validate_user(request, db: Session, required = False):
     update_db(db)
 
     user_data = db.query(User).filter(User.id == user_session.user_id).first()
-    
+
     user = {
         "id": user_data.id,
         "username": user_data.username,
         "email": user_data.email,
         "points" : user_data.points,
 
+        "role": user_data.role,
         "avatar_url" : user_data.avatar_url,
         "bio": user_data.bio,
 

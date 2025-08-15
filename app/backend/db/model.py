@@ -7,7 +7,7 @@ from db.database import Base
 from sqlalchemy.orm import relationship
 from sqlalchemy import Column, String, DateTime, ForeignKey, Enum, Integer, Text, Boolean
 
-from db.models.User import User, User_Session, External_Account
+from db.models.User import User, User_Session, External_Account, User_Channel, User_Follow, User_Role, User_Verification
 from db.models.Point import Point_Transaction
 
 from db.models.Playlist import Playlist, Video_Playlist
@@ -41,7 +41,7 @@ class Comment(Base):
     user_id = Column(String, ForeignKey("users.id"), nullable=False)
     video_id = Column(String, ForeignKey("videos.id"), nullable=False)
     parent_id = Column(String, ForeignKey("comments.id"), nullable=True)
-    date = Column(DateTime, default=datetime.utcnow)
+    date = Column(DateTime(timezone=True), default=datetime.utcnow)
     
     ## Relationships ##
     user = relationship("User", back_populates="comments")
@@ -58,7 +58,7 @@ class Watch_History(Base):
     video_id = Column(String, ForeignKey("videos.id"), nullable=False)
     progress = Column(Integer, default=0)
 
-    watched_at = Column(DateTime, default=datetime.utcnow)
+    watched_at = Column(DateTime(timezone=True), default=datetime.utcnow)
 
 ##### Notification #####
 class Notification(Base):
@@ -68,6 +68,6 @@ class Notification(Base):
     user_id = Column(String, ForeignKey("users.id"), nullable=False)
     message = Column(Text, nullable=False)
     is_read = Column(Boolean, default=False)
-    date = Column(DateTime, default=datetime.utcnow)
+    date = Column(DateTime(timezone=True), default=datetime.utcnow)
 
     user = relationship("User")

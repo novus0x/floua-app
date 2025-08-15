@@ -1,12 +1,15 @@
 ########## Modules ##########
 import datetime
 
+from datetime import timezone
+
 from fastapi import APIRouter, Depends, Request
 
+from sqlalchemy import desc
 from sqlalchemy.orm import Session
 
 from db.database import get_db
-from db.model import User, User_Session
+from db.model import User, User_Session, User_Verification
 
 from core.config import settings
 
@@ -16,6 +19,8 @@ from core.utils.responses import custom_response
 from core.utils.db_management import add_db, update_db
 from core.utils.encrypt import hash_password, check_password, generate_jwt, check_jwt
 from core.utils.validators import read_json_body, validate_required_fields, validate_email_domain, validate_user
+
+from services.smtp.main import template_routes, get_html, send_mail
 
 ########## Variables ##########
 router = APIRouter()
@@ -55,6 +60,13 @@ async def signup(request: Request, db: Session = Depends(get_db)):
         birth = user.date_of_birth
     )
     add_db(db, new_user)
+
+    html_body = await get_html(template_routes.auth.welcome, {
+        "username": new_user.username,
+        "role": "Viewer"
+    })
+
+    await send_mail("noreply", "Registration on Floua - Dev", new_user.email, html_body)
 
     return custom_response(status_code=201, message="User created")
 
@@ -106,25 +118,13 @@ async def signup(request: Request, db: Session = Depends(get_db)):
 
     response = custom_response(status_code=200, message="Login successful")
     response.set_cookie(
-        key=settings.TOKEN_NAME,
-        value=token,
-        httponly=True,
-        secure=False, # Prod -> True
-        max_age=new_session.expires_at,
+        key = settings.TOKEN_NAME,
+        value = token,
+        httponly = True,
+        secure = False, # Prod --> True
+        max_age = new_session.expires_at,
     )
     return response
-
-########## Validate ##########
-@router.get("/validate")
-async def validate(request: Request, db: Session = Depends(get_db)):
-    ### Get Session ###
-    user, error = await validate_user(request, db, True)
-    if error:
-        return custom_response(status_code=400, message=error)
-
-    return custom_response(status_code=200, message="Account information", data={
-        "user": user
-    })
 
 ########## Logout ##########
 @router.get("/logout")
@@ -142,3 +142,80 @@ async def logout(request: Request, db: Session = Depends(get_db)):
     response = custom_response(status_code=200, message="Logout successful")
     response.delete_cookie(key=settings.TOKEN_NAME)
     return response
+
+########## Verify Account - GET ##########
+@router.get("/verify")
+async def validate(request: Request, db: Session = Depends(get_db)):
+    ### Get Session ###
+    user, error = await validate_user(request, db, True)
+    if error:
+        return custom_response(status_code=400, message=error)
+
+    verifications = db.query(User_Verification).filter(User_Verification.user_id == user["id"]).order_by(desc(User_Verification.date)).all()
+
+    # if len(verifications) > 0:
+    #     for verification in verifications:
+    #         current_date = datetime.datetime.now(timezone.utc)
+    #         verification_date = verification.date
+
+    #         time_aprx = current_date - verification_date
+    #         minutes = abs(time_aprx.total_seconds()) / 60
+
+    #         if minutes < 2:
+    #             return custom_response(status_code=400, message="Try again later. Hint: 2 minutes after your last try")
+
+    new_verification = User_Verification(
+        id = await get_uuid(User_Verification, db),
+        user_id = user["id"],
+    )
+
+    new_verification.expires_at = datetime.datetime.now(datetime.timezone.utc) + datetime.timedelta(minutes=10)
+    add_db(db, new_verification)
+
+    html_body = await get_html(template_routes.auth.verify, {
+        "verification_route": settings.FRONTEND_ORIGIN + "/auth/verify/" +  new_verification.id
+    })
+
+    await send_mail("noreply", "Account Verification - Dev", user["email"], html_body)
+
+    return custom_response(status_code=200, message="Verifiction link sent, check your email")
+
+########## Verify Account - POST ##########
+@router.post("/verify")
+async def validate(request: Request, db: Session = Depends(get_db)):
+    ### Get Body ###
+    verify, error = await read_json_body(request)
+    if error: 
+        return custom_response(status_code=400, message=error)
+
+    ### Validations ###
+    required_fields, error = validate_required_fields(verify, ["id"])
+    if error:
+        return custom_response(status_code=400, message="Fields required", details=required_fields)
+    
+    verification = db.query(User_Verification).filter(User_Verification.id == verify.id).first()
+
+    if not verification:
+        return custom_response(status_code=400, message="Invalid link")
+
+    if verification.used:
+        return custom_response(status_code=400, message="Invalid link")
+    
+    current_date = datetime.datetime.now(timezone.utc)
+    expiration_date = verification.expires_at
+        
+    if expiration_date <= current_date:
+        verification.used = True
+        update_db(db)
+        return custom_response(status_code=400, message="Invalid link")
+
+    user = db.query(User).filter(User.id == verification.user_id).first()
+
+    if not user:
+        return custom_response(status_code=400, message="Invalid link")
+
+    user.email_verified = True
+    verification.used = True
+    update_db(db)
+
+    return custom_response(status_code=200, message="Account information", data={})

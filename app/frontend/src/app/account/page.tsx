@@ -5,7 +5,7 @@ import { useState, useEffect } from "react";
 
 // Icons
 import { FaLink, FaLock, FaVideo, FaUser, FaDotCircle } from "react-icons/fa";
-import { FiSettings } from "react-icons/fi";
+import { FiSettings, FiPlus } from "react-icons/fi";
 import { PiTidalLogoFill, PiTreasureChestFill } from "react-icons/pi";
 import { SiKick } from "react-icons/si";
 
@@ -31,6 +31,9 @@ const Account = () => {
 
   // Auth
   const { user } = useAuth();
+
+  // Help
+  if (!user) return window.location.href = routes.auth.signin;
 
   // Structure
   interface Session {
@@ -70,11 +73,15 @@ const Account = () => {
     day: "2-digit",
     month: "long",
     year: "numeric",
-  })
+  });
 
   // API calls
-  const get_login_sessions = async () => {
+  const verify_email = async () => {
+    // Request
+    const data = await get_data("/api/users/verify", {}, notify);
+  }
 
+  const get_login_sessions = async () => {
     // Variables
     let i, last_used, expire_at, created, session, sessions = [];
 
@@ -86,6 +93,7 @@ const Account = () => {
 
       // Format Date --> String
       last_used = new Date(session.last_used_at).toLocaleDateString("en-US", {
+        timeZone: "America/Lima",
         minute: "2-digit",
         hour: "2-digit",
         day: "2-digit",
@@ -95,6 +103,7 @@ const Account = () => {
 
       if (session.expires_at) {
         expire_at = new Date(session.expires_at).toLocaleDateString("en-US", {
+          timeZone: "America/Lima",
           minute: "2-digit",
           hour: "2-digit",
           day: "2-digit",
@@ -104,6 +113,7 @@ const Account = () => {
       } else expire_at = "No expire";
 
       created = new Date(session.date).toLocaleDateString("en-US", {
+        timeZone: "America/Lima",
         minute: "2-digit",
         hour: "2-digit",
         day: "2-digit",
@@ -143,8 +153,8 @@ const Account = () => {
 
   const deactivate_session = async (session_id: string) => {
     // Request
-    const data = await send_data("/api/accounts/deactivate-session", {}, {session_id: session_id}, notify);
-    if(data.current_session) window.location.href = routes.auth.logout;
+    const data = await send_data("/api/accounts/deactivate-session", {}, { session_id: session_id }, notify);
+    if (data.current_session) window.location.href = routes.auth.logout;
 
     await get_login_sessions();
   }
@@ -157,11 +167,19 @@ const Account = () => {
     setisLogginTrackingChecked(!isLogginTrackingChecked);
   };
 
+  // Get Channel information - overview
+  const get_channel_overview = async () => {
+    const data = await get_data("/api/accounts/channel-overview", {});
+      console.log(data);
+  }
+
   return (
     <div className="content">
       {user.email_verified ? (<></>) : (
         <div className="user-activate-account-container">
           Please verify your account now!
+
+          <button className="user-activate-account-btn" onClick={verify_email}>Verify account!</button>
         </div>
       )}
 
@@ -181,7 +199,7 @@ const Account = () => {
             <FaVideo className="account-option-title-icon color-main" size={25} /> Channel
           </span>
           {user.has_channel ? (
-            <button className={`account-option ${activeTab == "channel_overview" ? "account-option-active" : ""}`} onClick={() => setActiveTab("channel_overview")}>
+            <button className={`account-option ${activeTab == "channel_overview" ? "account-option-active" : ""}`} onClick={() => { setActiveTab("channel_overview"); get_channel_overview(); }}>
               Overview
             </button>
           ) : (
@@ -225,10 +243,10 @@ const Account = () => {
         </div>
 
         <div className="account-data">
-
           {activeTab == "general" && (
             <div className="account-data-general-container">
               <div>
+                {/* user.has_channel */}
                 <span className="account-data-general-section-title">Profile Preview</span>
                 <div className="account-data-general-basic-container">
                   <img src={user.avatar_url} alt="User avatar" className="account-data-general-basic-avatar" />
@@ -251,6 +269,13 @@ const Account = () => {
               </div>
 
               <div>
+                <span className="account-data-general-section-title">Role</span>
+                <div className="account-data-general-basic-container">
+                  <span className="account-data-general-basic-role">{user.role}</span>
+                </div>
+              </div>
+
+              <div>
                 <span className="account-data-general-section-title">Points</span>
                 <div className="account-data-general-basic-container">
                   <span>{user.points}</span>
@@ -267,7 +292,16 @@ const Account = () => {
           )}
 
           {activeTab == "create_channel" && (
-            <div>Create Channel</div>
+            <div className="account-data-create-channel">
+              <span className="account-data-create-channel-title">Create your channel and start sharing your content!</span>
+              <Link href={routes.channel.opts.create} className="account-data-create-channel-btn"><FiPlus size={30} /> Create Channel</Link>
+            </div>
+          )}
+
+          {activeTab == "channel_overview" && (
+            <div className="account-data-channel-overview">
+              <h3>Overview Channels</h3>
+            </div>
           )}
 
           {activeTab == "login_tracking" && (

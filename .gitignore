@@ -9,3 +9,4 @@ __pycache__
 videos
 package-lock.json
 geoip.mmdb
+credentials.py

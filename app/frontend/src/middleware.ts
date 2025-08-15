@@ -8,7 +8,7 @@ import { settings } from '@/helpers/settings';
 import { routes } from './helpers/routes';
 
 /********************** Variables **********************/
-const protectedRoutes = [routes.auth.logout, routes.account.home];
+const protectedRoutes = [routes.auth.logout, routes.account.home, routes.channel.opts.create];
 const publicRoutes = [routes.auth.signin, routes.auth.signup];
  
 /********************** Function **********************/

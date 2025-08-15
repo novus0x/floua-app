@@ -33,7 +33,7 @@ class Playlist(Base):
     visibility = Column(Enum(Playlist_Visibility), default=Playlist_Visibility.public)
 
     user_id = Column(String, ForeignKey("users.id"), nullable=False)
-    date = Column(DateTime, default=datetime.utcnow)
+    date = Column(DateTime(timezone=True), default=datetime.utcnow)
     
     ## Relationships ##
     user = relationship("User", back_populates="playlists")

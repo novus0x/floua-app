@@ -7,13 +7,13 @@ from sqlalchemy import desc
 from sqlalchemy.orm import Session
 
 from db.database import get_db
-from db.model import User, User_Session, User_Session
+from db.model import User, User_Session, User_Channel
 
 from core.utils.generator import get_uuid
 from core.utils.db_management import update_db
 from core.utils.responses import custom_response
 from core.utils.encrypt import hash_password, check_password, generate_jwt
-from core.utils.validators import read_json_body, validate_required_fields, validate_email_domain, validate_user, get_token
+from core.utils.validators import read_json_body, validate_required_fields, validate_user, get_token
 
 ########## Variables ##########
 router = APIRouter()
@@ -23,11 +23,29 @@ router = APIRouter()
 async def validate(request: Request, db: Session = Depends(get_db)):
     ### Get Session ###
     user, error = await validate_user(request, db, True)
+
+    if error == "The session has expired":
+        return custom_response(status_code=200, message=error, data={"expired":True})
+
     if error:
         return custom_response(status_code=400, message=error)
 
     return custom_response(status_code=200, message="Account information", data={
         "user": user
+    })
+
+########## Get Channel Overview ##########
+@router.get("/channel-overview")
+async def validate(request: Request, db: Session = Depends(get_db)):
+    ### Get Session ###
+    user, error = await validate_user(request, db, True)
+    if error:
+        return custom_response(status_code=400, message=error)
+
+    channels = db.query(User_Channel).filter(User_Channel.user_id == user["id"]).all()
+
+    return custom_response(status_code=200, message="Account information", data={
+        "channels": channels
     })
 
 ########## Login Tracking ##########

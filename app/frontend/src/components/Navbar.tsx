@@ -6,7 +6,7 @@ import { usePathname } from "next/navigation";
 
 // Icons
 import { FaBell, FaBars } from "react-icons/fa";
-import { FiLogOut, FiSettings, FiPlus } from "react-icons/fi";
+import { FiLogOut, FiSettings, FiPlus, FiVideo } from "react-icons/fi";
 import { MdOutlineClose } from "react-icons/md";
 
 // DOM
@@ -22,7 +22,7 @@ import { use_UI } from "@/context/ui";
 import { useAuth } from "@/context/auth";
 
 /********************** Show **********************/
-const hide_navbar_paths = [routes.auth.signup, routes.auth.signin, routes.auth.logout];
+const hide_navbar_paths = [routes.auth.signup, routes.auth.signin, routes.auth.logout, routes.auth.verify_path];
 
 /********************** Component **********************/
 const Navbar = () => {
@@ -61,7 +61,7 @@ const Navbar = () => {
 
     // Check if valid path
     const pathname = usePathname();
-    if (hide_navbar_paths.includes(pathname)) return "";
+    if (hide_navbar_paths.some(path => pathname.startsWith(path))) return "";
 
     // DOM
     return (
@@ -121,9 +121,9 @@ const Navbar = () => {
                                 <div className="navbar-user-avatar-extra-divider"></div>
                                 <div className="navbar-user-avatar-extra-links">
                                     {user.has_channel ? (
-                                        <Link href="#" className="navbar-user-avatar-extra-link"><i className="fa-regular fa-video navbar-user-avatar-extra-link-icon"></i> Go to my channel</Link>
+                                        <Link href={routes.channel.home} className="navbar-user-avatar-extra-link"><FiVideo className="navbar-user-avatar-extra-link-icon" size={25} /> Go to my channel</Link>
                                     ) : (
-                                        <Link href="#" className="navbar-user-avatar-extra-link"><FiPlus className="navbar-user-avatar-extra-link-icon" size={25} /> Create Channel</Link>
+                                        <Link href={routes.channel.opts.create} className="navbar-user-avatar-extra-link"><FiPlus className="navbar-user-avatar-extra-link-icon" size={25} /> Create Channel</Link>
                                     )}
                                     <Link href={routes.account.home} className="navbar-user-avatar-extra-link"><FiSettings className="navbar-user-avatar-extra-link-icon" size={23} /> Account</Link>
                                     <Link href={routes.auth.logout} className="navbar-user-avatar-extra-link-logout"><FiLogOut className="navbar-user-avatar-extra-link-icon" size={24} /> Logout</Link>
