@@ -74,12 +74,10 @@ const Channel = ({ params }: { params: Promise<{ tag: string }> }) => {
             });
 
             // Request
-            const data = await get_data(`/api/channels/get${params}`, {}, notify);
+            const data = await get_data(`/api/channels/get${params}`, {}, notify, true);
 
             if (!data) {
-                setTimeout(() => {
-                    window.location.href = routes.public.home;
-                }, 500);
+                window.location.href = routes.public.home;
             }
 
             const channel = data.channel;
@@ -123,8 +121,8 @@ const Channel = ({ params }: { params: Promise<{ tag: string }> }) => {
                                     </div>
                                 </div>
                                 {creator ? (
-                                    <Link href="#" className="channel-view-info-content-action channel-view-info-content-action-creator">Edit Channel</Link>   
-                                ): (
+                                    <Link href={routes.studio.channels.manage_tag(tag_txt)} className="channel-view-info-content-action channel-view-info-content-action-creator">Floua Studio</Link>
+                                ) : (
                                     <Link href="#" className="channel-view-info-content-action">Follow</Link>
                                 )}
                             </div>

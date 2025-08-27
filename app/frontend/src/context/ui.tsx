@@ -6,7 +6,9 @@ import { createContext, useContext, useState, ReactNode } from "react";
 /********************** Structures **********************/
 type UI_context_type = {
     sidebarOpen: boolean;
+    studioSidebarOpen: boolean;
     toggleSidebar: () => void;
+    toggleStudioSidebar: () => void;
 };
 
 /********************** Variables **********************/
@@ -15,11 +17,13 @@ const UI_context = createContext<UI_context_type | undefined >(undefined);
 /********************** Function **********************/
 export const UI_provider = ({ children }: { children: ReactNode }) => {
     const [sidebarOpen, setSidebarOpen] = useState(true);
+    const [studioSidebarOpen, setStudioSidebarOpen] = useState(true);
 
     const toggleSidebar = () => setSidebarOpen(prev => !prev);
+    const toggleStudioSidebar = () => setStudioSidebarOpen(prev => !prev);
 
     return (
-        <UI_context.Provider value={{ sidebarOpen, toggleSidebar }}>
+        <UI_context.Provider value={{ sidebarOpen, studioSidebarOpen, toggleSidebar, toggleStudioSidebar }}>
             { children }
         </UI_context.Provider>
     );

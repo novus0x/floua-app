@@ -66,7 +66,7 @@ async def signup(request: Request, db: Session = Depends(get_db)):
         "role": "Viewer"
     })
 
-    await send_mail("noreply", "Registration on Floua - Dev", new_user.email, html_body)
+    # await send_mail("noreply", "Registration on Floua - Dev", new_user.email, html_body)
 
     return custom_response(status_code=201, message="User created")
 
@@ -153,16 +153,16 @@ async def validate(request: Request, db: Session = Depends(get_db)):
 
     verifications = db.query(User_Verification).filter(User_Verification.user_id == user["id"]).order_by(desc(User_Verification.date)).all()
 
-    # if len(verifications) > 0:
-    #     for verification in verifications:
-    #         current_date = datetime.datetime.now(timezone.utc)
-    #         verification_date = verification.date
+    if len(verifications) > 0:
+        for verification in verifications:
+            current_date = datetime.datetime.now(timezone.utc)
+            verification_date = verification.date
 
-    #         time_aprx = current_date - verification_date
-    #         minutes = abs(time_aprx.total_seconds()) / 60
+            time_aprx = current_date - verification_date
+            minutes = abs(time_aprx.total_seconds()) / 60
 
-    #         if minutes < 2:
-    #             return custom_response(status_code=400, message="Try again later. Hint: 2 minutes after your last try")
+            if minutes < 2:
+                return custom_response(status_code=400, message="Try again later. Hint: 2 minutes after your last try")
 
     new_verification = User_Verification(
         id = await get_uuid(User_Verification, db),
@@ -218,4 +218,4 @@ async def validate(request: Request, db: Session = Depends(get_db)):
     verification.used = True
     update_db(db)
 
-    return custom_response(status_code=200, message="Account information", data={})
+    return custom_response(status_code=200, message="Account verified", data={})

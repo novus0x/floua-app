@@ -15,6 +15,9 @@ import { useNotification } from "@/context/notifications";
 // API
 import { send_data } from "@/helpers/api";
 
+// Utils
+import { set_cookie } from "@/helpers/utils";
+
 /********************** Signin **********************/
 const Signin = () => {
   // Notifications
@@ -53,6 +56,7 @@ const Signin = () => {
 
     if (data) {
       setTimeout(() => {
+        set_cookie("authenticated", "yes");
         window.location.href = routes.public.home;
       }, 1000);
     } else setLoading(false);

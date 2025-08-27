@@ -10,6 +10,8 @@ import "@/../public/css/animations.css"
 // Components
 import Navbar from "@/components/Navbar";
 import Sidebar from "@/components/Sidebar";
+import Studio_Navbar from "@/components/Studio-Navbar";
+import Studio_Sidebar from "@/components/Studio-Sidebar";
 
 // UI
 import { UI_provider } from "@/context/ui";
@@ -43,6 +45,8 @@ const RootLayout = ({ children }: { children: ReactNode }) => {
             <Notification_provider>
               <Navbar />
               <Sidebar />
+              <Studio_Navbar />
+              <Studio_Sidebar />
               {children}
             </Notification_provider>
           </UI_provider>

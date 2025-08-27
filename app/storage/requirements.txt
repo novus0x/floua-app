@@ -1,7 +1,12 @@
-uuid
-requests
-websockets
-sqlalchemy
+httpx
+asyncio
+uvicorn
+fastapi
+tinytag
+aioboto3
+pymediainfo
 python-dotenv
-psycopg2-binary
+ffmpeg-python
+python-multipart
+uvicorn[standard]
 pydantic-settings

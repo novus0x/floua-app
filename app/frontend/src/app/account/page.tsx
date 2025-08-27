@@ -23,6 +23,7 @@ import { useAuth } from "@/context/auth";
 
 // API
 import { get_data, send_data } from "@/helpers/api";
+import { settings } from "@/helpers/settings";
 
 /********************** Account **********************/
 const Account = () => {
@@ -93,7 +94,7 @@ const Account = () => {
 
       // Format Date --> String
       last_used = new Date(session.last_used_at).toLocaleDateString("en-US", {
-        timeZone: "America/Lima",
+        timeZone: settings.timeZone,
         minute: "2-digit",
         hour: "2-digit",
         day: "2-digit",
@@ -103,7 +104,7 @@ const Account = () => {
 
       if (session.expires_at) {
         expire_at = new Date(session.expires_at).toLocaleDateString("en-US", {
-          timeZone: "America/Lima",
+          timeZone: settings.timeZone,
           minute: "2-digit",
           hour: "2-digit",
           day: "2-digit",
@@ -113,7 +114,7 @@ const Account = () => {
       } else expire_at = "No expire";
 
       created = new Date(session.date).toLocaleDateString("en-US", {
-        timeZone: "America/Lima",
+        timeZone: settings.timeZone,
         minute: "2-digit",
         hour: "2-digit",
         day: "2-digit",
@@ -220,26 +221,26 @@ const Account = () => {
             <PiTreasureChestFill className="account-option-title-icon color-main" size={30} /> Floua Points
           </span>
           <button className="account-option">
-            Get
+            Buy
           </button>
           <button className="account-option">
             Transactions
           </button>
-          <button className="account-option">
+          {/* <button className="account-option">
             Withdraw
-          </button>
+          </button> */}
           <span className="account-option-title">
             <FaLink className="account-option-title-icon color-main" size={25} /> Connections
           </span>
-          <button className="account-option">
+          {/* <button className="account-option">
             <SiKick className="color-lime-green account-option-icon" size={20} /> Kick
-          </button>
+          </button> */}
           <button className="account-option">
             <PiTidalLogoFill className="color-white account-option-icon" size={25} /> Tidal
           </button>
-          <button className="account-option">
+          {/* <button className="account-option">
             Others
-          </button>
+          </button> */}
         </div>
 
         <div className="account-data">

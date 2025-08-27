@@ -11,7 +11,7 @@ from db.models.User import User, User_Session, External_Account, User_Channel, U
 from db.models.Point import Point_Transaction
 
 from db.models.Playlist import Playlist, Video_Playlist
-from db.models.Video import Video
+from db.models.Video import Video, Video_Source_type, Video_Visibility, Video_Status
 
 ##### Category #####
 class Category(Base):

@@ -1,121 +1,43 @@
 ########## Modules ##########
-import os, asyncio, json, websockets, base64,  shutil
+import asyncio
 
 from pathlib import Path
 
+from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
+
 from core.config import settings
-from db.database import Base, engine, get_db
+from core.utils.converter import video_converter
 
-from db.model import Video
-
-from core.utils.generator import get_uuid
-from core.utils.net import get_local_ip
-from core.utils.converter import video_converter, queue
-
-########## Create tables ##########
-Base.metadata.create_all(bind=engine)
+from routes import videos
 
 ########## Variables ##########
-connected_nodes = {}
-base_url = "ws://" + settings.CDN_ORIGIN
-ORIGIN = "192.168.1.36"
 SAVE_DIR = Path("videos").absolute()
 
-### Check folder ###
-SAVE_DIR.mkdir(parents=True, exist_ok=True)
+########## Init app ##########
+app = FastAPI(
+    title = "Floua Node",
+    description = "Node 1",
+    version = "1.0.0",
+)
 
-########## Create server ##########
-async def handle_upload(websocket):
-    ### Access DB ###
-    db_gen = get_db()
-    try:
-        db = next(db_gen)  
-    except:
-        db_gen.close()
+########## Events ##########
+@app.on_event("startup")
+def startup_event():
+    SAVE_DIR.mkdir(parents=True, exist_ok=True)
 
-    file = None
-    file_dir = None
+    # Task converter
+    app.state.converter_task = asyncio.create_task(video_converter())
+    app.state.SAVE_DIR = SAVE_DIR
 
-    try:
-        async for message in websocket:
-            if isinstance(message, str):
+########## CORS ##########
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins = ["192.168.1.80:3002"],
+    allow_credentials = False,
+    allow_methods = ["*"],
+    allow_headers = ["*"],
+)
 
-                data = json.loads(message)
-
-                if data["type"] == "upload_init": ### Start downloading the file
-                    filename = data["video_info"]["filename"]
-                    file_uuid = data["video_info"]["video_id"]
-                    ext = Path(filename).suffix
-                    
-                    file_dir = SAVE_DIR / file_uuid
-                    file_dir.mkdir(parents=True, exist_ok=True) 
-
-                    file_path = file_dir / f"{file_uuid}{ext}"
-                    file = open(file_path, "wb")
-                elif data["type"] == "upload_end": ### Downloaded file
-                    break
-            
-            elif isinstance(message, bytes) and file:
-                file.write(message)
-
-        if file: ### Success
-            new_video = Video(id = file_uuid)
-            db.add(new_video)
-            db.commit()
-            db.flush(new_video)
-            file.close()
-
-            ### Start video converter ###
-            await queue.put({
-                "video_id": new_video.id,
-                "video_ext": ext,
-                "dir": file_dir,
-                "video_dir": file_path
-            })
-
-    except Exception as e: ### Error
-        print(e)
-        if file:
-            file.close()
-
-        if file_dir and file_dir.exists():
-            shutil.rmtree(file_dir)
-
-########## Connect to server ##########
-async def handle_connection():
-    async with websockets.connect(base_url + "/ws/connect") as websocket:
-        ip = get_local_ip()
-
-        if ip == "127.0.0.1":
-            return "DDD"
-
-        register_msg = {
-            "type": "register",
-            "node_info": {
-                "ip": ip,
-                "port": settings.PORT
-            }
-        }
-
-        await websocket.send(json.dumps(register_msg))
-
-        while True:
-            msg = await websocket.recv()
-            print(msg)
-    
-########## Main function ##########
-async def main():
-    ### Client ###
-    client = asyncio.create_task(handle_connection())
-
-    ### Server ###
-    server = await websockets.serve(handle_upload, "0.0.0.0", settings.PORT, max_size= 1024 * 1024 * 2)
-
-    ### Converter ###
-    converter = asyncio.create_task(video_converter())
-
-    ### Start ###
-    await asyncio.gather(client, converter)
-
-########## Init ##########
-asyncio.run(main())
+########## API Routes ##########
+app.include_router(videos.router, prefix="/videos", tags=["Videos"])

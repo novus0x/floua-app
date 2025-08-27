@@ -41,7 +41,7 @@ const Account = () => {
 
   // Generate @
   const generate_tag = (name: string) => {
-    let cleaned = name.toLowerCase().replace(/[^a-z0-9_-]/g, "");
+    let cleaned = name.toLowerCase().replace(/[^a-z0-9._-]/g, "");
     return `${cleaned}`;
   }
 
@@ -56,7 +56,7 @@ const Account = () => {
 
   // Update values
   const handle_change = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    if (e.target.tagName === "INPUT") update_tag(e.target.value);
+    if (e.target.tagName === "INPUT" && e.target.id === "tag") update_tag(e.target.value);
     setFormData({ ...formData, [e.target.name]: e.target.value })
   }
 
@@ -70,9 +70,9 @@ const Account = () => {
     // Request
     const data = await send_data("/api/channels/create", {}, formData, notify);
 
-    if (data) {
+    if (1) {
       setTimeout(() => {
-        router.push(routes.public.home);
+        router.push(`${routes.public.home}@${channelTag}`);
       }, 1000);
     } else setLoading(false);
     setLoading(false);
@@ -86,6 +86,10 @@ const Account = () => {
           <span className="create-channel-text">Channel name</span>
           <div className="create-channel-form-input-container">
             <input type="text" name="name" className="create-channel-input" placeholder="Example 123" value={formData.name} onChange={handle_change} required />
+          </div>
+          <span className="create-channel-text">Channel tag</span>
+          <div className="create-channel-form-input-container">
+            <input type="text" name="tag" id="tag" className="create-channel-input" placeholder="example_123" value={formData.tag} onChange={handle_change} required />
             <span className="create-channel-looks-like">It will look like this: /@{channelTag}</span>
           </div>
           <span className="create-channel-text">Channel description</span>

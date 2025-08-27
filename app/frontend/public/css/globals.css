@@ -62,9 +62,10 @@
 }
 
 body {
+    overflow-x: hidden;
+    color: var(--color-white);
     font-family: var(--font-firacode);
     background-color: var(--color-black-blue);
-    overflow-x: hidden;
 }
 
 .hidden {
@@ -172,7 +173,6 @@ body {
     border-color: var(--color-gray-bluish);
 }
 
-
 /********************** Notifications **********************/
 .notification-container {
     top: 15px;
@@ -244,6 +244,7 @@ body {
 .logo-text {
     color: var(--color-white);
     font-size: var(--fs-regular);
+    font-weight: var(--fw-bold);
 }
 
 .logo-text-extra {
@@ -501,6 +502,7 @@ body {
     justify-content: space-between;
 
     background-color: var(--color-dark-blue-1);
+
     transition: left ease-in-out 150ms;
 }
 
@@ -725,6 +727,406 @@ body {
     gap: 10px;
     display: flex;
     align-items: center;
+}
+
+/********************** Floua Video Player **********************/
+.floua-player {
+    position: relative;
+
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    background-color: var(--color-black);
+
+    overflow: hidden;
+    border-radius: 15px;
+}
+
+.floua-player video {
+    width: 100%;
+    height: 100%;
+
+    display: block;
+    object-fit: contain;
+}
+
+.floua-player-overlay {
+    width: 100%;
+    height: 100%;
+
+    top: 0;
+    left: 0;
+    position: absolute;
+}
+
+.floua-player-controls {
+    width: 100%;
+    padding: 15px 10px 5px 10px;
+
+    left: 0;
+    bottom: 0;
+    position: absolute;
+
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+
+    background-color: var(--color-background-player);
+}
+
+.floua-player-progress-container {
+    -moz-appearance: none;
+    -webkit-appearance: none;
+    border-radius: 0;
+    appearance: none;
+
+    cursor: pointer;
+
+    height: 5px;
+    width: 100%;
+
+    top: 0;
+    left: 0;
+    z-index: 999;
+    position: absolute;
+    accent-color: var(--color-main);
+
+    background: linear-gradient(to right, var(--color-main) 50%, var(--color-black-blue) 50%);
+    transition: height 150ms ease-in-out;
+}
+
+.floua-player-progress-volume-container {
+    cursor: pointer;
+
+    gap: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.floua-player-progress-volume {
+    -moz-appearance: none;
+    -webkit-appearance: none;
+    border-radius: 0;
+    appearance: none;
+
+    cursor: pointer;
+
+    height: 5px;
+    width: 80px;
+
+    accent-color: var(--color-main);
+    background-color: var(--color-main-hover);
+}
+
+.floua-player-progress-container::-webkit-slider-thumb,
+.floua-player-progress-container::-moz-range-thumb {
+    transition: width 150ms ease-in-out, height 150ms ease-in-out;
+}
+
+.floua-player-progress-container::-webkit-slider-thumb,
+.floua-player-progress-container::-moz-range-thumb {
+    background: var(--color-main);
+}
+
+.floua-player-progress-container:active::-moz-range-thumb {
+    width: 18px;
+    height: 18px;
+
+    margin-top: 0px;
+    border-radius: 50%;
+    appearance: none;
+
+    border: none;
+    cursor: pointer;
+    background: var(--color-main-hover);
+}
+
+.floua-player-progress-container:active::-webkit-slider-thumb {
+    width: 18px;
+    height: 18px;
+
+    margin-top: 0px;
+    border-radius: 50%;
+    -webkit-appearance: none;
+
+    border: none;
+    cursor: pointer;
+    background: var(--color-main-hover);
+
+}
+
+.floua-player-progress-container:active::-moz-range-thumb {
+    width: 20px;
+    height: 20px;
+    margin-top: -5px;
+    border-radius: 50%;
+    appearance: none;
+
+    border: none;
+    cursor: pointer;
+    background: var(--color-main);
+}
+
+
+.floua-player-progress-container:hover {
+    height: 8px;
+}
+
+.floua-player-progress-container:active {
+    height: 12px;
+}
+
+.floua-player-controls-left,
+.floua-player-controls-right {
+    gap: 15px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.floua-player-controls-icon {
+    cursor: pointer;
+}
+
+/********************** Floua Video Carousel **********************/
+.floua-video-carousel-container {
+    padding: 10px 15px;
+
+    gap: 25px;
+    display: flex;
+    flex-direction: column;
+}
+
+.floua-video-carousel-header {
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.floua-video-carousel-header-title {
+    gap: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.floua-video-carousel-header-title-text {
+    font-size: var(--fs-xbig);
+}
+
+.floua-video-carousel-header-actions {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.floua-video-carousel-header-actions-text {
+    font-size: var(--fs-small);
+}
+
+.floua-video-carousel-body {
+    gap: 45px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.floua-video-carousel-item-container {
+    width: 340px;
+
+    gap: 15px;
+    display: flex;
+    flex-direction: column;
+}
+
+.floua-video-carousel-item-video-container {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+
+    border-radius: 15px;
+    background-color: var(--color-gray-light);
+}
+
+.floua-video-carousel-item-info-container {
+    gap: 10px;
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+}
+
+.floua-video-carousel-item-info-channel-avatar {
+    width: 65px;
+}
+
+.floua-video-carousel-item-info {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.floua-video-carousel-item-info-title {
+    max-width: 95%;
+    white-space: nowrap;
+    overflow: hidden;
+    font-size: var(--fs-regular);
+}
+
+.floua-video-carousel-item-info-extra {
+    padding-right: 10px;
+
+    gap: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+/********************** Watch Video **********************/
+.floua-watch-container {
+    gap: 25px;
+    display: flex;
+    flex-direction: row;
+}
+
+.floua-watch-left {
+    width: 75%;
+}
+
+.floua-watch-content {
+    margin-top: 15px;
+    padding: 5px 10px;
+}
+
+.floua-watch-title-container {
+    gap: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.floua-watch-title {
+    font-size: var(--fs-big);
+}
+
+.floua-watch-actions-likes {
+    gap: 15px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.floua-watch-actions-likes-btn {
+    cursor: pointer;
+    color: var(--color-gray-bluish);
+    
+    gap: 10px;
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    justify-content: center;
+
+}
+
+.floua-watch-content-extra-container {
+    width: 100%;
+    margin-top: 15px;
+
+    gap: 35px;
+    display: flex;
+    flex-direction: row;
+}
+
+.floua-watch-content-extra-container-left,
+.floua-watch-content-extra-container-right {
+    width: 50%;
+}
+
+.floua-watch-content-description {
+    color: var(--color-gray-bluish);
+}
+
+.floua-watch-content-subtitle-container {
+    margin: 20px 0;
+
+    gap: 15px;
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+}
+
+.floua-watch-content-subtitle-text {
+    font-size: var(--fs-medium);
+}
+
+.floua-watch-content-extra-container-actions {
+    gap: 15px;
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.floua-watch-content-channel {
+    gap: 15px;
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+}
+
+.floua-watch-content-channel-avatar-container {
+    width: 65px;
+    overflow: hidden;
+    border-radius: 100%
+}
+
+.floua-watch-content-channel-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.floua-watch-content-channel-name {
+    font-size: var(--fs-small);
+}
+
+.floua-watch-content-channel-followers {
+    color: var(--color-gray-bluish);
+    font-size: var(--fs-xxsmall);
+}
+
+.floua-watch-content-extra-actions-btns-container {
+    gap: 15px;
+    display: flex;
+}
+
+.floua-watch-action-btn {
+    border: none;
+    cursor: pointer;
+    padding: 10px 20px;
+
+    border-radius: 15px;
+
+}
+
+.floua-watch-action-btn-follow {
+    color: var(--color-white);
+    background: linear-gradient(25deg, var(--color-dark-blue-4) 25%, var(--color-dark-blue-2) 100%);
+    transition: background ease-in-out 250ms; 
+}
+
+.floua-watch-action-btn-follow:hover {
+    background: linear-gradient(25deg, var(--color-dark-blue-4) 15%, var(--color-dark-blue-1) 100%);
+}
+
+.floua-watch-action-btn-donate {
+    color: var(--color-white);
+    background-color: var(--color-main);
+    transition: background-color ease-in-out 350ms;
+}
+
+.floua-watch-action-btn-donate:hover {
+    background-color: var(--color-main-hover);
 }
 
 /********************** Account Settings **********************/
@@ -1120,6 +1522,469 @@ body {
     color: var(--color-gray-bluish);
 }
 
+/********************** Floua Studio - Navbar **********************/
+.studio-sidebar-btn {
+    cursor: pointer;
+
+    right: 7px;
+    bottom: 7px;
+    position: fixed;
+    z-index: 999999;
+
+    padding: 10px;
+    border-radius: 100%;
+    background-color: var(--color-main);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/********************** Floua Studio - Sidebar **********************/
+.studio-sidebar {
+    width: 280px;
+    height: 100%;
+
+    top: 0;
+    left: 0;
+    position: fixed;
+    z-index: 999999;
+
+
+    color: var(--color-white);
+    background-color: var(--color-dark-blue-1);
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    overflow-y: auto;
+    transition: left ease-in-out 150ms;
+}
+
+.studio-sidebar-background {
+    width: 100%;
+    height: 100%;
+
+    top: 0;
+    left: 0;
+    position: fixed;
+    z-index: 999999;
+
+    opacity: 0.3;
+    background-color: var(--color-black);
+}
+
+.studio-icon-logo-container {
+    margin: 25px 0;
+}
+
+.studio-logo-img {
+    width: 45px;
+}
+
+.studio-logo-text {
+    font-size: var(--fs-small);
+
+    font-weight: var(--fw-bold);
+}
+
+.studio-logo-text-extra {
+    padding: 2px 5px;
+    font-size: var(--fs-xxxsmall);
+
+    border-radius: 5px;
+    background-color: var(--color-main);
+}
+
+.studio-sidebar-links-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.studio-sidebar-title-container {
+    gap: 15px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
+    padding: 15px 40px;
+}
+
+.studio-sidebar-title {
+    margin-top: 4px;
+    font-size: var(--fs-small);
+    font-weight: var(--fw-bold);
+}
+
+.studio-sidebar-link-container {
+    padding: 10px 90px;
+
+    font-size: var(--fs-xsmall);
+
+    transition: color ease-in-out 250ms;
+}
+
+.studio-sidebar-link-container:hover,
+.studio-sidebar-link-container:active {
+    color: var(--color-main);
+}
+
+.studio-sidebar-go-back {
+    transition: color ease-in-out 250ms;
+}
+
+.studio-sidebar-go-back:hover {
+    color: var(--color-red);
+}
+
+/********************** Floua Studio - Content **********************/
+.studio-content {
+    color: var(--color-white);
+    padding: 35px 40px;
+}
+
+.studio-content-breadcrumps-extra-container {
+    margin-bottom: 25px;
+
+    gap: 15px;
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.studio-content-breadcrumps {
+    font-weight: var(--fw-bold);
+
+    gap: 10px;
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+}
+
+.studio-content-breadcrumps-active {
+    color: var(--color-main);
+}
+
+.studio-content-title-container {
+    margin-bottom: 25px;
+}
+
+.studio-content-title {
+    font-size: var(--fs-xbig);
+    font-weight: var(--fw-bold);
+
+    text-transform: capitalize;
+}
+
+.studio-content-breadcrumps-button {
+    gap: 10px;
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    justify-content: center;
+
+    border-radius: 10px;
+    padding: 10px 15px;
+    background-color: var(--color-main);
+
+    font-size: var(--fs-xsmall);
+    font-weight: var(--fw-bold);
+
+    transition: background-color 250ms ease-in-out;
+}
+
+.studio-content-breadcrumps-button:hover,
+.studio-content-breadcrumps-button:active {
+    background-color: var(--color-main-hover);
+}
+
+/********************** Floua Studio - Generals **********************/
+.studio-content-table-container {
+    padding: 15px 45px;
+
+    border-radius: 10px;
+    background-color: var(--color-dark-blue-1);
+
+    overflow-x: auto;
+}
+
+.studio-content-table-header {
+    margin-bottom: 15px;
+
+    gap: 35px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.studio-content-table-header-title {
+    color: var(--color-main);
+
+    font-size: var(--fs-big);
+    font-weight: var(--fw-bold);
+}
+
+.studio-content-table-header-extra-search {
+    padding: 5px 10px;
+
+    border-radius: 5px;
+    border: 2px solid var(--color-main);
+}
+
+.studio-content-table {
+    width: 100%;
+    border-spacing: 10px;
+    border-collapse: separate;
+}
+
+.studio-content-table-head {
+    width: 100%;
+
+    text-align: left;
+}
+
+.studio-content-table-head-element {
+    font-size: var(--fs-regular);
+}
+
+.studio-content-table-body {
+    width: 100%;
+}
+
+.studio-content-table-body-element {
+    width: 100%;
+    text-align: left;
+}
+
+.studio-content-table-body-element-text {
+    font-size: var(--fs-small);
+    padding: 20px 0;
+}
+
+.studio-content-table-body-element-text-link {
+    color: var(--color-main);
+    transition: color 250ms ease-in-out;
+}
+
+.studio-content-table-body-element-text-link:hover,
+.studio-content-table-body-element-text-link:active {
+    color: var(--color-main-hover);
+}
+
+.studio-content-summary {
+    width: 100%;
+
+    gap: 15px;
+    display: flex;
+    flex-direction: row;
+
+    margin-bottom: 25px;
+}
+
+.studio-content-summary-block {
+    width: 100%;
+    padding: 15px 25px;
+
+    border-radius: 10px;
+    background-color: var(--color-dark-blue-1);
+}
+
+.studio-content-summary-block-info {
+    gap: 20px;
+    display: flex;
+}
+
+.studio-content-summary-block-info-icon-container {
+    width: 50px;
+    height: 50px;
+
+    position: relative;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: var(--fs-big);
+}
+
+.studio-content-summary-block-vals-container {
+    font-size: var(--fs-regular);
+
+    display: flex;
+    flex-direction: column;
+}
+
+.studio-content-summary-block-info-icon {
+    position: absolute;
+}
+
+.studio-content-summary-block-info-icon-background {
+    width: 100%;
+    height: 100%;
+    opacity: 1;
+
+    position: absolute;
+    border-radius: 5px;
+    background-color: var(--color-main);
+}
+
+.studio-content-summary-block-text {
+    font-size: var(--fs-xxsmall);
+    color: var(--color-gray-bluish);
+}
+
+/********************** Floua Studio - Channel Manage **********************/
+.studio-content-channel-canva {
+    margin-bottom: 25px;
+
+    gap: 15px;
+    display: flex;
+    flex-direction: row;
+}
+
+.studio-content-channel-canva-left {
+    padding: 15px 25px;
+
+    width: 60%;
+    border-radius: 10px;
+    background-color: var(--color-dark-blue-1);
+}
+
+.studio-content-channel-canva-right {
+    max-height: 700px;
+    padding: 15px 25px;
+
+    width: 40%;
+    border-radius: 10px;
+    background-color: var(--color-dark-blue-1);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/********************** Floua Studio - Channel Upload**********************/
+.studio-content-upload {
+    width: 100%;
+    min-height: 400px;
+
+    gap: 15px;
+    display: flex;
+    flex-direction: row;
+}
+
+.studio-content-upload-left {
+    width: 55%;
+    padding: 15px 25px;
+    background-color: var(--color-dark-blue-1);
+}
+
+.studio-content-upload-right {
+    width: 45%;
+    padding: 15px 25px;
+    background-color: var(--color-dark-blue-1);
+}
+
+.studio-content-upload-input-container {
+    display: flex;
+    flex-direction: column;
+
+    margin-bottom: 20px;
+}
+
+.studio-content-upload-input {
+    margin-top: 10px;
+
+    padding: 10px 15px;
+    border-radius: 5px;
+    border: 1px solid var(--color-main);
+}
+
+.studio-content-upload-select {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+
+    cursor: pointer;
+}
+
+.studio-content-upload-input-option:hover {
+    background-color: var(--color-dark-blue-3);
+}
+
+.studio-content-upload-input-option {
+    padding: 15px 10px;
+    border: none;
+
+    background-color: var(--color-dark-blue-3);
+}
+
+.studio-content-upload-input-option:hover {
+    background-color: var(--color-dark-blue-2);
+}
+
+.studio-content-upload-input-option:checked {
+    background-color: var(--color-black-blue);
+}
+
+.studio-content-upload-btn {
+    cursor: pointer;
+    font-weight: var(--fw-bold);
+    font-size: var(--fs-regular);
+
+    text-align: center;
+    padding: 10px 15px;
+
+    border-radius: 10px;
+    background-color: var(--color-main);
+
+    transition: background-color 250ms ease-in-out;
+}
+
+.studio-content-upload-btn-disabled {
+    cursor: not-allowed;
+    background-color: var(--color-gray-bluish);
+}
+
+.studio-content-upload-video-container {
+    height: 75%;
+    cursor: pointer;
+
+    padding: 45px 35px;
+    border-radius: 10px;
+    border: 2px dashed var(--color-main);
+
+    transition: height 500ms ease-in-out, background-color 750ms ease-in-out;
+}
+
+.studio-content-upload-video-container-change {
+    height: 55%;
+
+    border: none;
+    background-color: var(--color-main);
+}
+
+.studio-content-upload-video-info {
+    height: 100%;
+
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.studio-content-upload-video-info-text {
+    margin-top: 15px;
+    font-size: var(--fs-regular);
+}
+
+.studio-content-upload-video-extra-container {
+    margin-top: 15px;
+}
+
 /********************** Media Queries **********************/
 @media (max-width: 2200px) {}
 
@@ -1180,17 +2045,70 @@ body {
     .content {
         margin-left: 0;
     }
-}
 
-@media (max-width: 992px) {
-
-    /*** Scroll ***/
-    ::-webkit-scrollbar {
-        height: 0;
+    /*** Studio Sidebar ***/
+    .studio-sidebar {
+        left: -280px;
+        position: fixed;
     }
+
+    .studio-content-shide {
+        left: 0px;
+    }
+
+    /*** Studio Content ***/
+    .studio-content {
+        padding: 25px 25px;
+    }
+
+    /*** Studio General ***/
+    .studio-content-summary {
+        flex-direction: column;
+    }
+
+    /*** Floua Studio - Channel Manage ***/
+    .studio-content-channel-canva {
+        flex-direction: column;
+    }
+
+    .studio-content-channel-canva-left {
+        width: 100%;
+    }
+
+    .studio-content-channel-canva-right {
+        width: 100%;
+    }
+
+    .studio-content-channel-canva-left,
+    .studio-content-channel-canva-right {
+        min-height: 400px;
+    }
+
+    /*** Floua Studio - Upload ***/
+    .studio-content-upload {
+        flex-direction: column;
+    }
+
+    .studio-content-upload-left {
+        width: 100%;
+    }
+
+    .studio-content-upload-right {
+        width: 100%;
+    }
+
 }
 
-@media (max-width: 768px) {}
+@media (max-width: 768px) {
+
+    /*** Studio General ***/
+    .studio-content-breadcrumps-extra-container {
+        align-items: start;
+        flex-direction: column;
+    }
+
+
+}
 
 @media (max-width: 600px) {}
 
@@ -1210,7 +2128,6 @@ body {
     .account-data-general-basic-avatar {
         width: 100%;
     }
-
 }
 
 @media (min-width: 1000px) {
@@ -1318,5 +2235,22 @@ body {
 
     .content-shide {
         margin-left: 0;
+    }
+
+    /*** Studio Content ***/
+    .studio-content {
+        margin-left: 280px;
+    }
+
+    .studio-content-shide {
+        margin-left: 0;
+    }
+
+    .studio-sidebar-btn {
+        display: none;
+    }
+
+    .studio-sidebar-background {
+        display: none;
     }
 }

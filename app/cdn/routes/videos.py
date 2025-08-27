@@ -1,29 +1,58 @@
 ########## Modules ##########
-import io, json, websockets, datetime
+import datetime
 
 from pathlib import Path
 
-from fastapi import APIRouter, Depends, Request, WebSocket, UploadFile, File
+from fastapi import APIRouter, Depends, Request, UploadFile, File
 
 from sqlalchemy.orm import Session
-
 
 from db.database import get_db
 from db.model import Video, Upload_Token
 
 from core.config import settings
+
 from core.utils.responses import custom_response
+from core.utils.db_management import add_db, update_db
 from core.utils.encrypt import hash_token, check_token
 from core.utils.generator import get_uuid, build_signed_url
+from core.utils.http_requests import post_data, post_data_api
 from core.utils.validators import read_json_body, validate_required_fields
-from core.utils.ws import broadcast_all_nodes
 
-from routes.nodes import connected_nodes
+from services.media.main import upload_original_video, get_presigned_url
 
 ########## Variables ##########
 router = APIRouter()
-WS_URL = "ws://192.168.1.36:3003"
-allowed_exts = [".mp4", ".mov", ".mkv"]
+WS_URL = "ws://192.168.1.80:3003"
+allowed_exts = [".mp4"] # , ".mov", ".mkv"
+
+########## Generate Signed Video URL ##########
+@router.post("/get-video")
+async def get_video(request: Request):
+    ### Get Body ###
+    video, error = await read_json_body(request)
+    if error: 
+        return custom_response(status_code=400, message=error)
+
+    ### Validations ###
+    required_fields, error = validate_required_fields(video, ["video_id", "video_status"])
+
+    if error:
+        return custom_response(status_code=400, message="Fields required", details=required_fields)
+
+    file_name = "main.mp4"
+
+    if video.video_status == "ready": 
+        file_name = "master.m3u8"
+    
+    location = f"videos/{video.video_id}/{file_name}"
+    
+    url = await get_presigned_url("/get-file-url", { "location": location })
+
+    return custom_response(status_code=200, message="Signed Video URL", data={
+        "video_url": url,
+    })
+
 
 ########## Generate upload token ##########
 @router.post("/generate_upload_token")
@@ -41,9 +70,6 @@ async def generate_upload_token(request: Request, db: Session = Depends(get_db))
     if db.query(Video).filter(Video.id == video.video_id).first():
         return custom_response(status_code=400, message="The video is already in DB")
 
-    # await broadcast_all_nodes("Hola desde generating", connected_nodes)
-    # print(connected_nodes)
-
     upload_token_id = await get_uuid(Upload_Token, db)
     hashed_token = hash_token(str(upload_token_id))
 
@@ -53,12 +79,10 @@ async def generate_upload_token(request: Request, db: Session = Depends(get_db))
         token = hashed_token,
         expires_at = datetime.datetime.utcnow() + datetime.timedelta(minutes=settings.UPLOAD_EXPIRE_MINUTES),
     )
-    db.add(new_upload_token)
-    db.commit()
-    db.flush(new_upload_token)
+    add_db(db, new_upload_token)
 
     ### Send data ###
-    return custom_response(status_code=201, message="Upload token generated", data={
+    return custom_response(status_code=200, message="Upload token generated", data={
         "upload_token": new_upload_token.token
     })
 
@@ -68,20 +92,22 @@ async def upload_video(request: Request, file: UploadFile = File(...), db: Sessi
     ### Get data ###
     form = await request.form()
 
-    video_id = form.get("video_id")
+    # video_id = form.get("video_id")
     upload_token = form.get("upload_token")
     ext = Path(file.filename).suffix.lower()
 
     ### Validations ###
-    if not video_id or not upload_token:
+    if not upload_token:
         return custom_response(status_code=400, message="video_id and upload_token are required")
-
-    if db.query(Video).filter(Video.id == video_id).first():
-        return custom_response(status_code=400, message="video_id already in use")
 
     upload_token_data = db.query(Upload_Token).filter(Upload_Token.token == upload_token).first()
     if not upload_token_data:
         return custom_response(status_code=400, message="Invalid upload_token")
+    
+    video_id = upload_token_data.video_id
+
+    if db.query(Video).filter(Video.id == video_id).first():
+        return custom_response(status_code=400, message="video_id already in use")
 
     if upload_token_data.used == True:
         return custom_response(status_code=400, message="Token already used")
@@ -101,47 +127,16 @@ async def upload_video(request: Request, file: UploadFile = File(...), db: Sessi
         return custom_response(status_code=400, message="Invalid extention")
 
     ### Upload video ###
-    try:
-        async with websockets.connect(WS_URL) as ws:
-            video_information = {
-                "type": "upload_init",
-                "video_info": {
-                    "video_id": video_id,
-                    "filename": file.filename,
-                    "content_type": file.content_type or "video/mp4"
-                }
-            }
+    upload_token_data.used = True ### Token used
+    update_db(db)
 
-            try:
-                json_msg = json.dumps(video_information)
-
-                await ws.send(json_msg)
-
-                file_data = io.BytesIO(await file.read())
-                while True:
-                    chunk = file_data.read(1024 * 1024)
-
-                    if not chunk:
-                        break
-
-                    await ws.send(chunk)
-                
-                json_msg = json.dumps({
-                    "type": "upload_end"
-                })
-                await ws.send(json_msg)
-
-                upload_token_data.used = True ### Token used
-
-                new_video = Video(id = video_id)
-                db.add(new_video)
-                db.commit()
-                db.flush(new_video)
-                return custom_response(status_code=201, message="Upload end")
-
-            except Exception as e:
-                print(e)
-                return custom_response(status_code=400, message="Error while uploading file")
-
-    except Exception as e: ### Error - Node not available
-        return custom_response(status_code=400, message="Node not available")
+    await upload_original_video(video_id, file)
+    await post_data("/videos/upload", {
+        "video_id": video_id,
+    })
+    await post_data_api("/api/studio/video-upload-status", {
+        "video_id": video_id,
+        "video_status": "uploaded"
+    })
+    
+    return custom_response(status_code=200, message="Video uploaded!")

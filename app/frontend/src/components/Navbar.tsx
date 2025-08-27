@@ -22,7 +22,10 @@ import { use_UI } from "@/context/ui";
 import { useAuth } from "@/context/auth";
 
 /********************** Show **********************/
-const hide_navbar_paths = [routes.auth.signup, routes.auth.signin, routes.auth.logout, routes.auth.verify_path];
+const hide_navbar_paths = [
+    routes.auth.signup, routes.auth.signin, routes.auth.logout, routes.auth.verify_path,
+    routes.studio.home,
+];
 
 /********************** Component **********************/
 const Navbar = () => {
@@ -121,7 +124,7 @@ const Navbar = () => {
                                 <div className="navbar-user-avatar-extra-divider"></div>
                                 <div className="navbar-user-avatar-extra-links">
                                     {user.has_channel ? (
-                                        <Link href={routes.channel.home} className="navbar-user-avatar-extra-link"><FiVideo className="navbar-user-avatar-extra-link-icon" size={25} /> Go to my channel</Link>
+                                        <Link href={routes.studio.home} className="navbar-user-avatar-extra-link"><FiVideo className="navbar-user-avatar-extra-link-icon" size={25} /> Floua Studio</Link>
                                     ) : (
                                         <Link href={routes.channel.opts.create} className="navbar-user-avatar-extra-link"><FiPlus className="navbar-user-avatar-extra-link-icon" size={25} /> Create Channel</Link>
                                     )}

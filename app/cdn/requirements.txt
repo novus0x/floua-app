@@ -1,4 +1,6 @@
 uuid
+httpx
+boto3
 bcrypt
 fastapi
 uvicorn

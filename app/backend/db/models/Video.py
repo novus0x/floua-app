@@ -11,7 +11,7 @@ from sqlalchemy import Column, String, DateTime, ForeignKey, Enum, Integer, Text
 class Video_Status(str, enum.Enum):
     error = "error"
     uploading = "uploading"
-    upload = "upload"
+    uploaded = "uploaded"
     processing = "processing"
     ready = "ready"
 
@@ -42,7 +42,7 @@ class Video(Base):
 
     id = Column(String, primary_key=True, nullable=False)
     short_id = Column(String(12), unique=True, nullable=False, index=True)
-    name = Column(String, nullable=False)
+    title = Column(String, nullable=False)
     description = Column(Text, nullable=True)
     status = Column(Enum(Video_Status), default=Video_Status.uploading)
     visibility = Column(Enum(Video_Visibility), default=Video_Visibility.public)
@@ -53,10 +53,9 @@ class Video(Base):
     comments_count = Column(Integer, default=0)
 
     source_type = Column(Enum(Video_Source_type), default=Video_Source_type.cdn)
-    source_url = Column(String, nullable=False)
-    filename = Column(String, nullable=False)
+    filename = Column(String, nullable=True)
 
-    category_id = Column(String, ForeignKey("categories.id"), nullable=False)
+    category_id = Column(String, ForeignKey("categories.id"), nullable=True)
     user_id = Column(String, ForeignKey("users.id"), nullable=False)
     channel_id = Column(String, ForeignKey("user_channels.id"), nullable=False)
     date = Column(DateTime(timezone=True), default=datetime.utcnow)

@@ -21,7 +21,10 @@ import { use_UI } from "@/context/ui";
 import { useAuth } from "@/context/auth";
 
 /********************** Show **********************/
-const hide_sidebar_paths = [routes.auth.signup, routes.auth.signin, routes.auth.logout, routes.auth.verify_path];
+const hide_sidebar_paths = [
+    routes.auth.signup, routes.auth.signin, routes.auth.logout, routes.auth.verify_path,
+    routes.studio.home,
+];
 
 /********************** Component **********************/
 const Sidebar = () => {

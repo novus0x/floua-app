@@ -3,7 +3,6 @@ import json, uuid, random, string, datetime
 from types import SimpleNamespace
 
 from fastapi import Request
-from sqlalchemy.orm import Session
 
 ########## Read Json body ##########
 async def read_json_body(request: Request):

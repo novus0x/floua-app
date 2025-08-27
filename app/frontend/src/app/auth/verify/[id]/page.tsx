@@ -28,14 +28,26 @@ const Channel = ({ params }: { params: Promise<{ id: string }> }) => {
     let { id } = use(params);
     id = decodeURIComponent(id);
 
+    // Variables
+    let already = false;
+
     useEffect(() => {
         const verify_account = async () => {
             const data = await send_data("/api/users/verify", {}, {
                 id: id
-            }, notify)
+            }, notify);
+
+            setTimeout(() => {
+               return window.location.href = routes.public.home; 
+            }, 500);
         }
 
-    }, [id]);
+        if (!already) {
+            verify_account();
+            already = true;
+        }
+
+    }, [already, id]);
 
     // DOM
     return (
@@ -53,7 +65,7 @@ const Channel = ({ params }: { params: Promise<{ id: string }> }) => {
                         </a>
                     </div>
 
-                    <span className="auth-chage-link-container">Verifying account {id}</span>
+                    <span className="auth-chage-link-container">Verifying your account</span>
                     <span className="auth-chage-link-container">You will be redirected soon!</span>
                 </div>
 

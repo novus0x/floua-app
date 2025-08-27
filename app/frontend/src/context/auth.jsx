@@ -9,6 +9,9 @@ import { get_data } from "../helpers/api";
 // Settings
 import { settings } from "../helpers/settings";
 
+// Utils
+import { get_cookie, set_cookie } from "@/helpers/utils";
+
 /********************** Variables **********************/
 const AuthContext = createContext();
 
@@ -20,15 +23,24 @@ export function Auth_provider({ children }) {
     // Get & Check token
     useEffect(() => {
         const get_session = async () => {
+            // Variable
+            let data = {};
 
-            const data = await get_data("/api/accounts/validate", {});
+            if (get_cookie("authenticated") == "yes") data = await get_data("/api/accounts/validate", {});
 
             if (data?.user) setUser(data.user);
             else {
                 setUser(null);
+                if (get_cookie("authenticated") == "yes") {
+                    await get_data("/api/users/logout", {});
+                    set_cookie("authenticated", "no");
+                }
             }
 
-            if (data?.expired) await get_data("/api/users/logout", {});
+            if (data?.expired) {
+                await get_data("/api/users/logout", {});
+                set_cookie("authenticated", "no");
+            }
 
             setUserLoading(false);
         };
@@ -39,11 +51,12 @@ export function Auth_provider({ children }) {
     const logout = async () => {
         await get_data("/api/users/logout", {});
         setUser(null);
+        set_cookie("authenticated", "no");
     }
 
     return (
         <AuthContext.Provider value={{ user, logout, userLoading }}>
-            { !userLoading && children }
+            {!userLoading && children}
         </AuthContext.Provider>
     );
 }

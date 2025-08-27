@@ -35,16 +35,12 @@ async def send_mail_worker():
             await smtp.send_message(msg)
         except Exception as e:
             print(e)
-            print("error")
         finally:
             await smtp.quit()
-            print("sent")
-
 
 
 ########## New email ##########
 async def send_mail(type: str, subject: str, to_email: str, html: str):
-
     await email_queue.put({
         "type": type,
         "subject": subject,

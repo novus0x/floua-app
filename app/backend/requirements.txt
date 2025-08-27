@@ -1,8 +1,10 @@
 uuid
+httpx
 PyJWT
 jinja2
 geoip2
 bcrypt
+pymysql
 fastapi
 uvicorn
 aiosmtplib
