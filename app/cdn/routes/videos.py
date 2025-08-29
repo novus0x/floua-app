@@ -19,12 +19,13 @@ from core.utils.generator import get_uuid, build_signed_url
 from core.utils.http_requests import post_data, post_data_api
 from core.utils.validators import read_json_body, validate_required_fields
 
-from services.media.main import upload_original_video, get_presigned_url
+from services.media.main import upload_original_video, get_presigned_url, upload_thumbnail
 
 ########## Variables ##########
 router = APIRouter()
 WS_URL = "ws://192.168.1.80:3003"
 allowed_exts = [".mp4"] # , ".mov", ".mkv"
+allowed_exts_thumb = [".jpg", ".jpeg", ".png"]
 
 ########## Generate Signed Video URL ##########
 @router.post("/get-video")
@@ -134,9 +135,54 @@ async def upload_video(request: Request, file: UploadFile = File(...), db: Sessi
     await post_data("/videos/upload", {
         "video_id": video_id,
     })
-    await post_data_api("/api/studio/video-upload-status", {
+    
+    return custom_response(status_code=200, message="Video uploaded!")
+
+########## Upload video thumbnail ##########
+@router.post("/upload-thumbnail")
+async def video_upload_thumbnail(request: Request, file: UploadFile = File(...), db: Session = Depends(get_db)):
+    ### Get data ###
+    form = await request.form()
+
+    upload_token = form.get("upload_token")
+    ext = Path(file.filename).suffix.lower()
+
+    ### Validations ###
+    if not upload_token:
+        return custom_response(status_code=400, message="video_id and upload_token are required")
+
+    upload_token_data = db.query(Upload_Token).filter(Upload_Token.token == upload_token).first()
+    if not upload_token_data:
+        return custom_response(status_code=400, message="Invalid upload_token")
+    
+    video_id = upload_token_data.video_id
+
+    if upload_token_data.used == True:
+        return custom_response(status_code=400, message="Token already used")
+
+    current_date = datetime.datetime.utcnow()
+    expiration_date = upload_token_data.expires_at 
+
+    if upload_token_data.expired == True:
+        return custom_response(status_code=400, message="The session has already expired")
+        
+    elif expiration_date <= current_date:
+        upload_token_data.expired = True
+        db.commit()
+        return custom_response(status_code=400, message="The session has already expired")
+
+    if ext not in allowed_exts_thumb:
+        print(ext)
+        return custom_response(status_code=400, message="Invalid extention")
+
+    ### Upload video ###
+    upload_token_data.used = True ### Token used
+    update_db(db)
+
+    thumbnail_url = await upload_thumbnail(video_id, file, ext)
+    await post_data_api("/api/studio/video-upload-thumbnail", {
         "video_id": video_id,
-        "video_status": "uploaded"
+        "video_thumbnail_url": str(settings.MEDIA_ORIGIN + f"/uploads/{thumbnail_url}"),
     })
     
     return custom_response(status_code=200, message="Video uploaded!")

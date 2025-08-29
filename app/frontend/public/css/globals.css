@@ -930,7 +930,7 @@ body {
     gap: 45px;
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: flex-start;
 }
 
 .floua-video-carousel-item-container {
@@ -947,6 +947,13 @@ body {
 
     border-radius: 15px;
     background-color: var(--color-gray-light);
+
+    overflow: hidden;
+}
+
+.floua-video-carousel-item-video-container-img {
+    width: 100%;
+    aspect-ratio: 16 / 9;
 }
 
 .floua-video-carousel-item-info-container {
@@ -954,16 +961,19 @@ body {
     display: flex;
     align-items: center;
     flex-direction: row;
+    justify-content: space-between;
 }
 
 .floua-video-carousel-item-info-channel-avatar {
-    width: 65px;
+    min-width: 50px;
+    width: 50px;
 }
 
 .floua-video-carousel-item-info {
     width: 100%;
     display: flex;
     flex-direction: column;
+    overflow: hidden;
 }
 
 .floua-video-carousel-item-info-title {
@@ -1414,8 +1424,6 @@ body {
 }
 
 /********************** Channel **********************/
-.channel-view-container {}
-
 .channel-view-info-container-p {
     width: 100%;
 
@@ -1520,6 +1528,56 @@ body {
 
 .channel-view-info-content-bottom-text {
     color: var(--color-gray-bluish);
+}
+
+.channel-view-body-container {
+    gap: 15px;
+    display: flex;
+    flex-direction: column;
+}
+
+.channel-view-body-header {
+    margin-top: 20px;
+    padding: 10px 15px;
+
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.channel-view-body-header-options {
+    gap: 15px;
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+}
+
+.channel-options-btn {
+    cursor: pointer;
+
+    font-size: var(--fs-small);
+
+    padding: 10px 25px;
+    border-radius: 10px;
+    background-color: var(--color-dark-blue-2);
+
+    transition: background-color ease-in-out 250ms;
+}
+
+.channel-options-btn:hover {
+    background-color: var(--color-dark-blue-4);
+}
+
+.channel-options-btn-active {
+    background-color: var(--color-main);
+    transition: background-color ease-in-out 250ms;
+}
+
+.channel-view-body-home-container {
+    gap: 25px;
+    display: flex;
+    flex-direction: column;
 }
 
 /********************** Floua Studio - Navbar **********************/
@@ -1949,8 +2007,32 @@ body {
     background-color: var(--color-gray-bluish);
 }
 
+.studio-content-upload-input-thumbnail-container {
+    margin: 15px 0;
+}
+
+.studio-content-upload-thumbnail-container {
+    height: 250px;
+    cursor: pointer;
+
+    padding: 45px 35px;
+    
+    border-radius: 10px;
+    border: 2px dashed var(--color-main);
+
+    transition: height 500ms ease-in-out, background-color 750ms ease-in-out;
+}
+
+.studio-content-upload-thumbnail-preview {
+    margin: 35px 0;
+}
+
+.studio-content-upload-thumbnail-image {
+    margin-top: 20px;
+}
+
 .studio-content-upload-video-container {
-    height: 75%;
+    height: 500px;
     cursor: pointer;
 
     padding: 45px 35px;
@@ -1960,14 +2042,16 @@ body {
     transition: height 500ms ease-in-out, background-color 750ms ease-in-out;
 }
 
-.studio-content-upload-video-container-change {
-    height: 55%;
+.studio-content-upload-video-container-change,
+.studio-content-upload-input-thumbnail-container-change {
+    height: 300px;
 
     border: none;
     background-color: var(--color-main);
 }
 
-.studio-content-upload-video-info {
+.studio-content-upload-video-info,
+.studio-content-upload-thumbnail-info {
     height: 100%;
 
     display: flex;
@@ -1976,7 +2060,8 @@ body {
     justify-content: center;
 }
 
-.studio-content-upload-video-info-text {
+.studio-content-upload-video-info-text,
+.studio-content-upload-thumbnail-info-text {
     margin-top: 15px;
     font-size: var(--fs-regular);
 }

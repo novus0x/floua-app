@@ -53,7 +53,7 @@ class Video(Base):
     comments_count = Column(Integer, default=0)
 
     source_type = Column(Enum(Video_Source_type), default=Video_Source_type.cdn)
-    filename = Column(String, nullable=True)
+    thumbnail_url = Column(String, nullable=True)
 
     category_id = Column(String, ForeignKey("categories.id"), nullable=True)
     user_id = Column(String, ForeignKey("users.id"), nullable=False)

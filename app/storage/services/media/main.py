@@ -24,7 +24,7 @@ async def delete_file(video_id: str):
 ########## Upload files ##########
 async def upload_files(video_id: str, file_path: str):
     try:
-        print(file_path)
+        # print(file_path)
         for root, _, files in os.walk(file_path):
             for file in files:
                 if file.endswith(".mp4"):

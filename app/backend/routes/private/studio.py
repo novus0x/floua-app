@@ -159,6 +159,74 @@ async def upload_video_info(request: Request, tag: str, db: Session = Depends(ge
         "short_id": new_video.short_id,
     })
 
+########## Upload Video ##########
+@router.post("/channel/{tag}/upload-thumbnail")
+async def upload_video_thumbnail(request: Request, tag: str, db: Session = Depends(get_db)):
+    ### Get Session ###
+    user, error = await validate_user(request, db, True)
+    if error:
+        return custom_response(status_code=400, message=error)
+
+    channel = db.query(User_Channel).filter(User_Channel.tag == tag).first()
+
+    if not channel:
+        return custom_response(status_code=400, message="The channel doesn't exist")
+
+    if user["id"] != channel.user_id:
+        return custom_response(status_code=400, message="You don't have access to this channel")
+
+    ### Get Body ###
+    video_info, error = await read_json_body(request)
+    if error: 
+        return custom_response(status_code=400, message=error)
+
+    ### Validations ###
+    required_fields, error = validate_required_fields(video_info, ["short_id"])
+    if error:
+        return custom_response(status_code=400, message="Fields required", details=required_fields)
+
+    video = db.query(Video).filter(Video.short_id == video_info.short_id).first()
+
+    if not channel:
+        return custom_response(status_code=400, message="The video doesn't exist")
+
+    res = await post_data("/videos/generate_upload_token", {"video_id": video.id})
+
+    if not res.get("data", {}).get("upload_token"): 
+        return custom_response(status_code=400, message="Something went wrong, please try again later!")
+
+    token = res.get("data", {}).get("upload_token")
+
+    update_db(db)
+
+    return custom_response(status_code=200, message="Upload thumbnail token", data={
+        "destination": settings.CDN_ORIGIN + "/videos/upload-thumbnail",
+        "upload_token": token,
+    })
+
+########## Update Video Thumbnail URL ##########
+@router.post("/video-upload-thumbnail")
+async def upload_video_info(request: Request, db: Session = Depends(get_db)):
+    ### Get Body ###
+    video_info, error = await read_json_body(request)
+    if error: 
+        return custom_response(status_code=400, message=error)
+
+    ### Validations ###
+    required_fields, error = validate_required_fields(video_info, ["video_id", "video_thumbnail_url"])
+    if error:
+        return custom_response(status_code=400, message="Fields required", details=required_fields)
+
+    video = db.query(Video).filter(Video.id == video_info.video_id).first()
+
+    if not video:
+        return custom_response(status_code=400, message="Something went wrong")
+
+    video.thumbnail_url = video_info.video_thumbnail_url
+    update_db(db)
+
+    return custom_response(status_code=200, message="Video thumbnail updated!")
+
 ########## Update Video Upload Status ##########
 @router.post("/video-upload-status")
 async def upload_video_info(request: Request, db: Session = Depends(get_db)):

@@ -26,11 +26,14 @@ import { get_data } from "@/helpers/api";
 interface VideoCarouselProps {
     endpoint: string,
     title: string,
-    icon: React.ReactElement
+    icon: React.ReactElement,
+    actions?: boolean,
+    text?: string,
+    url?: string,
 }
 
 /********************** Home **********************/
-const VideoCarousel = ({ endpoint, title, icon }: VideoCarouselProps) => {
+const VideoCarousel = ({ endpoint, title, icon, actions = false, text = "", url = "#" }: VideoCarouselProps) => {
     // Router
     const router = useRouter();
 
@@ -39,6 +42,7 @@ const VideoCarousel = ({ endpoint, title, icon }: VideoCarouselProps) => {
         short_id: string,
         title: string,
         views: string,
+        thumbnail_url: string,
 
         channel_name: string,
         channel_tag: string,
@@ -65,7 +69,6 @@ const VideoCarousel = ({ endpoint, title, icon }: VideoCarouselProps) => {
         call_video = true;
     }, [])
 
-
     return (
         <div className="floua-video-carousel-container">
             <div className="floua-video-carousel-header">
@@ -73,20 +76,24 @@ const VideoCarousel = ({ endpoint, title, icon }: VideoCarouselProps) => {
                     {icon}
                     <span className="floua-video-carousel-header-title-text">{title}</span>
                 </div>
-                <Link href="#watch-more" className="floua-video-carousel-header-actions">
-                    <span className="floua-video-carousel-header-actions-text">Watch more</span>
-                    <MdKeyboardArrowRight size={30} />
-                </Link>
+                {actions ? (
+                    <Link href={ url } className="floua-video-carousel-header-actions">
+                        <span className="floua-video-carousel-header-actions-text">{ text }</span>
+                        <MdKeyboardArrowRight size={30} />
+                    </Link>
+                ) : (
+                    <></>
+                )}
             </div>
             <div className="floua-video-carousel-body">
                 {videos.map(video => (
                     <div className="floua-video-carousel-item-container" key={video.short_id}>
                         <Link href={routes.public.watch(video.short_id)} className="floua-video-carousel-item-video-container">
-                            {/* <img src="" alt="" /> */}
+                             <img src={video.thumbnail_url} alt="Video thumbnail" className="floua-video-carousel-item-video-container-img" /> 
                         </Link>
                         <div className="floua-video-carousel-item-info-container">
                             <Link href={routes.channel.home(video.channel_tag)} className="floua-video-carousel-item-info-channel-avatar">
-                                <img src={video.channel_avatar} alt="" />
+                                <img src={video.channel_avatar} alt="Channel avatar" />
                             </Link>
                             <div className="floua-video-carousel-item-info">
                                 <Link href={routes.public.watch(video.short_id)} className="floua-video-carousel-item-info-title">{video.title}</Link>

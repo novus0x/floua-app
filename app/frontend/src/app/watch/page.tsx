@@ -14,9 +14,6 @@ import { FaComment, FaHeart, FaHeartBroken } from "react-icons/fa";
 // Auth
 import { useAuth } from "@/context/auth";
 
-// Settings
-import { settings } from "@/helpers/settings";
-
 // Notifications
 import { useNotification } from "@/context/notifications";
 
@@ -25,10 +22,6 @@ import { routes } from "@/helpers/routes";
 
 // API
 import { get_data, send_data, send_files } from "@/helpers/api";
-
-// Utils
-import { create_params } from "@/helpers/utils";
-
 
 /********************** Trending **********************/
 const Watch = () => {
@@ -96,12 +89,13 @@ const Watch = () => {
     // Get Video
     if (video_request) return;
     const get_video = async () => {
-      const data = await get_data(`/api/videos/watch/${id}`, {}, notify, true);
-      console.log(data);
+      const data = await get_data(`/api/videos/watch/${id}`, {});
 
       if (data?.video_source) {
         setVideoSource(data.video_source);
         setVideoLoaded(true);
+      } else {
+        window.location.href = routes.public.home;
       }
       if (data?.video) setVideo(data.video);
       if (data?.channel) SetChannel(data.channel);
@@ -117,65 +111,69 @@ const Watch = () => {
   return (
     <div className="content">
 
-      <div className="floua-watch-container">
-        <div className="floua-watch-left">
-          <div className="floua-watch-player">
-            {videoLoaded && videoSource ? (
-              <Player videoSrc={videoSource} />
-            ) : <></>}
-          </div>
-          <div className="floua-watch-content">
-            <div className="floua-watch-title-container">
-              <span className="floua-watch-title">{video.title}</span>
-              <div className="floua-watch-actions-likes">
-                <button className="floua-watch-actions-likes-btn">
-                  <FaHeart size={25} />
-                  <span>{video.likes}</span>
-                </button>
-                <button className="floua-watch-actions-likes-btn">
-                  <FaHeartBroken size={25} />
-                  <span>{video.dislikes}</span>
-                </button>
-              </div>
+      {videoLoaded ? (
+        <div className="floua-watch-container">
+          <div className="floua-watch-left">
+            <div className="floua-watch-player">
+              {videoLoaded && videoSource ? (
+                <Player key={videoSource} videoSrc={videoSource} autoPlay />
+              ) : <></>}
             </div>
-
-            <div className="floua-watch-content-extra-container">
-              <div className="floua-watch-content-extra-container-left">
-                <p className="floua-watch-content-description">{video.description}</p>
-                <div className="floua-watch-content-subtitle-container">
-                  <FaComment className="color-main" size={32} />
-                  <span className="floua-watch-content-subtitle-text">Comments</span>
-                </div>
-                <div>
-                  To Do
+            <div className="floua-watch-content">
+              <div className="floua-watch-title-container">
+                <span className="floua-watch-title">{video.title}</span>
+                <div className="floua-watch-actions-likes">
+                  <button className="floua-watch-actions-likes-btn">
+                    <FaHeart size={25} />
+                    <span>{video.likes}</span>
+                  </button>
+                  <button className="floua-watch-actions-likes-btn">
+                    <FaHeartBroken size={25} />
+                    <span>{video.dislikes}</span>
+                  </button>
                 </div>
               </div>
 
-              <div className="floua-watch-content-extra-container-right">
-                <div className="floua-watch-content-extra-container-actions">
-                  <div className="floua-watch-content-channel">
-                    <Link href={routes.channel.home(channel.tag)} className="floua-watch-content-channel-avatar-container">
-                      <img src={channel.avatar} alt="Channel Avatar" />
-                    </Link>
-                    <div className="floua-watch-content-channel-info">
-                      <Link href={routes.channel.home(channel.tag)} className="floua-watch-content-channel-name">{channel.name}</Link>
-                      <span className="floua-watch-content-channel-followers">{channel.followers} followers</span>
+              <div className="floua-watch-content-extra-container">
+                <div className="floua-watch-content-extra-container-left">
+                  <p className="floua-watch-content-description">{video.description}</p>
+                  <div className="floua-watch-content-subtitle-container">
+                    <FaComment className="color-main" size={32} />
+                    <span className="floua-watch-content-subtitle-text">Comments</span>
+                  </div>
+                  <div>
+                    To Do
+                  </div>
+                </div>
+
+                <div className="floua-watch-content-extra-container-right">
+                  <div className="floua-watch-content-extra-container-actions">
+                    <div className="floua-watch-content-channel">
+                      <Link href={routes.channel.home(channel.tag)} className="floua-watch-content-channel-avatar-container">
+                        <img src={channel.avatar} alt="Channel Avatar" />
+                      </Link>
+                      <div className="floua-watch-content-channel-info">
+                        <Link href={routes.channel.home(channel.tag)} className="floua-watch-content-channel-name">{channel.name}</Link>
+                        <span className="floua-watch-content-channel-followers">{channel.followers} followers</span>
+                      </div>
+                    </div>
+                    <div className="floua-watch-content-extra-actions-btns-container">
+                      <button className="floua-watch-action-btn floua-watch-action-btn-follow">Follow</button>
+                      <button className="floua-watch-action-btn floua-watch-action-btn-donate">Donate</button>
                     </div>
                   </div>
-                  <div className="floua-watch-content-extra-actions-btns-container">
-                    <button className="floua-watch-action-btn floua-watch-action-btn-follow">Follow</button>
-                    <button className="floua-watch-action-btn floua-watch-action-btn-donate">Donate</button>
-                  </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
 
-        <div className="floua-watch-right">
-          <p>To Do</p>
+          <div className="floua-watch-right">
+            <p>To Do</p>
+          </div>
         </div>
-      </div>
+      ) : (
+        <></>
+      )}
 
     </div>
   );

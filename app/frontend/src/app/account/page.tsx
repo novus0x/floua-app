@@ -3,14 +3,15 @@
 /********************** Modules **********************/
 import { useState, useEffect } from "react";
 
-// Icons
-import { FaLink, FaLock, FaVideo, FaUser, FaDotCircle } from "react-icons/fa";
-import { FiSettings, FiPlus } from "react-icons/fi";
-import { PiTidalLogoFill, PiTreasureChestFill } from "react-icons/pi";
-import { SiKick } from "react-icons/si";
-
 // DOM
 import Link from "next/link";
+import VideoCarousel from "@/components/Video-Carousel"
+
+// Icons
+import { SiKick } from "react-icons/si";
+import { FiSettings, FiPlus } from "react-icons/fi";
+import { PiTidalLogoFill, PiTreasureChestFill } from "react-icons/pi";
+import { FaLink, FaLock, FaVideo, FaUser, FaDotCircle } from "react-icons/fa";
 
 // Routes
 import { routes } from "@/helpers/routes";

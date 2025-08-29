@@ -32,22 +32,10 @@ const Home = () => {
   // Router
   const router = useRouter();
 
-  // Structures
-
-
-  // States
-
-
-  // Variables
-
-
-  // Call API 
-
-
   return (
     <div className="content">
 
-      <VideoCarousel endpoint="/api/videos/newest" title="Newest" icon={ <GiElectric className="color-orange" size={40} /> } />
+      <VideoCarousel endpoint="/api/videos/newest" title="Newest" icon={ <GiElectric className="color-orange" size={40} /> } actions text="Watch more" url="#" />
     </div>
   );
 };

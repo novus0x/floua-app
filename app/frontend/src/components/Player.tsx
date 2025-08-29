@@ -41,7 +41,7 @@ function getVideoType(src: string): string {
 const Player = ({ videoSrc, autoPlay = false, preview = false }: PlayerProps) => {
     // States
     const [isPlaying, setIsPlaying] = useState(autoPlay);
-    const [volume, setVolume] = useState(0);
+    const [volume, setVolume] = useState(100);
     const [muted, setMuted] = useState(false);
     const [currentTime, setCurrentTime] = useState(0);
     const [duration, setDuration] = useState(0);

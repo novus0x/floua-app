@@ -6,7 +6,6 @@ from asyncio import Queue
 
 from core.config import settings
 from core.utils.http_requests import post_data_api
-from core.utils.video_detector import is_mobile_video
 
 from services.media.main import delete_file, upload_files
 
@@ -59,6 +58,15 @@ async def hls_converter(video_data):
     # # if not os.path.exists(video_data["dir"]) or not has_video:
     # #     print("[-] Error", has_audio, has_video)
     # #     return False
+
+    try:
+        await post_data_api("/api/studio/video-upload-status", {
+            "video_id": video_data["video_id"],
+            "video_status": "processing"
+        })
+    except Exception as e:
+        print(e)
+
     print("[+] Reparing video")
     command = [
             "ffmpeg", "-fflags", "+genpts", "-err_detect", "ignore_err", "-i", str(video_data["video_dir"]), "-c", "copy", "-movflags", "+faststart", f"{output_dir}/temp.mp4",
@@ -172,10 +180,8 @@ async def hls_converter(video_data):
     if stderr:
         print("Stderr: \n", stderr.decode())
 
-    await process.wait()
 
     if process.returncode == 0:
-        print("mandando data")
         os.remove(video_data["video_dir"])
         await upload_files(video_data["video_id"], video_data["dir"])
         await delete_file(video_data["video_id"])

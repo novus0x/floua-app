@@ -34,6 +34,20 @@ async def upload_original_video(video_id: str, file: UploadFile):
     except Exception as e:
         print(e)
 
+########## Upload Thumbnail ##########
+async def upload_thumbnail(video_id: str, file: UploadFile, ext: str):
+    print("uploading thumbnail")
+    try:
+        ext = Path(file.filename).suffix.lower()
+
+        location = f"videos/{video_id}"
+
+        await post_data_media("/upload", file, { "location": location, "filename": f"thumbnail{ext}" })
+        return location + f"/thumbnail{ext}"
+
+    except Exception as e:
+        print(e)
+
 ########## Media Service - Signed url ##########
 async def get_presigned_url(endpoint: str, data: dict):
     try:

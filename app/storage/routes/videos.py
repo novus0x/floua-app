@@ -41,11 +41,6 @@ async def upload_video(request: Request):
 
     await download_file(video_id, f"videos/{video_id}/main.mp4")
 
-    await post_data_api("/api/studio/video-upload-status", {
-        "video_id": video_id,
-        "video_status": "processing"
-    })
-
     await queue.put({
         "video_id": video_id,
         "dir": temp_dir,

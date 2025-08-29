@@ -16,7 +16,7 @@ async def post_data(endpoint: str, fileobj, data: dict):
     async with httpx.AsyncClient() as client:
         res = await client.post(settings.MEDIA_ORIGIN + endpoint, files=files, data=data)
 
-        print(res.json())
+        # print(res.json())
 
 ########## POST Data to Media Service - Download ##########
 async def post_download_file(endpoint: str, data: dict):
@@ -40,6 +40,6 @@ async def post_signed_url(endpoint: str, data: dict):
         async with httpx.AsyncClient() as client:
             res = await client.post(settings.MEDIA_ORIGIN + endpoint, json=data)
             
-            print(res.json())
+            # print(res.json())
     except Exception as e:
         print(e)

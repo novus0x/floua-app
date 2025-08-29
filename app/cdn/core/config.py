@@ -12,10 +12,6 @@ class Settings(BaseSettings):
     STREAM_EXPIRE_MINUTES: int
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 60 * 24 * 7
 
-    WASABI_BUCKET_NAME: str
-    WASABI_ACCESS_KEY: str
-    WASABI_SECRET_KEY: str
-
     class Config:
         env_file = ".env"
 
