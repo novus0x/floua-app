@@ -701,6 +701,7 @@ body {
 /********************** Content **********************/
 .content {
     overflow-y: auto;
+    overflow-x: hidden;
 
     margin-top: 76px;
     height: calc(100vh - 76px);
@@ -892,10 +893,14 @@ body {
 /********************** Floua Video Carousel **********************/
 .floua-video-carousel-container {
     padding: 10px 15px;
-
     gap: 25px;
     display: flex;
     flex-direction: column;
+    position: relative;
+}
+
+.floua-video-carousel-wrapper {
+    position: relative;
 }
 
 .floua-video-carousel-header {
@@ -931,10 +936,53 @@ body {
     display: flex;
     align-items: center;
     justify-content: flex-start;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    padding: 5px 0;
+}
+
+.floua-video-carousel-body::-webkit-scrollbar {
+    display: none;
+}
+
+.floua-video-carousel-button {
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+
+    top: 50%;
+    z-index: 10;
+    position: absolute;
+
+    border: none;
+    border-radius: 50%;
+    transform: translateY(-50%);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background-color: var(--color-dark-blue-3);
+    transition: background-color 250ms ease;
+}
+
+.floua-video-carousel-button:hover {
+    background-color: var(--color-dark-blue-2);
+}
+
+.floua-video-carousel-button-left {
+    left: -20px;
+}
+
+.floua-video-carousel-button-right {
+    right: -20px;
 }
 
 .floua-video-carousel-item-container {
     width: 340px;
+    flex-shrink: 0;
 
     gap: 15px;
     display: flex;
@@ -944,16 +992,15 @@ body {
 .floua-video-carousel-item-video-container {
     width: 100%;
     aspect-ratio: 16 / 9;
-
     border-radius: 15px;
     background-color: var(--color-gray-light);
-
     overflow: hidden;
 }
 
 .floua-video-carousel-item-video-container-img {
     width: 100%;
     aspect-ratio: 16 / 9;
+    object-fit: cover;
 }
 
 .floua-video-carousel-item-info-container {
@@ -965,8 +1012,12 @@ body {
 }
 
 .floua-video-carousel-item-info-channel-avatar {
-    min-width: 50px;
     width: 50px;
+    height: 50px;
+    min-width: 50px;
+
+    overflow: hidden;
+    border-radius: 50%;
 }
 
 .floua-video-carousel-item-info {
@@ -980,6 +1031,7 @@ body {
     max-width: 95%;
     white-space: nowrap;
     overflow: hidden;
+    text-overflow: ellipsis;
     font-size: var(--fs-regular);
 }
 
@@ -992,15 +1044,23 @@ body {
     justify-content: space-between;
 }
 
+.floua-video-carousel-item-info-extra {
+    font-size: var(--fs-small);
+    color: var(--color-gray-bluish);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
 /********************** Watch Video **********************/
 .floua-watch-container {
     gap: 25px;
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
 }
 
 .floua-watch-left {
-    width: 75%;
+    width: 100%;
 }
 
 .floua-watch-content {
@@ -1030,7 +1090,7 @@ body {
 .floua-watch-actions-likes-btn {
     cursor: pointer;
     color: var(--color-gray-bluish);
-    
+
     gap: 10px;
     display: flex;
     align-items: center;
@@ -1057,6 +1117,27 @@ body {
     color: var(--color-gray-bluish);
 }
 
+.floua-watch-content-extra-container-selection {
+    margin-top: 25px;
+
+    gap: 10px;
+    display: none;
+}
+
+.floua-watch-content-extra-container-selection-btn {
+    cursor: pointer;
+    padding: 10px 15px;
+
+    border-radius: 10px;
+    background-color: var(--color-dark-blue-2);
+
+    transition: background-color ease-in-out 250ms;
+}
+
+.floua-watch-content-extra-container-selection-btn-active {
+    background-color: var(--color-main);
+}
+
 .floua-watch-content-subtitle-container {
     margin: 20px 0;
 
@@ -1071,11 +1152,10 @@ body {
 }
 
 .floua-watch-content-extra-container-actions {
-    gap: 15px;
+    gap: 25px;
     display: flex;
-    align-items: center;
-    flex-direction: row;
-    justify-content: space-between;
+    flex-direction: column;
+    margin-bottom: 35px;
 }
 
 .floua-watch-content-channel {
@@ -1116,13 +1196,12 @@ body {
     padding: 10px 20px;
 
     border-radius: 15px;
-
 }
 
 .floua-watch-action-btn-follow {
     color: var(--color-white);
     background: linear-gradient(25deg, var(--color-dark-blue-4) 25%, var(--color-dark-blue-2) 100%);
-    transition: background ease-in-out 250ms; 
+    transition: background ease-in-out 250ms;
 }
 
 .floua-watch-action-btn-follow:hover {
@@ -1137,6 +1216,41 @@ body {
 
 .floua-watch-action-btn-donate:hover {
     background-color: var(--color-main-hover);
+}
+
+.floua-watch-content-extra-container-info-video {
+    margin: 15px 0;
+    font-size: var(--fs-xsmall);
+
+    gap: 50px;
+    display: flex;
+    flex-direction: row;
+}
+
+.floua-watch-content-extra-container-info-social {
+    margin: 15px 0;
+
+    gap: 10px;
+    display: flex;
+    flex-direction: row;
+}
+
+.floua-watch-content-extra-container-info-tags {
+    margin-top: 15px;
+
+    gap: 8px;
+    display: flex;
+    flex-direction: row;
+}
+
+
+.floua-watch-content-extra-tag {
+    color: var(--color-teal);
+}
+
+.floua-watch-right {
+    padding: 0 10px;
+    margin-top: -25px;
 }
 
 /********************** Account Settings **********************/
@@ -2016,7 +2130,6 @@ body {
     cursor: pointer;
 
     padding: 45px 35px;
-    
     border-radius: 10px;
     border: 2px dashed var(--color-main);
 
@@ -2075,7 +2188,32 @@ body {
 
 @media (max-width: 1800px) {}
 
-@media (max-width: 1400px) {}
+@media (max-width: 1400px) {
+
+    /*** Watch Video ***/
+
+    .floua-watch-content-extra-container {
+        flex-direction: column-reverse;
+    }
+
+    .floua-watch-content-extra-container-left,
+    .floua-watch-content-extra-container-right {
+        width: 100%;
+    }
+
+    .floua-watch-content-extra-container {
+        gap: 15px;
+    }
+
+    .floua-watch-content-extra-container-selection-hidden {
+        display: none;
+    }
+
+    .floua-watch-content-extra-container-selection {
+        display: flex;
+        flex-direction: row;
+    }
+}
 
 @media (max-width: 1200px) {
 
@@ -2181,7 +2319,6 @@ body {
     .studio-content-upload-right {
         width: 100%;
     }
-
 }
 
 @media (max-width: 768px) {
@@ -2192,7 +2329,10 @@ body {
         flex-direction: column;
     }
 
-
+    /*** Video Carousel ***/
+    .floua-video-carousel-button {
+        display: none;
+    }
 }
 
 @media (max-width: 600px) {}
@@ -2212,6 +2352,18 @@ body {
 
     .account-data-general-basic-avatar {
         width: 100%;
+    }
+}
+
+@media (min-width: 600px) {
+
+    /*** Watch Video ***/
+    .floua-watch-content-extra-container-actions {
+        gap: 15px;
+        align-items: center;
+        flex-direction: row;
+        justify-content: space-between;
+        margin-bottom: 0px;
     }
 }
 
@@ -2338,4 +2490,22 @@ body {
     .studio-sidebar-background {
         display: none;
     }
+}
+
+@media (min-width: 1400px) {
+
+    /*** Watch Video ***/
+    .floua-watch-container {
+        flex-direction: row;
+    }
+
+    .floua-watch-left {
+        width: 75%;
+    }
+
+    .floua-watch-right {
+        padding: 0;
+        margin-top: 0;
+    }
+
 }

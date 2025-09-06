@@ -7,7 +7,7 @@ import { use, useState, useEffect } from "react";
 
 // DOM
 import Link from "next/link";
-import Player from "@/components/Player";
+import Player from "@/components/actions/Player";
 
 // Icons
 import { RiUploadCloud2Line, RiVideoLine, RiImageLine } from "react-icons/ri";

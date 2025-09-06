@@ -6,10 +6,14 @@ import { useRouter, useSearchParams } from "next/navigation";
 
 // DOM
 import Link from "next/link";
-import Player from "@/components/Player";
+import Player from "@/components/actions/Player";
+import Comments from "@/components/actions/Comments";
+import VideoSuggestionList from "@/components/actions/Video-Suggestion-List";
 
 // Icons
-import { FaComment, FaHeart, FaHeartBroken } from "react-icons/fa";
+import { GoVideo } from "react-icons/go";
+import { FaRegComment, FaHeart, FaHeartBroken } from "react-icons/fa";
+import { FaInstagram, FaXTwitter, FaDiscord, FaGithub, FaLink } from "react-icons/fa6";
 
 // Auth
 import { useAuth } from "@/context/auth";
@@ -80,6 +84,7 @@ const Watch = () => {
     avatar: "",
     followers: "",
   })
+  const [currentTab, SetCurrentTab] = useState("videos");
 
   // Variables
   let video_request = false;
@@ -137,12 +142,18 @@ const Watch = () => {
               <div className="floua-watch-content-extra-container">
                 <div className="floua-watch-content-extra-container-left">
                   <p className="floua-watch-content-description">{video.description}</p>
-                  <div className="floua-watch-content-subtitle-container">
-                    <FaComment className="color-main" size={32} />
-                    <span className="floua-watch-content-subtitle-text">Comments</span>
+                  <div className="floua-watch-content-extra-container-selection">
+                    <button className={`floua-watch-content-extra-container-selection-btn ${currentTab == "videos" ? "floua-watch-content-extra-container-selection-btn-active" : ""} `} onClick={() => SetCurrentTab("videos")}>Videos</button>
+                    <button className={`floua-watch-content-extra-container-selection-btn ${currentTab == "comments" ? "floua-watch-content-extra-container-selection-btn-active" : ""} `} onClick={() => SetCurrentTab("comments")}>Comments</button>
                   </div>
-                  <div>
-                    To Do
+                  <div className={`${currentTab == "comments" ? "" : "floua-watch-content-extra-container-selection-hidden"} `}>
+                    <div className="floua-watch-content-subtitle-container">
+                      <FaRegComment className="color-main" size={32} />
+                      <span className="floua-watch-content-subtitle-text">Comments</span>
+                    </div>
+                    <div>
+                      <Comments />
+                    </div>
                   </div>
                 </div>
 
@@ -162,13 +173,39 @@ const Watch = () => {
                       <button className="floua-watch-action-btn floua-watch-action-btn-donate">Donate</button>
                     </div>
                   </div>
+                  <div className="floua-watch-content-extra-container-info">
+                    <div className="floua-watch-content-extra-container-info-video">
+                      <span>Views</span>
+                      <span>Time</span>
+                    </div>
+                    <div className="floua-watch-content-extra-container-info-social">
+                      <a href="#" target="_blank"><FaInstagram className="color-main" size={25} /></a>
+                      <a href="#" target="_blank"><FaXTwitter className="color-main" size={25} /></a>
+                      <a href="#" target="_blank"><FaDiscord className="color-main" size={25} /></a>
+                      <a href="#" target="_blank"><FaGithub className="color-main" size={25} /></a>
+                      <a href="#" target="_blank"><FaLink className="color-main" size={25} /></a>
+                    </div>
+                    <div className="floua-watch-content-extra-container-info-tags">
+                      <a href="#" className="floua-watch-content-extra-tag">#Tag</a>
+                      <a href="#" className="floua-watch-content-extra-tag">#Tag</a>
+                      <a href="#" className="floua-watch-content-extra-tag">#Tag</a>
+                      <a href="#" className="floua-watch-content-extra-tag">#Tag</a>
+                      <a href="#" className="floua-watch-content-extra-tag">#Tag</a>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
 
-          <div className="floua-watch-right">
-            <p>To Do</p>
+          <div className={`floua-watch-right ${currentTab == "videos" ? "" : "floua-watch-content-extra-container-selection-hidden"} `}>
+            <div className="floua-watch-content-subtitle-container">
+              <GoVideo className="color-main" size={32} />
+              <span className="floua-watch-content-subtitle-text">You might like</span>
+            </div>
+            <div>
+              <VideoSuggestionList />
+            </div>
           </div>
         </div>
       ) : (

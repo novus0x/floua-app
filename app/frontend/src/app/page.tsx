@@ -6,7 +6,7 @@ import { use, useState, useEffect } from "react";
 
 // DOM
 import Link from "next/link";
-import VideoCarousel from "@/components/Video-Carousel"
+import VideoCarousel from "@/components/actions/Video-Carousel"
 
 // Icons
 import { GiElectric } from "react-icons/gi";
