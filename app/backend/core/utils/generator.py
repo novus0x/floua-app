@@ -8,7 +8,7 @@ from types import SimpleNamespace
 from core.config import settings
 
 ########## Get uuid v4 ##########
-async def get_uuid(model, db: Session):
+def get_uuid(model, db: Session):
     uid = str(uuid.uuid4())
 
     while (1):

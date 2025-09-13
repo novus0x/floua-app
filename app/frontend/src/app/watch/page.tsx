@@ -152,7 +152,7 @@ const Watch = () => {
                       <span className="floua-watch-content-subtitle-text">Comments</span>
                     </div>
                     <div>
-                      <Comments />
+                      <Comments id={video.short_id} />
                     </div>
                   </div>
                 </div>

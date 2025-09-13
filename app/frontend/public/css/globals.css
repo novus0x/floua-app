@@ -1051,6 +1051,87 @@ body {
     overflow: hidden;
     text-overflow: ellipsis;
 }
+/********************** Video Suggestion List **********************/
+
+/********************** Comments **********************/
+.floua-comments-container {
+    gap: 15px;
+    display: flex;
+    flex-direction: column;
+}
+
+.floua-comments-comment {
+    gap: 15px;
+    display: flex;
+    flex-direction: row;
+}
+
+.floua-comments-comment-avatar {
+    overflow: hidden;
+
+    width: 50px;
+    height: 50px;
+
+    border-radius: 100%;
+}
+
+.floua-comments-comment-info {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.floua-comments-comment-info-username {
+    text-transform: capitalize;
+}
+
+.floua-comments-comment-info-text {
+    color: var(--color-gray-bluish);
+    white-space: pre-wrap;
+}
+
+.floua-comments-create-input {
+    width: 100%;
+    padding-bottom: 5px;
+    border-bottom: 2px solid var(--color-main);
+
+    resize: none;
+    overflow: hidden;
+    box-sizing: border-box;
+}
+
+.floua-comments-comment-actions-container {
+    margin-top: 15px;
+
+    gap: 10px;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+}
+
+.floua-comments-comment-action {
+    cursor: pointer;
+
+    padding: 10px 15px;
+    border-radius: 5px;
+    transition: background-color ease-in-out 250ms;
+}
+
+.floua-comments-comment-action-cancel {
+    background-color: var(--color-dark-blue-3);
+}
+
+.floua-comments-comment-action-cancel:hover {
+    background-color: var(--color-dark-blue-1);
+}
+
+.floua-comments-comment-action-comment {
+    background-color: var(--color-main);
+}
+
+.floua-comments-comment-action-comment:hover {
+    background-color: var(--color-main-hover);
+}
 
 /********************** Watch Video **********************/
 .floua-watch-container {

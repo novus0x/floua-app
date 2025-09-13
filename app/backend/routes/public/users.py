@@ -53,7 +53,7 @@ async def signup(request: Request, db: Session = Depends(get_db)):
 
     ### Save to DB ###
     new_user = User(
-        id = await get_uuid(User, db),
+        id = get_uuid(User, db),
         username = user.username.lower(),
         email = user.email,
         password = hash_password(user.password),
@@ -93,7 +93,7 @@ async def signup(request: Request, db: Session = Depends(get_db)):
     
     ### Save to DB ###
     new_session = User_Session(
-        id = await get_uuid(User_Session, db),
+        id = get_uuid(User_Session, db),
         user_id = user_data.id,
         expires_at = None,
     )
@@ -165,7 +165,7 @@ async def validate(request: Request, db: Session = Depends(get_db)):
                 return custom_response(status_code=400, message="Try again later. Hint: 2 minutes after your last try")
 
     new_verification = User_Verification(
-        id = await get_uuid(User_Verification, db),
+        id = get_uuid(User_Verification, db),
         user_id = user["id"],
     )
 

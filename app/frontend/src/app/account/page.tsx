@@ -197,7 +197,7 @@ const Account = () => {
           <button className={`account-option ${activeTab == "general" ? "account-option-active" : ""}`} onClick={() => setActiveTab("general")}>
             General
           </button>
-          <span className="account-option-title">
+          {/* <span className="account-option-title">
             <FaVideo className="account-option-title-icon color-main" size={25} /> Channel
           </span>
           {user.has_channel ? (
@@ -208,7 +208,7 @@ const Account = () => {
             <button className={`account-option ${activeTab == "create_channel" ? "account-option-active" : ""}`} onClick={() => setActiveTab("create_channel")}>
               Create Channel
             </button>
-          )}
+          )} */}
           <span className="account-option-title">
             <FaLock className="account-option-title-icon color-main" size={25} /> Security
           </span>
@@ -293,7 +293,7 @@ const Account = () => {
             </div>
           )}
 
-          {activeTab == "create_channel" && (
+          {/* {activeTab == "create_channel" && (
             <div className="account-data-create-channel">
               <span className="account-data-create-channel-title">Create your channel and start sharing your content!</span>
               <Link href={routes.channel.opts.create} className="account-data-create-channel-btn"><FiPlus size={30} /> Create Channel</Link>
@@ -304,7 +304,7 @@ const Account = () => {
             <div className="account-data-channel-overview">
               <h3>Overview Channels</h3>
             </div>
-          )}
+          )} */}
 
           {activeTab == "login_tracking" && (
             <div className="account-data-loggin-tracking-container">

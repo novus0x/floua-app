@@ -25,15 +25,15 @@ import { get_data } from "@/helpers/api";
 // Structure
 
 /********************** Home **********************/
-const VideoSuggestionList = () => {
+const Playlist = () => {
     // Router
     const router = useRouter();
 
     return (
         <div>
-            <h1>Video Suggestion List</h1>
+            <h1>Playlist</h1>
         </div>
     );
 };
 
-export default VideoSuggestionList;
+export default Playlist;
