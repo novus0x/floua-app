@@ -126,8 +126,8 @@ async def upload_video_info(request: Request, tag: str, db: Session = Depends(ge
         return custom_response(status_code=400, message="Fields required", details=required_fields)
 
     new_video = Video(
-        id = await get_uuid(Video, db),
-        short_id = await get_short_id(Video, db),
+        id = get_uuid(Video, db),
+        short_id = get_short_id(Video, db),
         title = video_info.title,
         description = video_info.description,
         visibility = video_info.visibility,

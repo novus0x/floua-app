@@ -1,6 +1,8 @@
 uuid
 httpx
 PyJWT
+PyPDF2
+stripe
 jinja2
 geoip2
 bcrypt

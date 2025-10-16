@@ -196,6 +196,16 @@ async def hls_converter(video_data):
         print("algo paso")
         return False
 
+########## Worker  ##########
+async def worker(video_data):
+    try:
+        result = await hls_converter(video_data)
+
+        if not result:
+            print("[-] Error while converting")
+
+    except Exception as e:
+        print(f"Error: {e}")
 
 ########## Video  ##########
 async def video_converter():
@@ -203,7 +213,7 @@ async def video_converter():
 
         data = await queue.get()
 
-        result = await hls_converter(data)
+        asyncio.create_task(worker(data))
 
         # request.post(settings.CDN_ORIGIN + "/nodes/video_status", json=data)
 

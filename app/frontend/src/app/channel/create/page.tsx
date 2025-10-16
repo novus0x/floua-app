@@ -85,11 +85,11 @@ const Account = () => {
         <form onSubmit={create_channel} className="create-channel-form">
           <span className="create-channel-text">Channel name</span>
           <div className="create-channel-form-input-container">
-            <input type="text" name="name" className="create-channel-input" placeholder="Example 123" value={formData.name} onChange={handle_change} required />
+            <input type="text" name="name" className="create-channel-input" placeholder="Example 123" value={formData.name} onChange={handle_change} autoComplete="off" required />
           </div>
           <span className="create-channel-text">Channel tag</span>
           <div className="create-channel-form-input-container">
-            <input type="text" name="tag" id="tag" className="create-channel-input" placeholder="example_123" value={formData.tag} onChange={handle_change} required />
+            <input type="text" name="tag" id="tag" className="create-channel-input" placeholder="example_123" value={formData.tag} onChange={handle_change} autoComplete="off" required />
             <span className="create-channel-looks-like">It will look like this: /@{channelTag}</span>
           </div>
           <span className="create-channel-text">Channel description</span>

@@ -3,9 +3,10 @@ import enum, uuid
 
 from datetime import datetime
 
-from db.database import Base
 from sqlalchemy.orm import relationship
 from sqlalchemy import Column, String, DateTime, ForeignKey, Enum, Integer, Text, Boolean
+
+from db.database import Base
 
 ##### Video #####
 class Video_Status(str, enum.Enum):
@@ -24,18 +25,6 @@ class Video_Source_type(str, enum.Enum):
     cdn = "cdn"
     youtube = "youtube"
     external = "external"
-
-class Video_Point_Stats(Base):
-    __tablename__ = "video_point_stats"
-
-    id = Column(String, primary_key=True, nullable=False)
-    video_id = Column(String, ForeignKey("videos.id"), nullable=False)
-
-    total_points = Column(Integer, default=0)
-    date = Column(DateTime(timezone=True), default=datetime.utcnow)
-
-    ## Relationships ##
-    video = relationship("Video")
 
 class Video(Base):
     __tablename__ = "videos"
@@ -66,4 +55,4 @@ class Video(Base):
     comments = relationship("Comment", back_populates="video", cascade="all, delete-orphan")
     video_playlists = relationship("Video_Playlist", back_populates="video", cascade="all, delete-orphan")
     category = relationship("Category", back_populates="videos")
-
+    transactions = relationship("Transaction", back_populates="video")

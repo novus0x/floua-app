@@ -1,7 +1,5 @@
 ########## Modules ##########
-import datetime
-
-from datetime import timezone
+from datetime import timezone, datetime, timedelta
 
 from fastapi import APIRouter, Depends, Request
 
@@ -51,6 +49,22 @@ async def signup(request: Request, db: Session = Depends(get_db)):
     if user.password != user.confirm_password:
         return custom_response(status_code=400, message="Passwords don't match")
 
+    ### Improve Password ###
+    if len(user.password) < 12:
+        return custom_response(status_code=400, message="The password must be at least 12 characters long for security reasons")
+
+    ### Validate Age ###
+    birth_year = datetime.fromisoformat(user.date_of_birth).date()
+    today = datetime.utcnow().date()
+
+    try:
+        max_date = today.replace(year=today.year - 124) - timedelta(days=164)
+    except ValueError:
+        max_date = today.replace(month=2, day=28, year=today.year - 124) - timedelta(days=164)
+
+    if birth_year < max_date:
+        return custom_response(status_code=400, message="It is impossible to live that long, are you sure that you still alive? :|")
+
     ### Save to DB ###
     new_user = User(
         id = get_uuid(User, db),
@@ -99,7 +113,7 @@ async def signup(request: Request, db: Session = Depends(get_db)):
     )
 
     if user.expires == "0": 
-        new_session.expires_at = datetime.datetime.now(datetime.timezone.utc) + datetime.timedelta(days=15)
+        new_session.expires_at = datetime.now(timezone.utc) + timedelta(days=15)
 
     ### Geo IP ###
     if user_data.user_session_extra:
@@ -155,7 +169,7 @@ async def validate(request: Request, db: Session = Depends(get_db)):
 
     if len(verifications) > 0:
         for verification in verifications:
-            current_date = datetime.datetime.now(timezone.utc)
+            current_date = datetime.now(timezone.utc)
             verification_date = verification.date
 
             time_aprx = current_date - verification_date
@@ -169,7 +183,7 @@ async def validate(request: Request, db: Session = Depends(get_db)):
         user_id = user["id"],
     )
 
-    new_verification.expires_at = datetime.datetime.now(datetime.timezone.utc) + datetime.timedelta(minutes=10)
+    new_verification.expires_at = datetime.now(datetime.timezone.utc) + datetime.timedelta(minutes=10)
     add_db(db, new_verification)
 
     html_body = await get_html(template_routes.auth.verify, {
@@ -201,7 +215,7 @@ async def validate(request: Request, db: Session = Depends(get_db)):
     if verification.used:
         return custom_response(status_code=400, message="Invalid link")
     
-    current_date = datetime.datetime.now(timezone.utc)
+    current_date = datetime.now(timezone.utc)
     expiration_date = verification.expires_at
         
     if expiration_date <= current_date:

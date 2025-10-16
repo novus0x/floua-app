@@ -11,7 +11,13 @@ from db.models.User import User, User_Session, External_Account, User_Channel, U
 from db.models.Point import Point_Transaction
 
 from db.models.Playlist import Playlist, Video_Playlist
+from db.models.Wallet import Wallet_Status, Wallet, Transaction_Type, Transaction
 from db.models.Video import Video, Video_Source_type, Video_Visibility, Video_Status
+
+from db.models.ai.base import Chat_Message_Type, Chat_Session, Chat_Message
+from db.models.ai.base import User_Conversation, Conversation_Memory, User_AI_Customization
+from db.models.ai.base import Approval_Status, Teaching_Proposal, Proposal_Review, Knowledge_Base_Official
+from db.models.ai.base import Learning_Strategy, Knowledge_Source, Learning_Strategy, Knowledge_Source, Agent_Memory, Learning_Experience, Concept_Network, Reasoning_Pattern, Language_Model, Agent_State, Self_Reflection, Learning_Goal
 
 ##### Category #####
 class Category(Base):
@@ -42,7 +48,7 @@ class Comment(Base):
     video_id = Column(String, ForeignKey("videos.id"), nullable=False)
     parent_id = Column(String, ForeignKey("comments.id"), nullable=True)
     date = Column(DateTime(timezone=True), default=datetime.utcnow)
-    
+
     ## Relationships ##
     user = relationship("User", back_populates="comments")
     video = relationship("Video", back_populates="comments")

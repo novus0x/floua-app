@@ -54,3 +54,11 @@ export function get_cookie(cookie_name: string) {
 export function delete_cookie() {
     document.cookie = `${settings.token_name}=; Max-Age=0; path=/`;
 }
+
+/********************** Truncate Words **********************/
+export function truncate_words(text: string, word_count: number = 3) {
+    const words = text.trim().split(/\s+/);
+    if (words.length <= word_count) return text;
+
+    return words.slice(0, word_count).join(" ") + "...";
+}

@@ -95,7 +95,7 @@ async def create_channel(request: Request, db: Session = Depends(get_db)):
         update_db(db)
 
     new_channel = User_Channel(
-        id = await get_uuid(User_Channel, db),
+        id = get_uuid(User_Channel, db),
         user_id = user["id"],
 
         tag = channel.tag,

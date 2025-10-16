@@ -1,5 +1,5 @@
 ########## Modules ##########
-import enum, uuid
+import enum
 
 from datetime import datetime
 
@@ -45,6 +45,15 @@ class User(Base):
     sessions = relationship("User_Session", back_populates="user", cascade="all, delete-orphan")
     transactions = relationship("Point_Transaction", back_populates="user", cascade="all, delete-orphan")
     external_accounts = relationship("External_Account", back_populates="user", cascade="all, delete-orphan")
+    wallet = relationship("Wallet", back_populates="user")
+    
+    ## AI Relationships ##
+    teaching_proposals = relationship("Teaching_Proposal", back_populates="proposed_by_user", foreign_keys="[Teaching_Proposal.proposed_by_user_id]")
+    proposal_reviews = relationship("Proposal_Review", back_populates="reviewed_by_user", foreign_keys="[Proposal_Review.reviewed_by_user_id]")
+    conversations = relationship("User_Conversation", back_populates="user")
+    conversation_memories = relationship("Conversation_Memory", back_populates="user")
+    ai_customization = relationship("User_AI_Customization", back_populates="user")
+    chat_sessions = relationship("Chat_Session", back_populates="user")
 
 ##### User Verification #####
 class User_Verification(Base):

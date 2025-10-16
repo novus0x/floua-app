@@ -15,6 +15,8 @@ from core.utils.responses import custom_response
 from core.utils.encrypt import hash_password, check_password, generate_jwt
 from core.utils.validators import read_json_body, validate_required_fields, validate_user, get_token
 
+from services.stripe import main
+
 ########## Variables ##########
 router = APIRouter()
 
